@@ -1650,11 +1650,15 @@ function populateCode() {
     const lang = langMap[preId] || 'markup';
     const code = document.createElement('code');
     code.className = 'language-' + lang;
-    code.textContent = ta.value.trim();
     pre.className = 'language-' + lang;
-    pre.innerHTML  = '';
+    // Set text content BEFORE appending, so code is always visible
+    code.textContent = ta.value.trim();
+    pre.innerHTML = '';
     pre.appendChild(code);
-    if (window.Prism) Prism.highlightElement(code);
+    // Apply Prism highlighting safely — if it throws, code text is already in DOM
+    if (window.Prism) {
+      try { Prism.highlightElement(code); } catch(e) {}
+    }
   });
 }
 </script>
