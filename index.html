@@ -1,0 +1,4298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Push Notification — Brand Editor Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0A0A0A;
+    --white: #FFFFFF;
+    --gray-50: #F7F7F7;
+    --gray-100: #EFEFEF;
+    --gray-200: #DCDCDC;
+    --gray-400: #999;
+    --gray-600: #555;
+    --gray-800: #222;
+
+    --light-primary: #FA0004;
+    --light-bg: #FFFFFF;
+    --light-card: #F7F7F7;
+
+    --dark-primary: #5BFDA4;
+    --dark-secondary: #FFEA00;
+    --dark-bg: #071F16;
+    --dark-card: #18262B;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+    --transition: 0.3s ease;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--black);
+    color: var(--white);
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .nav-logo span { color: var(--white); }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0 14px;
+    height: 56px;
+    line-height: 56px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  /* ── PAGE AMBIENT GLOWS ── */
+  .page-glow-wrap {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .page-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(130px);
+    will-change: transform;
+  }
+  .page-glow--a {
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(250,0,4,1) 0%, transparent 65%);
+    top: -250px; left: -250px;
+    opacity: 0.08;
+    animation: glowDrift 22s ease-in-out infinite alternate;
+  }
+  .page-glow--b {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(91,253,164,1) 0%, transparent 65%);
+    top: 30%; right: -250px;
+    opacity: 0.07;
+    animation: glowDrift 30s ease-in-out infinite alternate-reverse;
+    animation-delay: -10s;
+  }
+  .page-glow--c {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,1) 0%, transparent 65%);
+    bottom: -100px; left: 10%;
+    opacity: 0.055;
+    animation: glowDrift 26s ease-in-out infinite alternate;
+    animation-delay: -16s;
+  }
+  @keyframes glowDrift {
+    0%   { transform: translate(0, 0) scale(1); }
+    25%  { transform: translate(60px, -80px) scale(1.1); }
+    50%  { transform: translate(-50px, 60px) scale(0.92); }
+    75%  { transform: translate(90px, 30px) scale(1.06); }
+    100% { transform: translate(-30px, -60px) scale(0.96); }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1),
+                transform 0.75s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── SHARED KEYFRAMES ── */
+  @keyframes labelShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50%       { background-position: 100% 50%; }
+  }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-7px); }
+  }
+  @keyframes codeScan {
+    0%        { left: -50%; opacity: 0; }
+    8%        { opacity: 1; }
+    65%       { left: 130%; opacity: 1; }
+    66%, 100% { left: 130%; opacity: 0; }
+  }
+  @keyframes borderPulse {
+    0%, 100% { border-color: rgba(255,255,255,0.06); }
+    50%       { border-color: rgba(255,255,255,0.14); }
+  }
+  @keyframes cardShimmer {
+    0%   { transform: translateX(-100%) skewX(-12deg); }
+    100% { transform: translateX(300%) skewX(-12deg); }
+  }
+  @keyframes pulseRing {
+    0%   { transform: scale(1);   opacity: 0.5; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+
+  /* ── NAV LOGO FLOAT ── */
+  .nav-logo { animation: floatY 8s ease-in-out infinite; }
+
+  /* ── CODE SCAN LINE ── */
+  .code-block::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: -50%;
+    width: 35%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+    pointer-events: none;
+    animation: codeScan 8s ease-in-out infinite;
+    animation-delay: var(--scan-delay, 0s);
+  }
+
+  /* ── SECTION WRAP BORDER PULSE ── */
+  .section-wrap { animation: borderPulse 6s ease-in-out infinite; }
+
+  /* ── TEMPLATE CARD SHIMMER ON HOVER ── */
+  .template-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
+    transform: translateX(-100%) skewX(-12deg);
+    pointer-events: none;
+  }
+  .template-card:hover::after { animation: cardShimmer 0.7s ease forwards; }
+
+  /* ── STEP NUMBER PULSE ── */
+  .step-num {
+    position: relative;
+  }
+  .step-num::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0;
+    animation: pulseRing 3s ease-out infinite;
+  }
+
+  /* ── CHECK ITEM SLIDE ── */
+  .check-item.reveal { transform: translateX(-16px); }
+  .check-item.reveal.visible { transform: translateX(0); }
+
+  /* ── TEMPLATE CARDS ── */
+  .templates-section {
+    padding: 9rem 2rem 6rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    background: linear-gradient(90deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.55) 45%, rgba(255,255,255,0.22) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: labelShimmer 4s ease-in-out infinite;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin-bottom: 3rem;
+  }
+
+  .template-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .template-card {
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .template-card--light:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 32px 64px -16px rgba(250,0,4,0.22), 0 0 0 1px rgba(250,0,4,0.15); }
+  .template-card--dark:hover  { transform: translateY(-8px) scale(1.01); box-shadow: 0 32px 64px -16px rgba(91,253,164,0.18), 0 0 0 1px rgba(91,253,164,0.2); }
+
+  .template-card--light {
+    background: var(--white);
+    color: var(--black);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .template-card--dark {
+    background: var(--dark-card);
+    color: var(--white);
+    border: 1px solid rgba(91,253,164,0.15);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .card-tag--light { background: rgba(250,0,4,0.1); color: var(--light-primary); }
+  .card-tag--dark  { background: rgba(91,253,164,0.15); color: var(--dark-primary); }
+
+  .card-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    opacity: 0.5;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .card-swatches {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .swatch-group { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+  .swatch-group span { font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.4; }
+
+  .swatch-block {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-sm);
+  }
+
+  .card-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  .feat-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── STEPS ── */
+  .steps-section {
+    padding: 4rem 2rem 6rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .step-block {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 0 1.5rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .step-block.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .step-number-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .step-num {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-line {
+    width: 1px;
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    min-height: 40px;
+  }
+
+  .step-content {
+    padding-bottom: 2rem;
+  }
+
+  .step-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    margin-top: 8px;
+    color: var(--white);
+  }
+
+  .step-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── VARIABLE TABLE ── */
+  .var-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 1rem 0;
+    font-size: 13px;
+  }
+
+  .var-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .var-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+
+  .var-table tr:last-child td { border-bottom: none; }
+
+  .var-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  .var-name {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: #7DD3FC;
+    white-space: nowrap;
+  }
+
+  .var-desc { color: rgba(255,255,255,0.55); line-height: 1.4; }
+
+  .var-hint {
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .color-preview {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #111;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.04em;
+    font-family: var(--font-mono);
+  }
+
+  .code-dots { display: flex; gap: 5px; }
+  .code-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .code-copy {
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: none;
+    color: rgba(255,255,255,0.35);
+    font-size: 10px;
+    font-family: var(--font-mono);
+    transition: all 0.2s;
+  }
+
+  .code-copy:hover {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.6);
+  }
+
+  pre {
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .token-comment { color: rgba(255,255,255,0.22); }
+  .token-var     { color: #7DD3FC; }
+  .token-value   { color: #86EFAC; }
+  .token-url     { color: #FCA5A5; }
+  .token-hex     { color: #FDE68A; }
+  .token-key     { color: #C4B5FD; }
+
+  /* ── WARNING / DANGER ── */
+  .warning-card {
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin: 1rem 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .warning-card--danger {
+    background: rgba(220, 38, 38, 0.08);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+  }
+
+  .warning-card--info {
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.18);
+  }
+
+  .warning-card--success {
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.18);
+  }
+
+  .warn-icon {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .warn-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .warning-card--danger .warn-title { color: #FCA5A5; }
+  .warning-card--info .warn-title   { color: #93C5FD; }
+  .warning-card--success .warn-title { color: #86EFAC; }
+
+  .warn-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.55;
+  }
+
+  /* ── DONT TOUCH LIST ── */
+  .dont-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 1rem 0;
+  }
+
+  .dont-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(220, 38, 38, 0.05);
+    border: 1px solid rgba(220, 38, 38, 0.12);
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-family: var(--font-mono);
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .dont-item:hover {
+    background: rgba(220, 38, 38, 0.09);
+    border-color: rgba(220, 38, 38, 0.2);
+  }
+
+  .dont-x {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    color: #FCA5A5;
+    margin-top: 1px;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist-section {
+    padding: 4rem 2rem 6rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .check-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 1.5rem 0;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    user-select: none;
+  }
+
+  .check-item:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .check-item.checked {
+    background: rgba(91,253,164,0.05);
+    border-color: rgba(91,253,164,0.2);
+  }
+
+  .check-box {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .check-item.checked .check-box {
+    background: var(--dark-primary);
+    border-color: var(--dark-primary);
+  }
+
+  .check-box svg {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .check-item.checked .check-box svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .check-label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.2s;
+  }
+
+  .check-item.checked .check-label {
+    color: rgba(255,255,255,0.85);
+    text-decoration: line-through;
+    text-decoration-color: rgba(255,255,255,0.2);
+  }
+
+  .check-progress {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--dark-primary);
+    border-radius: 100px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    font-family: var(--font-mono);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* ── TABS ── */
+  .tab-header {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 1.5rem;
+  }
+
+  .tab-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .tab-btn.active {
+    color: var(--white);
+    border-bottom-color: var(--white);
+  }
+
+  .tab-btn--light.active { border-bottom-color: var(--light-primary); color: var(--white); }
+  .tab-btn--dark.active  { border-bottom-color: var(--dark-primary);  color: var(--white); }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── HARDCODE ROW ── */
+  .hc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 1rem 0;
+  }
+
+  .hc-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 8px;
+    align-items: start;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius-md);
+    font-size: 12px;
+  }
+
+  .hc-selector {
+    font-family: var(--font-mono);
+    color: #C4B5FD;
+    word-break: break-all;
+    line-height: 1.5;
+  }
+
+  .hc-action {
+    color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.2);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION WRAPPER ── */
+  .section-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .template-cards { grid-template-columns: 1fr; }
+    .dont-list { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hc-row { grid-template-columns: 1fr; }
+  }
+
+  /* ── CODE SECTION ── */
+  .code-brand-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 1.5rem;
+  }
+  .code-brand-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .code-brand-btn.active { color: var(--white); border-bottom-color: var(--white); }
+  .brand-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sub-tab-header { display: flex; gap: 8px; margin-bottom: 1rem; }
+  .sub-tab-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sub-tab-btn.active {
+    color: var(--white);
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+  }
+  .sub-pane pre {
+    max-height: 580px;
+    overflow-y: auto;
+  }
+
+  /* ── ANCHOR OFFSET ── */
+  [id] { scroll-margin-top: 70px; }
+
+  /* ── PRISM SYNTAX TOKENS ── */
+  pre code { font-family: inherit; font-size: inherit; line-height: inherit; background: transparent; padding: 0; display: block; }
+  .token.comment,
+  .token.prolog,
+  .token.doctype                { color: rgba(255,255,255,0.24); font-style: italic; }
+  .token.tag                    { color: #7FDBCA; }
+  .token.attr-name              { color: #ADDB67; }
+  .token.attr-value,
+  .token.string                 { color: #ECC48D; }
+  .token.punctuation            { color: rgba(255,255,255,0.35); }
+  .token.entity                 { color: #F78C6C; }
+  .token.selector               { color: #ADDB67; }
+  .token.property               { color: #80CBC4; }
+  .token.function               { color: #82AAFF; }
+  .token.number                 { color: #F78C6C; }
+  .token.unit                   { color: #F78C6C; }
+  .token.boolean                { color: #FF5874; }
+  .token.keyword                { color: #C792EA; }
+  .token.class-name             { color: #FFCB8B; }
+  .token.url                    { color: #ECC48D; }
+  .token.regex,
+  .token.important              { color: #FFD700; }
+  .token.atrule,
+  .token.rule                   { color: #C792EA; }
+  .token.operator               { color: rgba(255,255,255,0.55); }
+  .token.variable               { color: #ADDB67; }
+</style>
+</head>
+<body>
+
+<div class="page-glow-wrap" aria-hidden="true">
+  <div class="page-glow page-glow--a"></div>
+  <div class="page-glow page-glow--b"></div>
+  <div class="page-glow page-glow--c"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>Push Notification</span> &nbsp;Brand Guide</div>
+  <ul class="nav-links">
+    <li><a href="#templates">Templates</a></li>
+    <li><a href="#step1">App name</a></li>
+    <li><a href="#step2">CSS vars</a></li>
+    <li><a href="#step3">Hardcoded</a></li>
+    <li><a href="#step4">Images</a></li>
+    <li><a href="#donot">Do not touch</a></li>
+    <li><a href="#checklist">Checklist</a></li>
+    <li><a href="#code">Code</a></li>
+  </ul>
+</nav>
+
+<!-- TEMPLATE CHOOSER -->
+<section id="templates" class="templates-section">
+  <p class="section-label">Step 0</p>
+  <h2 class="section-title">Choose your template</h2>
+
+  <div class="template-cards">
+
+    <!-- MELB96 -->
+    <div class="template-card template-card--light">
+      <div class="card-header">
+        <span class="card-tag card-tag--light">Light theme</span>
+        <span style="font-size:20px;">&#9728;</span>
+      </div>
+      <div class="card-name" style="color:#0A0A0A;">MELB96</div>
+      <p class="card-desc" style="color:rgba(0,0,0,0.45);">White card backgrounds, light modal, red primary. Inline CSS inside HTML file, embedded inside an SPA shell with header and bottom nav.</p>
+      <div class="card-swatches">
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#FA0004;"></div>
+          <span style="color:rgba(0,0,0,0.4);">Primary</span>
+        </div>
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#000;"></div>
+          <span style="color:rgba(0,0,0,0.4);">Secondary</span>
+        </div>
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#FFF; border:1px solid #ddd;"></div>
+          <span style="color:rgba(0,0,0,0.4);">Modal bg</span>
+        </div>
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#F7F7F7; border:1px solid #ddd;"></div>
+          <span style="color:rgba(0,0,0,0.4);">Card bg</span>
+        </div>
+      </div>
+      <ul class="card-features">
+        <li style="color:rgba(0,0,0,0.6)"><span class="feat-dot" style="background:#FA0004;"></span>Inline CSS inside HTML file</li>
+        <li style="color:rgba(0,0,0,0.6)"><span class="feat-dot" style="background:#FA0004;"></span>SPA shell — measures header &amp; bottom nav <span style="font-size:0.82em;opacity:0.5;">(smart banner support)</span></li>
+        <li style="color:rgba(0,0,0,0.6)"><span class="feat-dot" style="background:#FA0004;"></span>Has <code style="font-size:11px;background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;">--color-pwa-title</code> extra variables</li>
+        <li style="color:rgba(0,0,0,0.6)"><span class="feat-dot" style="background:#FA0004;"></span>Uses <code style="font-size:11px;background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;">.modal-platform-label</code> selector</li>
+      </ul>
+    </div>
+
+    <!-- XOX96 -->
+    <div class="template-card template-card--dark">
+      <div class="card-header">
+        <span class="card-tag card-tag--dark">Dark theme</span>
+        <span style="font-size:20px;">&#127769;</span>
+      </div>
+      <div class="card-name" style="color:#5BFDA4;">XOX96</div>
+      <p class="card-desc" style="color:rgba(255,255,255,0.4);">Dark green backgrounds, green primary, yellow secondary. Inline CSS inside HTML file, embedded inside an SPA shell with header and bottom nav.</p>
+      <div class="card-swatches">
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#5BFDA4;"></div>
+          <span style="color:rgba(255,255,255,0.35);">Primary</span>
+        </div>
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#FFEA00;"></div>
+          <span style="color:rgba(255,255,255,0.35);">Secondary</span>
+        </div>
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#071F16;"></div>
+          <span style="color:rgba(255,255,255,0.35);">Modal bg</span>
+        </div>
+        <div class="swatch-group">
+          <div class="swatch-block" style="background:#18262B;"></div>
+          <span style="color:rgba(255,255,255,0.35);">Card bg</span>
+        </div>
+      </div>
+      <ul class="card-features">
+        <li><span class="feat-dot" style="background:#5BFDA4;"></span>Inline CSS inside HTML file</li>
+        <li><span class="feat-dot" style="background:#5BFDA4;"></span>SPA shell — measures header &amp; bottom nav <span style="font-size:0.82em;opacity:0.5;">(smart banner support)</span></li>
+        <li><span class="feat-dot" style="background:#5BFDA4;"></span>Has <code style="font-size:11px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">--color-pwa-title</code> extra variables</li>
+        <li><span class="feat-dot" style="background:#5BFDA4;"></span>Uses <code style="font-size:11px;background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:3px;">.modal-platform-label</code> selector</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- STEPS -->
+<div id="step1" class="section-wrap steps-section" style="border-top:none; padding-top:0; max-width:900px;">
+  <p class="section-label">Steps 1 – 4</p>
+  <h2 class="section-title">What to change</h2>
+
+  <!-- STEP 1 -->
+  <div class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">1</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Change the app name</h3>
+      <p class="step-subtitle">One line in JavaScript</p>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>script — top of &lt;script&gt; block</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="token-comment">// Change "YOURNEWBRAND" to your brand name</span>
+<span class="token-key">window</span>.<span class="token-var">APP_NAME</span> = <span class="token-key">window</span>.<span class="token-var">APP_NAME</span> || <span class="token-value">"YOURNEWBRAND"</span>;</pre>
+      </div>
+
+      <div class="warning-card warning-card--info">
+        <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <p class="warn-title">Also update the page title</p>
+          <p class="warn-text">Find <code style="font-family:monospace;font-size:12px;">&lt;title&gt;</code> in <code style="font-family:monospace;font-size:12px;">&lt;head&gt;</code> and change it to your brand name.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step2" class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">2</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Edit the <code style="font-size:0.95em;font-family:monospace;">:root</code> CSS variables</h3>
+      <p class="step-subtitle">The only section you change for colors — find <code style="font-family:monospace;font-size:12px;">:root { }</code> at the top of the CSS</p>
+
+      <div class="tab-header">
+        <button class="tab-btn tab-btn--light active" onclick="switchTab(this,'melb')">MELB96 (Light)</button>
+        <button class="tab-btn tab-btn--dark" onclick="switchTab(this,'xox')">XOX96 (Dark)</button>
+      </div>
+
+      <div id="tab-melb" class="tab-pane active">
+
+        <table class="var-table">
+          <thead>
+            <tr>
+              <th>Variable</th>
+              <th>What it controls</th>
+              <th>Default value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="var-name">--primary</td><td class="var-desc">Main brand color — buttons, active tabs, borders, modal icon bg</td><td class="var-hint"><span class="color-preview" style="background:#FA0004;"></span>#FA0004</td></tr>
+            <tr><td class="var-name">--primary-dim</td><td class="var-desc">Primary at 8% — card backgrounds, tab menu bg, button fill</td><td class="var-hint">rgba(250,0,4,0.08)</td></tr>
+            <tr><td class="var-name">--primary-border</td><td class="var-desc">Primary used on borders (usually same as --primary)</td><td class="var-hint"><span class="color-preview" style="background:#FA0004;"></span>#FA0004</td></tr>
+            <tr><td class="var-name">--primary-dark</td><td class="var-desc">Darkest primary shade</td><td class="var-hint"><span class="color-preview" style="background:#FA0004;"></span>#FA0004</td></tr>
+            <tr><td class="var-name">--secondary</td><td class="var-desc">Contrast color — eyebrow, remark label, modal title, app-card border</td><td class="var-hint"><span class="color-preview" style="background:#000;border:1px solid #666;"></span>#000</td></tr>
+            <tr><td class="var-name">--secondary-dim</td><td class="var-desc">Secondary at 8% — app-card text</td><td class="var-hint">rgba(0,0,0,0.08)</td></tr>
+            <tr><td class="var-name">--secondary-border</td><td class="var-desc">Secondary for borders — remark box, modal warning dashes</td><td class="var-hint"><span class="color-preview" style="background:#000;border:1px solid #666;"></span>#000</td></tr>
+            <tr><td class="var-name">--bg-page</td><td class="var-desc">Outer page background</td><td class="var-hint"><span class="color-preview" style="background:#0B1D14;"></span>#0B1D14</td></tr>
+            <tr><td class="var-name">--bg-hero</td><td class="var-desc">Hero background image URL</td><td class="var-hint">url("...")</td></tr>
+            <tr><td class="var-name">--bg-notif-card</td><td class="var-desc">Notification card background</td><td class="var-hint"><span class="color-preview" style="background:#FFF;border:1px solid #ddd;"></span>#FFF</td></tr>
+            <tr><td class="var-name">--bg-remark</td><td class="var-desc">Remark/info box background</td><td class="var-hint">rgba(0,0,0,0.08)</td></tr>
+            <tr><td class="var-name">--bg-app-card</td><td class="var-desc">Download app card background</td><td class="var-hint">rgba(0,0,0,0.08)</td></tr>
+            <tr><td class="var-name">--bg-app-card-pwa</td><td class="var-desc">PWA card background (primary tint)</td><td class="var-hint">rgba(250,0,4,0.08)</td></tr>
+            <tr><td class="var-name">--bg-app-icon-pwa</td><td class="var-desc">PWA icon square background</td><td class="var-hint">rgba(250,0,4,0.12)</td></tr>
+            <tr><td class="var-name">--bg-modal</td><td class="var-desc">Modal card background</td><td class="var-hint"><span class="color-preview" style="background:#FFF;border:1px solid #ddd;"></span>#FFF</td></tr>
+            <tr><td class="var-name">--bg-modal-inner</td><td class="var-desc">Modal tabs &amp; warning area background</td><td class="var-hint">rgba(0,0,0,0.08)</td></tr>
+            <tr><td class="var-name">--color-pwa-title</td><td class="var-desc">PWA card title color</td><td class="var-hint"><span class="color-preview" style="background:#FA0004;"></span>#FA0004</td></tr>
+            <tr><td class="var-name">--color-macos-title</td><td class="var-desc">macOS card title color</td><td class="var-hint"><span class="color-preview" style="background:#000;border:1px solid #666;"></span>#000</td></tr>
+            <tr><td class="var-name">--color-android-title</td><td class="var-desc">Android card title color</td><td class="var-hint"><span class="color-preview" style="background:#000;border:1px solid #666;"></span>#000</td></tr>
+            <tr><td class="var-name">--icon-app</td><td class="var-desc">App icon shown in modal header</td><td class="var-hint">url("...")</td></tr>
+            <tr><td class="var-name">--icon-button</td><td class="var-desc">Bell icon on Enable button</td><td class="var-hint">url("...")</td></tr>
+            <tr><td class="var-name">--icon-enabled</td><td class="var-desc">Checkmark icon when notifications enabled</td><td class="var-hint">url("...")</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block" style="margin-top:1.5rem;">
+          <div class="code-block-header">
+            <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+            <span>CSS — MELB96 :root example (edit values only)</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><span class="token-comment">/* ── EDIT THESE VALUES ── */</span>
+:root {
+  <span class="token-var">--primary</span>:              <span class="token-hex">#FA0004</span>;
+  <span class="token-var">--primary-dim</span>:          <span class="token-hex">rgba(250, 0, 4, 0.08)</span>;
+  <span class="token-var">--primary-border</span>:       <span class="token-hex">#FA0004</span>;
+  <span class="token-var">--primary-dark</span>:         <span class="token-hex">#FA0004</span>;
+  <span class="token-var">--secondary</span>:            <span class="token-hex">#000</span>;
+  <span class="token-var">--secondary-dim</span>:        <span class="token-hex">rgba(0, 0, 0, 0.08)</span>;
+  <span class="token-var">--secondary-border</span>:     <span class="token-hex">#000</span>;
+
+  <span class="token-var">--bg-page</span>:              <span class="token-hex">#0B1D14</span>;
+  <span class="token-var">--bg-hero</span>:              <span class="token-url">url("YOUR_HERO_IMAGE_URL")</span>;
+  <span class="token-var">--bg-notif-card</span>:        <span class="token-hex">#FFF</span>;
+  <span class="token-var">--bg-remark</span>:            <span class="token-hex">rgba(0, 0, 0, 0.08)</span>;
+  <span class="token-var">--bg-app-card</span>:          <span class="token-hex">rgba(0, 0, 0, 0.08)</span>;
+  <span class="token-var">--bg-app-card-pwa</span>:      <span class="token-hex">rgba(250, 0, 4, 0.08)</span>;
+  <span class="token-var">--bg-app-icon-pwa</span>:      <span class="token-hex">rgba(250, 0, 4, 0.12)</span>;
+  <span class="token-var">--bg-modal</span>:             <span class="token-hex">#FFF</span>;
+  <span class="token-var">--bg-modal-inner</span>:       <span class="token-hex">rgba(0, 0, 0, 0.08)</span>;
+
+  <span class="token-var">--color-pwa-title</span>:      <span class="token-hex">#FA0004</span>;
+  <span class="token-var">--color-macos-title</span>:    <span class="token-hex">#000</span>;
+  <span class="token-var">--color-android-title</span>:  <span class="token-hex">#000</span>;
+
+  <span class="token-var">--icon-app</span>:     <span class="token-url">url("YOUR_APP_ICON_URL")</span>;
+  <span class="token-var">--icon-button</span>:  <span class="token-url">url("YOUR_BELL_ICON_URL")</span>;
+  <span class="token-var">--icon-enabled</span>: <span class="token-url">url("YOUR_CHECK_ICON_URL")</span>;
+}</pre>
+        </div>
+      </div>
+
+      <div id="tab-xox" class="tab-pane">
+        <div class="warning-card warning-card--info" style="margin-bottom:1rem;">
+          <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div>
+            <p class="warn-title">XOX96 differences</p>
+            <p class="warn-text">Has <code style="font-family:monospace;font-size:12px;">--primary-faint</code> and <code style="font-family:monospace;font-size:12px;">--secondary-faint</code> (8% tint). Does NOT have <code style="font-family:monospace;font-size:12px;">--color-pwa-title</code>, <code style="font-family:monospace;font-size:12px;">--color-macos-title</code>, or <code style="font-family:monospace;font-size:12px;">--color-android-title</code>.</p>
+          </div>
+        </div>
+
+        <table class="var-table">
+          <thead>
+            <tr>
+              <th>Variable</th>
+              <th>What it controls</th>
+              <th>Default value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="var-name">--primary</td><td class="var-desc">Main brand color — borders, icon bg, title, active tabs</td><td class="var-hint"><span class="color-preview" style="background:#5BFDA4;"></span>#5BFDA4</td></tr>
+            <tr><td class="var-name">--primary-dim</td><td class="var-desc">Primary at 48% — benefit card border, notification card border</td><td class="var-hint">rgba(91,253,164,0.48)</td></tr>
+            <tr><td class="var-name">--primary-faint</td><td class="var-desc">Primary at 8% — benefit card background</td><td class="var-hint">rgba(91,253,164,0.08)</td></tr>
+            <tr><td class="var-name">--primary-border</td><td class="var-desc">Darker primary — notification list, check-badge border</td><td class="var-hint"><span class="color-preview" style="background:#388D65;"></span>#388D65</td></tr>
+            <tr><td class="var-name">--primary-dark</td><td class="var-desc">Darkest primary — check-badge background</td><td class="var-hint"><span class="color-preview" style="background:#16492E;"></span>#16492E</td></tr>
+            <tr><td class="var-name">--secondary</td><td class="var-desc">Accent color — eyebrow, remark label, button text, enabled bg, app-card border</td><td class="var-hint"><span class="color-preview" style="background:#FFEA00;border:1px solid #aaa;"></span>#FFEA00</td></tr>
+            <tr><td class="var-name">--secondary-dim</td><td class="var-desc">Secondary at 48% — app-card text</td><td class="var-hint">rgba(255,234,0,0.48)</td></tr>
+            <tr><td class="var-name">--secondary-faint</td><td class="var-desc">Secondary at 8% — button background</td><td class="var-hint">rgba(255,234,0,0.08)</td></tr>
+            <tr><td class="var-name">--secondary-border</td><td class="var-desc">Secondary at 24% — button border</td><td class="var-hint">rgba(255,234,0,0.24)</td></tr>
+            <tr><td class="var-name">--bg-page</td><td class="var-desc">Outer page background</td><td class="var-hint"><span class="color-preview" style="background:#0B1D14;"></span>#0B1D14</td></tr>
+            <tr><td class="var-name">--bg-hero</td><td class="var-desc">Hero background image URL</td><td class="var-hint">url("...")</td></tr>
+            <tr><td class="var-name">--bg-notif-card</td><td class="var-desc">Notification card background</td><td class="var-hint"><span class="color-preview" style="background:#18262B;"></span>#18262B</td></tr>
+            <tr><td class="var-name">--bg-remark</td><td class="var-desc">Remark/info box background</td><td class="var-hint"><span class="color-preview" style="background:#1D3735;"></span>#1D3735</td></tr>
+            <tr><td class="var-name">--bg-app-card</td><td class="var-desc">Download app card background</td><td class="var-hint"><span class="color-preview" style="background:#25251E;"></span>#25251E</td></tr>
+            <tr><td class="var-name">--bg-app-card-pwa</td><td class="var-desc">PWA card background</td><td class="var-hint"><span class="color-preview" style="background:#18262B;"></span>#18262B</td></tr>
+            <tr><td class="var-name">--bg-app-icon-pwa</td><td class="var-desc">PWA icon square background</td><td class="var-hint"><span class="color-preview" style="background:#203F3A;"></span>#203F3A</td></tr>
+            <tr><td class="var-name">--bg-modal</td><td class="var-desc">Modal card background</td><td class="var-hint"><span class="color-preview" style="background:#071F16;"></span>#071F16</td></tr>
+            <tr><td class="var-name">--bg-modal-inner</td><td class="var-desc">Modal tabs &amp; warning area background</td><td class="var-hint"><span class="color-preview" style="background:#0D3121;"></span>#0D3121</td></tr>
+            <tr><td class="var-name">--icon-app</td><td class="var-desc">App icon shown in modal header</td><td class="var-hint">url("...")</td></tr>
+            <tr><td class="var-name">--icon-button</td><td class="var-desc">Bell icon on Enable button</td><td class="var-hint">url("...")</td></tr>
+            <tr><td class="var-name">--icon-enabled</td><td class="var-desc">Checkmark icon when enabled</td><td class="var-hint">url("...")</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block" style="margin-top:1.5rem;">
+          <div class="code-block-header">
+            <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+            <span>CSS — XOX96 :root example (edit values only)</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><span class="token-comment">/* ── EDIT THESE VALUES ── */</span>
+:root {
+  <span class="token-var">--primary</span>:              <span class="token-hex">#5BFDA4</span>;
+  <span class="token-var">--primary-dim</span>:          <span class="token-hex">rgba(91, 253, 164, 0.48)</span>;
+  <span class="token-var">--primary-faint</span>:        <span class="token-hex">rgba(91, 253, 164, 0.08)</span>;
+  <span class="token-var">--primary-border</span>:       <span class="token-hex">#388D65</span>;
+  <span class="token-var">--primary-dark</span>:         <span class="token-hex">#16492E</span>;
+  <span class="token-var">--secondary</span>:            <span class="token-hex">#FFEA00</span>;
+  <span class="token-var">--secondary-dim</span>:        <span class="token-hex">rgba(255, 234, 0, 0.48)</span>;
+  <span class="token-var">--secondary-faint</span>:      <span class="token-hex">rgba(255, 234, 0, 0.08)</span>;
+  <span class="token-var">--secondary-border</span>:     <span class="token-hex">rgba(255, 234, 0, 0.24)</span>;
+
+  <span class="token-var">--bg-page</span>:              <span class="token-hex">#0B1D14</span>;
+  <span class="token-var">--bg-hero</span>:              <span class="token-url">url("YOUR_HERO_IMAGE_URL")</span>;
+  <span class="token-var">--bg-notif-card</span>:        <span class="token-hex">#18262B</span>;
+  <span class="token-var">--bg-remark</span>:            <span class="token-hex">#1D3735</span>;
+  <span class="token-var">--bg-app-card</span>:          <span class="token-hex">#25251E</span>;
+  <span class="token-var">--bg-app-card-pwa</span>:      <span class="token-hex">#18262B</span>;
+  <span class="token-var">--bg-app-icon-pwa</span>:      <span class="token-hex">#203F3A</span>;
+  <span class="token-var">--bg-modal</span>:             <span class="token-hex">#071F16</span>;
+  <span class="token-var">--bg-modal-inner</span>:       <span class="token-hex">#0D3121</span>;
+
+  <span class="token-var">--icon-app</span>:     <span class="token-url">url("YOUR_APP_ICON_URL")</span>;
+  <span class="token-var">--icon-button</span>:  <span class="token-url">url("YOUR_BELL_ICON_URL")</span>;
+  <span class="token-var">--icon-enabled</span>: <span class="token-url">url("YOUR_CHECK_ICON_URL")</span>;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="step3" class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">3</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Fix hardcoded color values</h3>
+      <p class="step-subtitle">Some colors were written as raw hex/rgba and must be updated manually</p>
+
+      <div class="tab-header">
+        <button class="tab-btn tab-btn--light active" onclick="switchTab(this,'melb-hc')">MELB96</button>
+        <button class="tab-btn tab-btn--dark" onclick="switchTab(this,'xox-hc')">XOX96</button>
+      </div>
+
+      <div id="tab-melb-hc" class="tab-pane active">
+        <div class="warning-card warning-card--danger" style="margin-bottom:1rem;">
+          <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><path d="M10 2L2 17h16L10 2z" stroke="#FCA5A5" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8v4M10 14.5v.5" stroke="#FCA5A5" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <div>
+            <p class="warn-title">Search and replace — do not skip</p>
+            <p class="warn-text">Find <code style="font-family:monospace;font-size:12px;">rgba(250, 0, 4,</code> in the CSS and replace all occurrences with <code style="font-family:monospace;font-size:12px;">rgba(R, G, B,</code> using your primary color's RGB values.</p>
+          </div>
+        </div>
+
+        <div class="hc-list">
+          <div class="hc-row">
+            <div class="hc-selector">.notification-list li</div>
+            <div class="hc-action">color → primary at 48%</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.app-card--pwa .app-description</div>
+            <div class="hc-action">color → primary at 48%</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.modal-tab-link .tab-sublabel</div>
+            <div class="hc-action">color → primary at 48%</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.instruction-card</div>
+            <div class="hc-action">border → primary at 32%</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.instruction-card-image</div>
+            <div class="hc-action">background → primary at 16%<br>border → primary at 48%</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.card-excerpt</div>
+            <div class="hc-action">color → primary at 48%</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.tag</div>
+            <div class="hc-action">color + gradient → your primary hex</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.tag--native</div>
+            <div class="hc-action">color → your secondary hex</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-xox-hc" class="tab-pane">
+        <div class="hc-list">
+          <div class="hc-row">
+            <div class="hc-selector">.instruction-card<br>border: 1px solid #195F49</div>
+            <div class="hc-action">Darker shade of your primary</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.instruction-card-image<br>background: linear-gradient(#13402C, #13402C)</div>
+            <div class="hc-action">Very dark shade of primary</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.instruction-card-image<br>border: 1px solid #1C573A</div>
+            <div class="hc-action">Dark primary shade for border</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.card-excerpt<br>color: #329360</div>
+            <div class="hc-action">Mid-shade of your primary</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.tab-link-tab-1-2.w--current .ios-excerpt<br>color: rgba(0, 12, 10, 0.48)</div>
+            <div class="hc-action">Very dark tint of your bg color</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.app-icon-wrap--mac<br>gradient: #F3E92E → #8CFF00</div>
+            <div class="hc-action">Your brand gradient (or secondary)</div>
+          </div>
+          <div class="hc-row">
+            <div class="hc-selector">.tag gradient colors</div>
+            <div class="hc-action">Your secondary colors</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div id="step4" class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">4</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Replace all image URLs in HTML</h3>
+      <p class="step-subtitle">Search for <code style="font-family:monospace;font-size:12px;">static.gwvkyk.com/media/</code> and replace every URL with your brand's images</p>
+
+      <table class="var-table">
+        <thead>
+          <tr>
+            <th>Location in HTML</th>
+            <th>Image description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="var-name">&lt;img class="hero-icon"&gt;</td><td class="var-desc">Large brand icon in hero section</td></tr>
+          <tr><td class="var-name">3× &lt;img&gt; in .benefit-grid</td><td class="var-desc">Benefit card icons (why enable notifications)</td></tr>
+          <tr><td class="var-name">&lt;img&gt; in .notification-icon</td><td class="var-desc">Notification preview icon</td></tr>
+          <tr><td class="var-name">3× &lt;img&gt; in .check-badge</td><td class="var-desc">Permission step checkmark images</td></tr>
+          <tr><td class="var-name">&lt;img&gt; in .remark-icon</td><td class="var-desc">Info/remark icon</td></tr>
+          <tr><td class="var-name">3× &lt;img&gt; in .app-icon-wrap</td><td class="var-desc">Download app card icons (iOS, Android, macOS)</td></tr>
+          <tr><td class="var-name">3× &lt;img class="app-action-icon"&gt;</td><td class="var-desc">Arrow icons on download app cards</td></tr>
+          <tr><td class="var-name">Modal close button &lt;img&gt;</td><td class="var-desc">× close icon</td></tr>
+          <tr><td class="var-name">Modal warning &lt;img&gt;</td><td class="var-desc">Warning/alert icon</td></tr>
+          <tr><td class="var-name">MODAL_DATA image: fields in JS</td><td class="var-desc">All step-by-step instruction images (5 steps × tabs × types)</td></tr>
+          <tr><td class="var-name">MODAL_DATA stepNumberImage: fields</td><td class="var-desc">Step number badge images in instruction cards</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- DO NOT TOUCH -->
+<div id="donot" class="section-wrap">
+  <p class="section-label">Critical</p>
+  <h2 class="section-title">Do not touch</h2>
+
+  <div class="warning-card warning-card--danger" style="margin-bottom:2rem;">
+    <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><path d="M10 2L2 17h16L10 2z" stroke="#FCA5A5" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 8v4M10 14.5v.5" stroke="#FCA5A5" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <div>
+      <p class="warn-title">These sections were carefully debugged and must not be edited</p>
+      <p class="warn-text">Editing any of these will break modal positioning, SPA re-navigation, smart banner sync, or the Webflow tab engine. Do not touch them even if you think you know what they do.</p>
+    </div>
+  </div>
+
+  <p style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1rem;">JavaScript functions — never edit</p>
+  <div class="dont-list">
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>measureTopOffset()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>measureBottomOffset()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>startModalSync()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>stopModalSync()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>showModal()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>hideModal()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>renderInstructionCards()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>initTabs()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>bindEvents()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>checkNotificationPermission()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>checkPWAStatus()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>checkIOSNativeApp()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>pushNotification()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>handleInstallPWA()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>handlePushButtonClick()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>isInAppBrowser() / isIOS() / isAndroid()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>handleAppBrowserRedirect()</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>InstructionCard class</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>window._pwaPageInit guard</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>IIFE wrapper structure</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>else branch (SPA re-nav handler)</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>_pwaRunChecks / _pwaReInit hooks</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>MODAL_DATA keys &amp; structure</div>
+  </div>
+
+  <p style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin:2rem 0 1rem;">CSS sections — never edit</p>
+  <div class="dont-list">
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>/* RESET / BASE */ section</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>.body and .page rules</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>benefit-grid column layout</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>All display:flex/grid rules</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>/* Webflow tab engine */ block</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>.w-tabs / .w-tab-* / .w--tab-active</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>/* RESPONSIVE */ media queries</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>.modal-overlay base rules</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>.modal-overlay.active rule</div>
+    <div class="dont-item"><svg class="dont-x" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#FCA5A5" stroke-width="1.4" stroke-linecap="round"/></svg>--container: 495px value</div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
+<div id="checklist" class="section-wrap checklist-section" style="max-width:700px;">
+  <p class="section-label">Final check</p>
+  <h2 class="section-title">New brand checklist</h2>
+  <p style="color:rgba(255,255,255,0.35);font-size:14px;margin-bottom:2rem;">Click each item as you complete it.</p>
+
+  <div class="check-progress">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <span class="progress-label" id="progress-label">0 / 9</span>
+  </div>
+
+  <div class="check-grid" id="check-list">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Cloned MELB96 or XOX96 template files</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Changed window.APP_NAME in JS</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Updated all :root color variables in CSS</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Found and replaced all hardcoded rgba()/hex values</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Replaced all static.gwvkyk.com image URLs in HTML</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Updated MODAL_DATA step images in JS</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">XOX96: Updated SDK &lt;script src&gt; URL</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Tested modal on iOS Safari and Android Chrome</span>
+    </div>
+  </div>
+
+  <div id="done-banner" style="display:none;margin-top:1.5rem;padding:1.25rem 1.5rem;border-radius:var(--radius-lg);background:rgba(91,253,164,0.08);border:1px solid rgba(91,253,164,0.25);text-align:center;">
+    <p style="font-size:1rem;font-weight:600;color:#5BFDA4;margin-bottom:4px;">Brand setup complete</p>
+    <p style="font-size:13px;color:rgba(255,255,255,0.4);">All steps checked. Your new brand is ready to deploy.</p>
+  </div>
+</div>
+
+<!-- TEMPLATE CODE -->
+<div id="code" class="section-wrap">
+  <p class="section-label">Templates</p>
+  <h2 class="section-title">Complete template code</h2>
+  <p style="font-size:14px;color:rgba(255,255,255,0.35);margin-bottom:2rem;">Full copy-paste code for each template. HTML file includes all inline JavaScript.</p>
+
+  <div class="code-brand-tabs">
+    <button class="code-brand-btn active" onclick="switchBrand(this,'melb')">
+      <span class="brand-dot" style="background:#FA0004;"></span>
+      MELB96 — Light theme
+    </button>
+    <button class="code-brand-btn" onclick="switchBrand(this,'xox')">
+      <span class="brand-dot" style="background:#5BFDA4;"></span>
+      XOX96 — Dark theme
+    </button>
+  </div>
+
+  <!-- MELB96 -->
+  <div id="brand-melb" class="brand-pane">
+    <div class="sub-tab-header">
+      <button class="sub-tab-btn active" onclick="switchSub(this,'melb-html')">HTML + JS</button>
+      <button class="sub-tab-btn" onclick="switchSub(this,'melb-css')">CSS</button>
+    </div>
+    <div id="sub-melb-html" class="sub-pane">
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>push-notification.html — MELB96</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre id="pre-melb-html"></pre>
+      </div>
+    </div>
+    <div id="sub-melb-css" class="sub-pane" style="display:none">
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>push-notification.css — MELB96</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre id="pre-melb-css"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- XOX96 -->
+  <div id="brand-xox" class="brand-pane" style="display:none">
+    <div class="sub-tab-header">
+      <button class="sub-tab-btn active" onclick="switchSub(this,'xox-html')">HTML + JS</button>
+      <button class="sub-tab-btn" onclick="switchSub(this,'xox-css')">CSS</button>
+    </div>
+    <div id="sub-xox-html" class="sub-pane">
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>push-notification.html — XOX96</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre id="pre-xox-html"></pre>
+      </div>
+    </div>
+    <div id="sub-xox-css" class="sub-pane" style="display:none">
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>bonus-push-notification.css — XOX96</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre id="pre-xox-css"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Push Notification Brand Guide &nbsp;·&nbsp; MELB96 (Light) &amp; XOX96 (Dark) templates
+</footer>
+
+<script>
+function switchTab(btn, id) {
+  const wrapper = btn.closest('.step-content') || btn.closest('.section-wrap') || btn.closest('.templates-section');
+  const allBtns = btn.parentElement.querySelectorAll('.tab-btn');
+  const allPanes = wrapper ? wrapper.querySelectorAll('.tab-pane') : document.querySelectorAll('.tab-pane');
+
+  allBtns.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  if (wrapper) {
+    wrapper.querySelectorAll('.tab-pane').forEach(p => {
+      p.classList.toggle('active', p.id === 'tab-' + id);
+    });
+  }
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  updateProgress();
+}
+
+function updateProgress() {
+  const items = document.querySelectorAll('.check-item');
+  const checked = document.querySelectorAll('.check-item.checked').length;
+  const pct = Math.round((checked / items.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = checked + ' / ' + items.length;
+  document.getElementById('done-banner').style.display = (checked === items.length) ? 'block' : 'none';
+}
+
+function copyCode(btn) {
+  const block = btn.closest('.code-block');
+  const src   = block.querySelector('code') || block.querySelector('pre');
+  navigator.clipboard.writeText(src.textContent).then(() => {
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 1500);
+  });
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('[data-step]').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+  observer.observe(el);
+});
+
+/* ── Reveal observer for sections, cards, checklist items ── */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+/* Section headings & labels */
+document.querySelectorAll('.section-label, .section-title').forEach((el, i) => {
+  el.classList.add('reveal');
+  el.style.transitionDelay = (i % 2 * 0.1) + 's';
+  revealObserver.observe(el);
+});
+
+/* Template cards — staggered */
+document.querySelectorAll('.template-card').forEach((el, i) => {
+  el.classList.add('reveal');
+  el.style.transitionDelay = (i * 0.12) + 's';
+  revealObserver.observe(el);
+});
+
+/* Section-wrap containers */
+document.querySelectorAll('.section-wrap').forEach(el => {
+  el.classList.add('reveal');
+  revealObserver.observe(el);
+});
+
+/* Checklist items — slide in from left, staggered */
+document.querySelectorAll('.check-item').forEach((el, i) => {
+  el.classList.add('reveal');
+  el.style.transitionDelay = (i * 0.07) + 's';
+  revealObserver.observe(el);
+});
+
+/* Code blocks — staggered scan delay */
+document.querySelectorAll('.code-block').forEach((el, i) => {
+  el.style.setProperty('--scan-delay', (i * 1.5) + 's');
+});
+
+
+function switchBrand(btn, brand) {
+  document.querySelectorAll('.code-brand-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.brand-pane').forEach(p => p.style.display = 'none');
+  document.getElementById('brand-' + brand).style.display = 'block';
+}
+
+function switchSub(btn, id) {
+  const wrapper = btn.closest('.brand-pane');
+  wrapper.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  wrapper.querySelectorAll('.sub-pane').forEach(p => p.style.display = 'none');
+  document.getElementById('sub-' + id).style.display = 'block';
+}
+
+function populateCode() {
+  const langMap = {
+    'pre-melb-html': 'markup', 'pre-melb-css': 'css',
+    'pre-xox-html':  'markup', 'pre-xox-css':  'css'
+  };
+  [['pre-melb-html','ta-melb-html'],['pre-melb-css','ta-melb-css'],
+   ['pre-xox-html','ta-xox-html'],['pre-xox-css','ta-xox-css']].forEach(([preId, taId]) => {
+    const ta  = document.getElementById(taId);
+    const pre = document.getElementById(preId);
+    if (!ta || !pre) return;
+    const lang = langMap[preId] || 'markup';
+    const code = document.createElement('code');
+    code.className = 'language-' + lang;
+    code.textContent = ta.value.trim();
+    pre.className = 'language-' + lang;
+    pre.innerHTML  = '';
+    pre.appendChild(code);
+    if (window.Prism) Prism.highlightElement(code);
+  });
+}
+</script>
+
+<textarea id="ta-melb-html" style="display:none">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Push Notifications</title>
+
+  <script>
+    (function () {
+      const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+      const isStandalone =
+        window.navigator.standalone === true ||
+        window.matchMedia("(display-mode: standalone)").matches;
+      if (isIOS && isStandalone) {
+        document.documentElement.classList.add("ios-pwa");
+      }
+    })();
+  </script>
+  <script>document.documentElement.style.opacity='0'</script>
+</head>
+
+<body class="body">
+  <main class="page">
+
+    <section class="hero-card" aria-labelledby="push-title">
+      <header class="hero-header">
+        <img class="hero-icon" src="https://static.gwvkyk.com/media/36199bb0b72a6ed2cb213.png" alt="Notification bell" />
+        <div>
+          <p class="eyebrow">Don't miss a beat</p>
+          <h1 id="push-title" class="hero-title">Turn on Push Notifications</h1>
+        </div>
+      </header>
+      <div class="benefit-grid" aria-label="Notification benefits">
+        <article class="benefit-card">
+          <img src="https://static.gwvkyk.com/media/0d954f11b72a6cf10e572.png" alt="Promotions" />
+          <h5 class="benefit-title">Exclusive Promos</h5>
+        </article>
+        <article class="benefit-card">
+          <img src="https://static.gwvkyk.com/media/cdde7b21b72a6d15d9b78.png" alt="Maintenance alerts" />
+          <h5 class="benefit-title">Maintenance Alerts</h5>
+        </article>
+        <article class="benefit-card">
+          <img src="https://static.gwvkyk.com/media/f310b831b72a61a54c0e3.png" alt="New brand launches" />
+          <h5 class="benefit-title">NEW Brand Launches</h5>
+        </article>
+      </div>
+    </section>
+
+    <section class="notification-card" aria-labelledby="allow-title">
+      <header class="notification-heading">
+        <span class="notification-icon" aria-hidden="true">
+          <img src="https://static.gwvkyk.com/media/8b414f51b72a6f3df2c4b.png" alt="" />
+        </span>
+        <h4 id="allow-title" class="notification-title">Allow Push Notification</h4>
+      </header>
+      <ul class="notification-list">
+        <li>
+          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/b64eb6a1b72a6c62b8986.png" alt="" /></span>
+          Receive Exclusive Invite-Only Promotions
+        </li>
+        <li>
+          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/b64eb6a1b72a6c62b8986.png" alt="" /></span>
+          Get Notified During Maintenance &amp; Domain Changes
+        </li>
+        <li>
+          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/b64eb6a1b72a6c62b8986.png" alt="" /></span>
+          Get Notified For Deposit/Withdrawal Status (Coming Soon)
+        </li>
+      </ul>
+      <aside class="remark-box">
+        <span class="remark-icon" aria-hidden="true"><img src="https://static.gwvkyk.com/media/b473cfc1b72a6bcdd20e5.png" alt="" /></span>
+        <span><strong class="remark-label">REMARK:</strong> We will never spam you.</span>
+      </aside>
+      <a id="push-notification-btn" class="button w-button">
+        <span class="button-icon"></span>
+        Enable Notifications
+      </a>
+      <div id="notification-enabled-btn" aria-label="Notifications - Enabled" class="enabled-hide">
+        <div class="enabled-container">
+          <div class="enabled-icon"></div>
+          <h4 class="enabled-text">Notifications - Enabled</h4>
+        </div>
+      </div>
+    </section>
+
+    <section class="apps-section" aria-labelledby="apps-title" id="get-the-app">
+      <h2 id="apps-title" class="section-title">Get the App</h2>
+      <a class="app-card app-card--pwa" aria-label="Install PWA App" id="install-pwa-btn">
+        <span class="app-icon-wrap app-icon-wrap--pwa" aria-hidden="true"><img src="https://static.gwvkyk.com/media/7060ce05b72a67e4453e3.png" alt="" /></span>
+        <span class="app-copy">
+          <span class="app-title-row"><strong class="app-title">Install PWA App</strong><span class="tag">No Download</span></span>
+          <span class="app-description">Launch from your Home Screen</span>
+        </span>
+        <img class="app-action-icon" src="https://static.gwvkyk.com/media/bbf25025b72a614e6e9d2.png" alt="" aria-hidden="true" />
+      </a>
+      <a class="app-card" aria-label="Download for macOS" id="download-macos-btn">
+        <span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"><img src="https://static.gwvkyk.com/media/feca4c82b72a64753fe5d.png" alt="" /></span>
+        <span class="app-copy">
+          <span class="app-title-row"><strong class="app-title">Download for macOS</strong><span class="tag tag--native">Native</span></span>
+          <span class="app-description">Apple Silicon • 92 MB</span>
+        </span>
+        <img class="app-action-icon" src="https://static.gwvkyk.com/media/ef3586a2b72a669626fbb.png" alt="" aria-hidden="true" />
+      </a>
+      <a class="app-card" aria-label="Download for Android" id="download-android-btn">
+        <span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"><img src="https://static.gwvkyk.com/media/a3b664b2b72a61852049f.png" alt="" /></span>
+        <span class="app-copy">
+          <span class="app-title-row"><strong class="app-title">Download for Android</strong><span class="tag tag--native">Native</span></span>
+          <span class="app-description">APK • 92 MB</span>
+        </span>
+        <img class="app-action-icon" src="https://static.gwvkyk.com/media/ef3586a2b72a669626fbb.png" alt="" aria-hidden="true" />
+      </a>
+    </section>
+
+    <div id="modal" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-inner">
+          <div class="modal-container">
+            <div class="modal-top">
+              <div class="modal-top-left">
+                <div class="modal-app-icon"><div class="modal-app-icon-img"></div></div>
+                <div class="modal-heading">
+                  <p class="modal-platform-label">IOS SAFARI</p>
+                  <h2 class="modal-title">Add <span class="app-name"></span> to Home Screen</h2>
+                </div>
+              </div>
+              <a id="close-modal-btn1">
+                <img src="https://static.gwvkyk.com/media/442387e2b72a6d6ff4a39.png" loading="lazy" width="25" height="25" alt="Close" class="close-button" />
+              </a>
+            </div>
+            <div class="modal-warning">
+              <div class="modal-warning-icon-wrap">
+                <img src="https://static.gwvkyk.com/media/7003a9f2b72a6b3a70e54.png" loading="lazy" width="18" height="18" alt="" class="warning-icon" />
+              </div>
+              <p class="warning-info">
+                On iPhone, push notifications only work from the installed app.
+                Add <span class="app-name"></span> to your home screen first,
+                then open it from there to enable push.
+              </p>
+            </div>
+            <div class="modal-tabs w-tabs">
+              <div class="modal-tabs-menu w-tab-menu" id="modal-tab-menus">
+                <a data-w-tab="Tab 1" class="modal-tab-link w-tab-link w--current">
+                  <div class="tab-label">IOS 16 &amp; newer</div>
+                  <div class="tab-sublabel tab-sublabel--small">2022+</div>
+                </a>
+                <a data-w-tab="Tab 2" class="modal-tab-link w-tab-link">
+                  <div class="tab-label">IOS 15 &amp; older</div>
+                  <div class="tab-sublabel tab-sublabel--small">2021 &amp; earlier</div>
+                </a>
+              </div>
+              <div class="w-tab-content">
+                <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active"><div id="tab1-content"></div></div>
+                <div data-w-tab="Tab 2" class="w-tab-pane"><div id="tab2-content"></div></div>
+              </div>
+            </div>
+            <a class="button w-button" id="close-modal-btn2">GOT IT</a>
+          </div>
+        </div>
+        <div style="height: 100px; width: 100%"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+
+    window.APP_NAME = window.APP_NAME || "MELB96";
+
+    if (!window._pwaPageInit) {
+      window._pwaPageInit = true;
+      (() => {
+
+        const $id  = id       => document.getElementById(id);
+        const $all = selector => document.querySelectorAll(selector);
+        function show(el, display = "block") { if (el) el.style.display = display; }
+        function hide(el)                    { if (el) el.style.display = "none";  }
+
+        /* ─── Tabs ─────────────────────────────────────────────── */
+        function initTabs() {
+          const links = $all(".w-tab-link");
+          const panes = $all(".w-tab-pane");
+          if (!links.length || !panes.length) return;
+          links.forEach((link, i) => {
+            link.addEventListener("click", () => {
+              links.forEach(el   => el.classList.remove("w--current"));
+              panes.forEach(pane => pane.classList.remove("w--tab-active"));
+              link.classList.add("w--current");
+              if (panes[i]) panes[i].classList.add("w--tab-active");
+            });
+          });
+        }
+
+        /* ─── Modal data ────────────────────────────────────────── */
+        const MODAL_DATA = {
+          safari: {
+            title: "IOS SAFARI",
+            tabs: {
+              tab1: [
+                { stepNumberImage: "https://static.gwvkyk.com/media/b3249023b72a60d252d4b.png", image: "https://static.gwvkyk.com/media/474a2c84b72a6ca800193.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/46053f33b72a64c954154.png", image: "https://static.gwvkyk.com/media/15ef9e64b72a6ac78ab9d.png", title: "Tap the Share button",                  description: "On iOS 16 and newer, the share icon sits in the bottom toolbar of Safari." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/8e626663b72a6240642e4.png", image: "https://static.gwvkyk.com/media/20736b44b72a6c8ba3781.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/37d3d183b72a6e4aac54b.png", image: "https://static.gwvkyk.com/media/79dc1ff3b72a61b155cce.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/c0ec40a3b72a6ce8e71f5.png", image: "https://static.gwvkyk.com/media/017f52e3b72a6392ee7ab.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+              ],
+              tab2: [
+                { stepNumberImage: "https://static.gwvkyk.com/media/b3249023b72a60d252d4b.png", image: "https://static.gwvkyk.com/media/474a2c84b72a6ca800193.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/46053f33b72a64c954154.png", image: "https://static.gwvkyk.com/media/15ef9e64b72a6ac78ab9d.png", title: "Tap the Share button",                  description: "On iOS 15 and earlier, the share icon sits in the bottom toolbar of Safari." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/8e626663b72a6240642e4.png", image: "https://static.gwvkyk.com/media/20736b44b72a6c8ba3781.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/37d3d183b72a6e4aac54b.png", image: "https://static.gwvkyk.com/media/79dc1ff3b72a61b155cce.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/c0ec40a3b72a6ce8e71f5.png", image: "https://static.gwvkyk.com/media/017f52e3b72a6392ee7ab.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+              ],
+            },
+          },
+          chrome: {
+            title: "IOS CHROME",
+            tabs: {
+              tab1: [
+                { stepNumberImage: "https://static.gwvkyk.com/media/b3249023b72a60d252d4b.png", image: "https://static.gwvkyk.com/media/474a2c84b72a6ca800193.png", title: "Open {{appName}} in Chrome",           description: "Push notifications require Chrome on iPhone — not Safari or an in-app browser." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/46053f33b72a64c954154.png", image: "https://static.gwvkyk.com/media/15ef9e64b72a6ac78ab9d.png", title: "Tap the Share button",                  description: "The share icon sits in the top right toolbar of Chrome." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/8e626663b72a6240642e4.png", image: "https://static.gwvkyk.com/media/20736b44b72a6c8ba3781.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/37d3d183b72a6e4aac54b.png", image: "https://static.gwvkyk.com/media/79dc1ff3b72a61b155cce.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/c0ec40a3b72a6ce8e71f5.png", image: "https://static.gwvkyk.com/media/017f52e3b72a6392ee7ab.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+              ],
+              tab2: [],
+            },
+          },
+        };
+
+        /* ─── Measure top (below all fixed headers) ─────────────── */
+        function measureTopOffset() {
+          const modal = $id("modal");
+          let top = 0;
+          ["smart-banner", "header", "marquee"].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el || getComputedStyle(el).display === "none") return;
+            const r = el.getBoundingClientRect();
+            if (r.height > 0) top = Math.max(top, Math.round(r.bottom));
+          });
+          if (top === 0) {
+            document.querySelectorAll("*").forEach(el => {
+              if (el === modal || (modal && modal.contains(el))) return;
+              const cs = getComputedStyle(el);
+              if (cs.position !== "fixed" && cs.position !== "sticky") return;
+              if (cs.display === "none" || cs.visibility === "hidden") return;
+              const r = el.getBoundingClientRect();
+              if (r.width === 0 || r.height === 0) return;
+              if (r.top <= 2 && r.bottom > 0 && r.bottom < window.innerHeight * 0.5) {
+                top = Math.max(top, Math.round(r.bottom));
+              }
+            });
+          }
+          return top;
+        }
+
+        /* ─── Measure bottom nav height ─────────────────────────── */
+        function measureBottomOffset() {
+          const el =
+            document.querySelector(".bottom-nav") ||
+            $id("floatcontainer") ||
+            $id("footer");
+          return el ? el.offsetHeight : 0;
+        }
+
+        /* ─── Live-sync top while modal is open ─────────────────── */
+        let _syncInterval = null;
+
+        function startModalSync(modal) {
+          stopModalSync();
+          _syncInterval = setInterval(() => {
+            if (!modal || !modal.classList.contains("active")) { stopModalSync(); return; }
+            const newTop = measureTopOffset();
+            const cur    = parseInt(modal.style.getPropertyValue("top")) || 0;
+            if (Math.abs(newTop - cur) > 1) {
+              modal.style.setProperty("top", newTop + "px", "important");
+            }
+          }, 100);
+        }
+
+        function stopModalSync() {
+          if (_syncInterval) { clearInterval(_syncInterval); _syncInterval = null; }
+        }
+
+        /* ─── Modal open ────────────────────────────────────────── */
+        function showModal({ type = "safari" } = {}) {
+          const modal    = $id("modal");
+          const modalBox = document.querySelector(".modal-box");
+          if (!modal) return;
+
+          if (modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+          }
+
+          const topOffset    = measureTopOffset();
+          const bottomOffset = measureBottomOffset();
+
+          /* Overlay — override ALL flex/padding properties */
+          modal.style.removeProperty("inset");
+          modal.style.setProperty("position",        "fixed",       "important");
+          modal.style.setProperty("top",             topOffset    + "px", "important");
+          modal.style.setProperty("left",            "0",           "important");
+          modal.style.setProperty("right",           "0",           "important");
+          modal.style.setProperty("bottom",          bottomOffset + "px", "important");
+          modal.style.setProperty("display",         "flex",        "important");
+          modal.style.setProperty("flex-direction",  "column",      "important");
+          modal.style.setProperty("align-items",     "stretch",     "important");
+          modal.style.setProperty("justify-content", "flex-start",  "important");
+          modal.style.setProperty("padding",         "0",           "important");
+          modal.style.setProperty("padding-left",    "1rem",        "important");
+          modal.style.setProperty("padding-right",   "1rem",        "important");
+          modal.style.setProperty("z-index",         "99999999",    "important");
+
+          /* Modal-box — fill the full overlay height */
+          if (modalBox) {
+            modalBox.style.setProperty("flex",       "1 1 auto",    "important");
+            modalBox.style.setProperty("height",     "100%",        "important");
+            modalBox.style.setProperty("max-height", "100%",        "important");
+            modalBox.style.setProperty("min-height", "0",           "important");
+            modalBox.style.setProperty("margin",     "0",           "important");
+            modalBox.style.setProperty("overflow-y", "auto",        "important");
+          }
+
+          const data = MODAL_DATA[type];
+          document.querySelector(".modal-platform-label").textContent = data.title;
+          renderInstructionCards(data.tabs.tab1, "tab1-content");
+          renderInstructionCards(data.tabs.tab2, "tab2-content");
+          modal.classList.add("active");
+          startModalSync(modal);
+          setTimeout(() => { if (modalBox) modalBox.scrollTop = 0; }, 50);
+        }
+
+        /* ─── Modal close ───────────────────────────────────────── */
+        function hideModal() {
+          stopModalSync();
+          const modal    = $id("modal");
+          const modalBox = document.querySelector(".modal-box");
+          if (modal) {
+            modal.classList.remove("active");
+            ["position","inset","top","left","right","bottom",
+             "display","flex-direction","align-items","justify-content",
+             "padding","padding-top","padding-bottom","padding-left","padding-right",
+             "z-index"]
+              .forEach(p => modal.style.removeProperty(p));
+          }
+          if (modalBox) {
+            ["flex","height","max-height","min-height","margin","overflow-y"]
+              .forEach(p => modalBox.style.removeProperty(p));
+          }
+        }
+
+        /* ─── Render steps ──────────────────────────────────────── */
+        function renderInstructionCards(items, containerId) {
+          const container = $id(containerId);
+          if (!container) return;
+          container.innerHTML = items.map(item => `
+            <instruction-card
+              image="${item.image}"
+              title="${item.title}"
+              description="${item.description}"
+              stepNumberImage="${item.stepNumberImage}"
+            ></instruction-card>`).join("");
+        }
+
+        /* ─── Notification ──────────────────────────────────────── */
+        function updateNotificationUI() {
+          hide($id("push-notification-btn"));
+          show($id("notification-enabled-btn"), "flex");
+        }
+        function pushNotification() {
+          window.pwaApp?.handlePushNotification((result, error) => {
+            if (error) { console.error("Push notification error:", error); return; }
+            if (result?.permission === "granted") updateNotificationUI();
+          });
+        }
+        function checkNotificationPermission() {
+          window.pwaApp?.handleGetNotificationPermission((result, error) => {
+            if (error) { console.error("Permission check error:", error); return; }
+            if (result?.permission === "granted") updateNotificationUI();
+          });
+        }
+
+        /* ─── PWA install ───────────────────────────────────────── */
+        function handleInstallPWA() {
+          handleAppBrowserRedirect();
+          const platform = window.pwaApp?.getOperatingSystem();
+          if (platform === "iosChrome") { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
+          if (platform === "iosSafari" || platform === "macOSSafari" || platform === "ios") { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
+          window.pwaApp?.handleInstallPWA((result, error) => { if (error) console.error("PWA install error:", error); });
+        }
+
+        function handlePushButtonClick(e) {
+          e.preventDefault();
+          handleAppBrowserRedirect();
+          const platform = window.pwaApp?.getOperatingSystem();
+          window.pwaApp?.handleGetPWAStatus((result, error) => {
+            if (error || !result) return;
+            if (platform === "iosChrome" && !result.status) { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
+            if ((platform === "iosSafari" || platform === "ios") && !result.status) { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
+            pushNotification();
+          });
+        }
+
+        function checkPWAStatus() {
+          window.pwaApp?.handleGetPWAStatus((result, error) => {
+            if (result?.status) hide($id("get-the-app"));
+          });
+        }
+
+        /* ─── Utilities ─────────────────────────────────────────── */
+        function renderAppName() {
+          $all(".app-name").forEach(el => { el.textContent = window.APP_NAME; });
+        }
+        function isInAppBrowser() {
+          const ua = navigator.userAgent.toLowerCase();
+          const isAnd = /android/.test(ua);
+          return /fban|fbav|fb_iab|instagram|line/.test(ua) ||
+            (typeof window.TelegramWebviewProxy !== "undefined" && typeof window.TelegramWebviewProxyProto !== "undefined") ||
+            (isAnd && typeof window.TelegramWebviewProxy !== "undefined");
+        }
+        function isIOS()     { return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()); }
+        function isAndroid() { return /android/.test(navigator.userAgent.toLowerCase()); }
+        function handleAppBrowserRedirect() {
+          if (!isInAppBrowser()) return;
+          const url = window.location.href;
+          if (isIOS()) { window.open("x-safari-" + url, "_blank"); }
+          else if (isAndroid()) { window.open("intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(url) + ";end", "_blank"); }
+        }
+
+        /* ─── Platform UI ───────────────────────────────────────── */
+        function checkIOSNativeApp() {
+          const platform = window.pwaApp?.getOperatingSystem();
+          if (platform === "android") hide($id("download-macos-btn"));
+          else hide($id("download-android-btn"));
+        }
+
+        /* ─── Events ────────────────────────────────────────────── */
+        function bindEvents() {
+          const pushBtn    = $id("push-notification-btn");
+          const installBtn = $id("install-pwa-btn");
+          const modal      = $id("modal");
+          const closeBtn1  = $id("close-modal-btn1");
+          const closeBtn2  = $id("close-modal-btn2");
+          if (pushBtn)    pushBtn.addEventListener("click", handlePushButtonClick);
+          if (installBtn) installBtn.addEventListener("click", handleInstallPWA);
+          if (modal)      modal.addEventListener("click", e => { if (e.target === modal) hideModal(); });
+          if (closeBtn1)  closeBtn1.addEventListener("click", hideModal);
+          if (closeBtn2)  closeBtn2.addEventListener("click", hideModal);
+        }
+
+        /* ─── SPA hooks ─────────────────────────────────────────── */
+        window._pwaRunChecks = () => { checkNotificationPermission(); checkPWAStatus(); checkIOSNativeApp(); };
+        window._pwaReInit    = () => { initTabs(); bindEvents(); };
+
+        /* ─── Boot ──────────────────────────────────────────────── */
+        function init() {
+          initTabs();
+          renderAppName();
+          bindEvents();
+          document.documentElement.style.transition = "opacity 0.25s ease";
+          document.documentElement.style.opacity    = "1";
+          setTimeout(window._pwaRunChecks, 300);
+        }
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+
+      })();
+    } else {
+      document.documentElement.style.transition = "opacity 0.25s ease";
+      document.documentElement.style.opacity    = "1";
+      window._pwaReInit?.();
+      setTimeout(() => window._pwaRunChecks?.(), 300);
+    }
+
+    /* ─── <instruction-card> ────────────────────────────────────── */
+    class InstructionCard extends HTMLElement {
+      connectedCallback() {
+        const image           = this.getAttribute("image") || "";
+        const stepNumberImage = this.getAttribute("stepNumberImage") || "";
+        const title           = (this.getAttribute("title")       || "").replace(/{{appName}}/g, window.APP_NAME);
+        const description     = (this.getAttribute("description") || "").replace(/{{appName}}/g, window.APP_NAME);
+        this.innerHTML = `
+          <div class="instruction-card">
+            <div class="instruction-card-image">
+              <div class="instruction-card-img" style="background-image:url('${image}')"></div>
+            </div>
+            <div class="card-containers">
+              <div class="card-heading">
+                <div class="step-number"><img src="${stepNumberImage}" width="18" height="18" alt="" /></div>
+                <div class="card-title">${title}</div>
+              </div>
+              <div class="card-excerpt">${description}</div>
+            </div>
+          </div>`;
+      }
+    }
+    if (!customElements.get("instruction-card")) {
+      customElements.define("instruction-card", InstructionCard);
+    }
+  </script>
+</body>
+</html>
+</textarea>
+
+<textarea id="ta-melb-css"  style="display:none">
+/* ═══════════════════════════════════════════════════════════
+   BRAND VARIABLES — edit all brand values from here
+═══════════════════════════════════════════════════════════ */
+:root {
+
+  /* ─── Primary Color ─────────────────────────────────────── */
+  --primary:          #FA0004;
+  --primary-dim:      rgba(250, 0, 4, 0.08);
+  --primary-border:   #FA0004;
+  --primary-dark:     #FA0004;
+
+  /* ─── Secondary Color ───────────────────────────────────── */
+  --secondary:        #000;
+  --secondary-dim:    rgba(0, 0, 0, 0.08);
+  --secondary-border: #000;
+
+  /* ─── Backgrounds ───────────────────────────────────────── */
+  --bg-page:          #0B1D14;
+  --bg-hero:          url("https://static.gwvkyk.com/media/947217aca72a680521e7b.png");
+  --bg-notif-card:    #FFF;
+  --bg-remark:        rgba(0, 0, 0, 0.08);
+  --bg-app-card:      rgba(0, 0, 0, 0.08);
+  --bg-app-card-pwa:  rgba(250, 0, 4, 0.08);
+  --bg-app-icon-pwa:  rgba(250, 0, 4, 0.12);
+  --bg-modal:         #FFF;
+  --bg-modal-inner:   rgba(0, 0, 0, 0.08);
+
+  /* ─── App Card Title Colors ─────────────────────────────── */
+  --color-pwa-title:     #FA0004;
+  --color-macos-title:   #000;
+  --color-android-title: #000;
+
+  /* ─── Icon Images ───────────────────────────────────────── */
+  --icon-app:     url("https://static.gwvkyk.com/media/fd2d5541c72a62a1dd997.png");
+  --icon-button:  url("https://static.gwvkyk.com/media/15d1adfea72a646993a30.png");
+  --icon-enabled: url("https://static.gwvkyk.com/media/5fa29e0fa72a6db8cffad.png");
+
+  /* ─── Layout & Radii ────────────────────────────────────── */
+  --container: 495px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  text-transform: none !important;
+}
+
+img    { display: block; max-width: 100%; }
+a      { color: inherit; text-decoration: none; background: transparent; }
+ul, li { margin: 0; padding: 0; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE LAYOUT
+═══════════════════════════════════════════════════════════ */
+.body {
+  background-color: var(--bg-page);
+  -webkit-text-fill-color: inherit;
+  background-clip: border-box;
+}
+
+.page {
+  width: min(100% - 2rem, var(--container));
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   HERO CARD
+═══════════════════════════════════════════════════════════ */
+.hero-card {
+  min-height: 180px;
+  padding: 20px;
+  background-image: var(--bg-hero);
+  background-position: 0 0;
+  background-size: cover;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-xl);
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.10),
+              0.5px 0.5px 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.hero-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.hero-icon {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--secondary);
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  color: #000;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   BENEFIT GRID
+═══════════════════════════════════════════════════════════ */
+.benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.benefit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  gap: 8px;
+  padding: 12px 8px;
+  text-align: center;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--primary-dim);
+  background: var(--primary-dim);
+}
+
+.benefit-card img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.benefit-title {
+  margin: 0;
+  padding: 0 0.6rem;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   NOTIFICATION CARD
+═══════════════════════════════════════════════════════════ */
+.notification-card {
+  margin-top: 16px;
+  padding: 1.2rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--primary);
+  background: var(--bg-notif-card);
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.10),
+              0.5px 0.5px 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.notification-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--primary-dim);
+}
+
+.notification-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+}
+
+.notification-icon img { width: 26px; height: 26px; }
+
+.notification-title {
+  margin: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.notification-list {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notification-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(250, 0, 4, 0.48);
+  font-size: 1rem;
+}
+
+.check-badge {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid var(--primary-dim);
+  background: var(--primary-dim);
+}
+
+.check-badge img { width: 14px; height: 14px; }
+
+
+/* ═══════════════════════════════════════════════════════════
+   REMARK BOX
+═══════════════════════════════════════════════════════════ */
+.remark-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.48);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--secondary-border);
+  background: var(--bg-remark);
+}
+
+.remark-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+}
+
+.remark-label { color: var(--secondary); }
+
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════════════════════ */
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius-md) !important;
+  background-color: var(--primary-dim);
+}
+
+.w-button {
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.button-icon {
+  width: 20px;
+  height: 20px;
+  background-image: var(--icon-button);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   ENABLED STATE
+═══════════════════════════════════════════════════════════ */
+.enabled-hide { display: none; }
+
+.enabled-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+}
+
+.enabled-icon {
+  width: 20px;
+  height: 20px;
+  background-image: var(--icon-enabled);
+  background-position: center;
+  background-size: cover;
+}
+
+.enabled-text {
+  margin: 0;
+  color: #FFF;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   GET THE APP
+═══════════════════════════════════════════════════════════ */
+.apps-section { margin-top: 24px; }
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.app-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--secondary);
+  background: var(--bg-app-card);
+  color: var(--secondary-dim);
+  box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.10),
+              0.5px 0.5px 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.app-card--pwa {
+  background: var(--bg-app-card-pwa);
+  color: var(--secondary);
+  border-color: var(--primary);
+}
+
+.app-icon-wrap {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  border-radius: 10px;
+}
+
+.app-icon-wrap img { width: 28px; height: 28px; }
+
+.app-icon-wrap--pwa {
+  background: var(--bg-app-icon-pwa);
+  border: 1px solid var(--primary);
+}
+
+.app-icon-wrap--mac {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#CCC, #CCC) padding-box,
+    linear-gradient(#000, #000) border-box;
+}
+
+.app-copy { flex: 1; min-width: 0; }
+
+.app-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.app-title       { margin: 0; font-size: 1rem; }
+.app-description { margin: 0; font-size: 1rem; }
+
+.app-card--pwa .app-title         { color: var(--color-pwa-title); }
+.app-card--pwa .app-description   { color: rgba(250, 0, 4, 0.48); }
+
+#download-macos-btn .app-title       { color: var(--color-macos-title); }
+#download-macos-btn .app-description { color: rgba(0, 0, 0, 0.48); }
+
+#download-android-btn .app-title       { color: var(--color-android-title); }
+#download-android-btn .app-description { color: rgba(0, 0, 0, 0.48); }
+
+.app-action-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#FFF, #FFF) padding-box,
+    linear-gradient(#FA0004, #FA0004) border-box;
+  color: #FA0004;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tag--native {
+  background:
+    linear-gradient(#FFF, #FFF) padding-box,
+    linear-gradient(#000, #000) border-box;
+  color: #000;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL OVERLAY
+═══════════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2.8rem 1.1rem 0;
+  background: rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+  z-index: 10000;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+  max-height: 88vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+
+.modal-overlay.active .modal-box { transform: scale(1); }
+
+.modal-inner { margin-top: 40px; }
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 495px;
+  padding: 20px;
+  background-color: var(--bg-modal);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-xl);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MODAL CONTENT
+═══════════════════════════════════════════════════════════ */
+.modal-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.modal-top-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-app-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  width: 58px;
+  height: 58px;
+  background-color: var(--primary);
+  border-radius: var(--radius-sm);
+}
+
+.modal-app-icon-img {
+  width: 36px;
+  height: 36px;
+  background-image: var(--icon-app);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.modal-heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.modal-platform-label {
+  margin-bottom: 0;
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.modal-title {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.close-button {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 99px;
+}
+
+.modal-warning {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: var(--bg-modal-inner);
+  border: 1px dashed var(--secondary-border);
+  border-radius: var(--radius-md);
+}
+
+.modal-warning-icon-wrap { flex: 0 0 auto; }
+
+.warning-icon { width: 16px; height: 16px; object-fit: cover; }
+
+.warning-info {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.48);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 124%;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════════════════ */
+.modal-tabs { margin-top: 20px; }
+
+.modal-tabs-menu {
+  display: flex;
+  gap: 12px;
+  padding: 6px;
+  background-color: var(--primary-dim);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-md);
+}
+
+.modal-tab-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 50%;
+  height: 52px;
+  padding: 8px;
+  background-color: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.modal-tab-link.w--current { background-color: var(--primary); }
+
+.tab-label {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.tab-sublabel {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+.tab-sublabel--small { font-size: 0.85rem; }
+
+.modal-tab-link .tab-label    { color: var(--primary); }
+.modal-tab-link .tab-sublabel { color: rgba(250, 0, 4, 0.48); }
+
+.modal-tab-link.w--current .tab-label    { color: #FFF; }
+.modal-tab-link.w--current .tab-sublabel { color: rgba(255, 255, 255, 0.64); }
+
+/* Webflow tab engine — do not edit */
+.w-tabs { position: relative; }
+.w-tabs::before, .w-tabs::after {
+  content: " "; display: table;
+  grid-column-start: 1; grid-row-start: 1;
+  grid-column-end: 2;   grid-row-end: 2;
+}
+.w-tabs::after { clear: both; }
+.w-tab-menu    { position: relative; }
+.w-tab-link    { cursor: pointer; }
+.w-tab-link:focus { outline: 0; }
+.w-tab-content, .w-tab-link, .w-tab-menu,
+.w-tab-pane, .w-tabs { position: relative; }
+.w-tab-content { display: block; overflow: hidden; }
+.w--tab-active { display: block; }
+.w-tab-pane {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+}
+.w-tab-pane.w--tab-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   INSTRUCTION CARD
+═══════════════════════════════════════════════════════════ */
+.instruction-card {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #FFF;
+  border: 1px solid rgba(250, 0, 4, 0.32);
+  border-radius: var(--radius-md);
+}
+
+.instruction-card-image {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 100px;
+  height: 120px;
+  padding: 6px;
+  background: rgba(250, 0, 4, 0.16);
+  border: 1px solid rgba(250, 0, 4, 0.48);
+  border-radius: 6px;
+}
+
+.instruction-card-img {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.card-containers {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+}
+
+.card-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.75rem;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  min-height: 1.75rem;
+}
+
+.card-title {
+  margin: 0;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.card-excerpt {
+  margin: 0;
+  color: rgba(250, 0, 4, 0.48);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 112%;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   iOS PWA
+═══════════════════════════════════════════════════════════ */
+.ios-pwa .menu-badge {
+  top: calc(14px + env(safe-area-inset-top, 0px));
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE — 480px and below
+═══════════════════════════════════════════════════════════ */
+@media screen and (max-width: 479px) {
+  .w-tab-link { display: block; }
+}
+
+@media (max-width: 479px) {
+  .page { width: calc(100% - 2rem); }
+  .hero-card        { padding: 16px; }
+  .hero-header      { gap: 12px; margin: 0 8px 16px 0; }
+  .hero-icon        { width: 40px; height: 40px; }
+  .hero-title       { font-size: 1rem; }
+  .eyebrow          { font-size: 0.75rem; }
+  .benefit-card     { min-height: 72px; padding: 12px 8px; border-radius: 12px; }
+  .benefit-card img { width: 32px; height: 32px; }
+  .benefit-title    { padding: 0; }
+  .notification-title    { font-size: 1.2rem; }
+  .notification-icon     { width: 38px; height: 38px; }
+  .notification-icon img { width: 22px; height: 22px; }
+  .notification-list li  { font-size: 0.8rem; }
+  .check-badge           { width: 18px; height: 18px; }
+  .check-badge img       { width: 12px; height: 12px; }
+  .remark-box            { font-size: 0.8rem; }
+  .section-title   { font-size: 1rem; }
+  .app-title       { font-size: 1rem; }
+  .app-description { font-size: 0.8rem; }
+  .app-icon-wrap   { width: 46px; height: 46px; }
+  .app-title-row   { flex-wrap: wrap; align-items: flex-start; }
+  .button { width: auto; }
+  .modal-inner             { margin-top: 3.625rem; margin-bottom: 3.625rem; }
+  .modal-app-icon          { width: 2.5rem; height: 2.5rem; }
+  .modal-app-icon-img      { width: 1.8rem; height: 1.8rem; }
+  .modal-heading           { margin-right: 8px; }
+  .modal-title             { font-size: 1rem; }
+  .modal-platform-label    { font-size: 0.75rem; }
+  .close-button            { width: 28px; height: 28px; max-width: 100%; }
+  .modal-warning           { margin-top: 1.2rem; padding: 1rem; }
+  .modal-warning-icon-wrap { width: 1.5rem; height: 1.5rem; }
+  .warning-icon            { width: 1rem; height: 1rem; }
+  .warning-info            { font-size: 0.8rem; }
+  .modal-tabs-menu { padding: 0.375rem; }
+  .modal-tab-link  { padding-left: 10px; padding-right: 10px; }
+  .tab-label,
+  .tab-sublabel    { font-size: 1rem; }
+  .instruction-card       { margin-top: 1.25rem; padding: 0.625rem; }
+  .instruction-card-image { width: 82.66px; height: 112px; }
+  .card-containers        { padding: 0 10px 10px; }
+  .card-heading           { gap: 6px; }
+  .card-excerpt           { font-size: 0.8rem; }
+}
+</textarea>
+
+<textarea id="ta-xox-html"  style="display:none">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Push Notifications</title>
+
+  <script>
+    (function () {
+      const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+      const isStandalone =
+        window.navigator.standalone === true ||
+        window.matchMedia("(display-mode: standalone)").matches;
+      if (isIOS && isStandalone) {
+        document.documentElement.classList.add("ios-pwa");
+      }
+    })();
+  </script>
+  <script>document.documentElement.style.opacity='0'</script>
+</head>
+
+<body class="body">
+  <main class="page">
+
+    <section class="hero-card" aria-labelledby="push-title">
+      <header class="hero-header">
+        <img class="hero-icon" src="https://static.gwvkyk.com/media/91585941412a65826b350.png" alt="Notification bell" />
+        <div>
+          <p class="eyebrow">Don't miss a beat</p>
+          <h1 id="push-title" class="hero-title">Turn on Push Notifications</h1>
+        </div>
+      </header>
+      <div class="benefit-grid" aria-label="Notification benefits">
+        <article class="benefit-card">
+          <img src="https://static.gwvkyk.com/media/89e66244412a68c15e351.png" alt="Promotions" />
+          <h5 class="benefit-title">Exclusive Promos</h5>
+        </article>
+        <article class="benefit-card">
+          <img src="https://static.gwvkyk.com/media/91905d54412a6ed85c000.png" alt="Maintenance alerts" />
+          <h5 class="benefit-title">Maintenance Alerts</h5>
+        </article>
+        <article class="benefit-card">
+          <img src="https://static.gwvkyk.com/media/c7965e64412a655a9441c.png" alt="New brand launches" />
+          <h5 class="benefit-title">NEW Brand Launches</h5>
+        </article>
+      </div>
+    </section>
+
+    <section class="notification-card" aria-labelledby="allow-title">
+      <header class="notification-heading">
+        <span class="notification-icon" aria-hidden="true">
+          <img src="https://static.gwvkyk.com/media/294f3a49412a6633a4357.png" alt="" />
+        </span>
+        <h4 id="allow-title" class="notification-title">Allow Push Notification</h4>
+      </header>
+      <ul class="notification-list">
+        <li>
+          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /></span>
+          Receive Exclusive Invite-Only Promotions
+        </li>
+        <li>
+          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /></span>
+          Get Notified During Maintenance &amp; Domain Changes
+        </li>
+        <li>
+          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /></span>
+          Get Notified For Deposit/Withdrawal Status (Coming Soon)
+        </li>
+      </ul>
+      <aside class="remark-box">
+        <span class="remark-icon" aria-hidden="true"><img src="https://static.gwvkyk.com/media/895614f2512a670607c76.png" alt="" /></span>
+        <span><strong class="remark-label">REMARK:</strong> We will never spam you.</span>
+      </aside>
+      <a id="push-notification-btn" class="button w-button">
+        <span class="button-icon"></span>
+        Enable Notifications
+      </a>
+      <div id="notification-enabled-btn" aria-label="Notifications - Enabled" class="enabled-hide">
+        <div class="enabled-container">
+          <div class="enabled-icon"></div>
+          <h4 class="enabled-text">Notifications - Enabled</h4>
+        </div>
+      </div>
+    </section>
+
+    <section class="apps-section" aria-labelledby="apps-title" id="get-the-app">
+      <h2 id="apps-title" class="section-title">Get the App</h2>
+      <a class="app-card app-card--pwa" aria-label="Install PWA App" id="install-pwa-btn">
+        <span class="app-icon-wrap app-icon-wrap--pwa" aria-hidden="true"><img src="https://static.gwvkyk.com/media/1b1ac544422a603234873.png" alt="" /></span>
+        <span class="app-copy">
+          <span class="app-title-row"><strong class="app-title">Install PWA App</strong><span class="tag">No Download</span></span>
+          <span class="app-description">Launch from your Home Screen</span>
+        </span>
+        <img class="app-action-icon" src="https://static.gwvkyk.com/media/f4791965422a6d8c19042.png" alt="" aria-hidden="true" />
+      </a>
+      <a class="app-card" aria-label="Download for macOS" id="download-macos-btn">
+        <span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"><img src="https://static.gwvkyk.com/media/5e963f2c422a646dc198d.png" alt="" /></span>
+        <span class="app-copy">
+          <span class="app-title-row"><strong class="app-title">Download for macOS</strong><span class="tag tag--native">Native</span></span>
+          <span class="app-description">Apple Silicon • 92 MB</span>
+        </span>
+        <img class="app-action-icon" src="https://static.gwvkyk.com/media/06dbb94c422a62ed60e07.png" alt="" aria-hidden="true" />
+      </a>
+      <a class="app-card" aria-label="Download for Android" id="download-android-btn">
+        <span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"><img src="https://static.gwvkyk.com/media/785f54ac422a6b0ff67d8.png" alt="" /></span>
+        <span class="app-copy">
+          <span class="app-title-row"><strong class="app-title">Download for Android</strong><span class="tag tag--native">Native</span></span>
+          <span class="app-description">APK • 92 MB</span>
+        </span>
+        <img class="app-action-icon" src="https://static.gwvkyk.com/media/06dbb94c422a62ed60e07.png" alt="" aria-hidden="true" />
+      </a>
+    </section>
+
+    <div id="modal" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-inner">
+          <div class="modal-container">
+            <div class="modal-top">
+              <div class="modal-top-left">
+                <div class="modal-app-icon"><div class="modal-app-icon-img"></div></div>
+                <div class="modal-heading">
+                  <p class="modal-platform-label">IOS SAFARI</p>
+                  <h2 class="modal-title">Add <span class="app-name"></span> to Home Screen</h2>
+                </div>
+              </div>
+              <a id="close-modal-btn1">
+                <img src="https://static.gwvkyk.com/media/fa4555f3822a635007148.png" loading="lazy" width="25" height="25" alt="Close" class="close-button" />
+              </a>
+            </div>
+            <div class="modal-warning">
+              <div class="modal-warning-icon-wrap">
+                <img src="https://static.gwvkyk.com/media/bb93b616822a63f4833ed.png" loading="lazy" width="18" height="18" alt="" class="warning-icon" />
+              </div>
+              <p class="warning-info">
+                On iPhone, push notifications only work from the installed app.
+                Add <span class="app-name"></span> to your home screen first,
+                then open it from there to enable push.
+              </p>
+            </div>
+            <div class="modal-tabs w-tabs">
+              <div class="modal-tabs-menu w-tab-menu" id="modal-tab-menus">
+                <a data-w-tab="Tab 1" class="modal-tab-link w-tab-link w--current">
+                  <div class="tab-label">IOS 16 &amp; newer</div>
+                  <div class="tab-sublabel tab-sublabel--small">2022+</div>
+                </a>
+                <a data-w-tab="Tab 2" class="modal-tab-link w-tab-link">
+                  <div class="tab-label">IOS 15 &amp; older</div>
+                  <div class="tab-sublabel tab-sublabel--small">2021 &amp; earlier</div>
+                </a>
+              </div>
+              <div class="w-tab-content">
+                <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active"><div id="tab1-content"></div></div>
+                <div data-w-tab="Tab 2" class="w-tab-pane"><div id="tab2-content"></div></div>
+              </div>
+            </div>
+            <a class="button w-button" id="close-modal-btn2">GOT IT</a>
+          </div>
+        </div>
+        <div style="height: 100px; width: 100%"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+
+    window.APP_NAME = window.APP_NAME || "XOX96";
+
+    if (!window._pwaPageInit) {
+      window._pwaPageInit = true;
+      (() => {
+
+        const $id  = id       => document.getElementById(id);
+        const $all = selector => document.querySelectorAll(selector);
+        function show(el, display = "block") { if (el) el.style.display = display; }
+        function hide(el)                    { if (el) el.style.display = "none";  }
+
+        /* ─── Tabs ─────────────────────────────────────────────── */
+        function initTabs() {
+          const links = $all(".w-tab-link");
+          const panes = $all(".w-tab-pane");
+          if (!links.length || !panes.length) return;
+          links.forEach((link, i) => {
+            link.addEventListener("click", () => {
+              links.forEach(el   => el.classList.remove("w--current"));
+              panes.forEach(pane => pane.classList.remove("w--tab-active"));
+              link.classList.add("w--current");
+              if (panes[i]) panes[i].classList.add("w--tab-active");
+            });
+          });
+        }
+
+        /* ─── Modal data ────────────────────────────────────────── */
+        const MODAL_DATA = {
+          safari: {
+            title: "IOS SAFARI",
+            tabs: {
+              tab1: [
+                { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "On iOS 16 and newer, the share icon sits in the bottom toolbar of Safari." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+              ],
+              tab2: [
+                { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "On iOS 15 and earlier, the share icon sits in the bottom toolbar of Safari." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+              ],
+            },
+          },
+          chrome: {
+            title: "IOS CHROME",
+            tabs: {
+              tab1: [
+                { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Chrome",           description: "Push notifications require Chrome on iPhone — not Safari or an in-app browser." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "The share icon sits in the top right toolbar of Chrome." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+                { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+              ],
+              tab2: [],
+            },
+          },
+        };
+
+        /* ─── Measure top (below all fixed headers) ─────────────── */
+        function measureTopOffset() {
+          const modal = $id("modal");
+          let top = 0;
+          ["smart-banner", "header", "marquee"].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el || getComputedStyle(el).display === "none") return;
+            const r = el.getBoundingClientRect();
+            if (r.height > 0) top = Math.max(top, Math.round(r.bottom));
+          });
+          if (top === 0) {
+            document.querySelectorAll("*").forEach(el => {
+              if (el === modal || (modal && modal.contains(el))) return;
+              const cs = getComputedStyle(el);
+              if (cs.position !== "fixed" && cs.position !== "sticky") return;
+              if (cs.display === "none" || cs.visibility === "hidden") return;
+              const r = el.getBoundingClientRect();
+              if (r.width === 0 || r.height === 0) return;
+              if (r.top <= 2 && r.bottom > 0 && r.bottom < window.innerHeight * 0.5) {
+                top = Math.max(top, Math.round(r.bottom));
+              }
+            });
+          }
+          return top;
+        }
+
+        /* ─── Measure bottom nav height ─────────────────────────── */
+        function measureBottomOffset() {
+          const el =
+            document.querySelector(".bottom-nav") ||
+            $id("floatcontainer") ||
+            $id("footer");
+          return el ? el.offsetHeight : 0;
+        }
+
+        /* ─── Live-sync top while modal is open ─────────────────── */
+        let _syncInterval = null;
+
+        function startModalSync(modal) {
+          stopModalSync();
+          _syncInterval = setInterval(() => {
+            if (!modal || !modal.classList.contains("active")) { stopModalSync(); return; }
+            const newTop = measureTopOffset();
+            const cur    = parseInt(modal.style.getPropertyValue("top")) || 0;
+            if (Math.abs(newTop - cur) > 1) {
+              modal.style.setProperty("top", newTop + "px", "important");
+            }
+          }, 100);
+        }
+
+        function stopModalSync() {
+          if (_syncInterval) { clearInterval(_syncInterval); _syncInterval = null; }
+        }
+
+        /* ─── Modal open ────────────────────────────────────────── */
+        function showModal({ type = "safari" } = {}) {
+          const modal    = $id("modal");
+          const modalBox = document.querySelector(".modal-box");
+          if (!modal) return;
+
+          if (modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+          }
+
+          const topOffset    = measureTopOffset();
+          const bottomOffset = measureBottomOffset();
+
+          /* Overlay — override ALL flex/padding properties */
+          modal.style.removeProperty("inset");
+          modal.style.setProperty("position",        "fixed",       "important");
+          modal.style.setProperty("top",             topOffset    + "px", "important");
+          modal.style.setProperty("left",            "0",           "important");
+          modal.style.setProperty("right",           "0",           "important");
+          modal.style.setProperty("bottom",          bottomOffset + "px", "important");
+          modal.style.setProperty("display",         "flex",        "important");
+          modal.style.setProperty("flex-direction",  "column",      "important");
+          modal.style.setProperty("align-items",     "stretch",     "important");
+          modal.style.setProperty("justify-content", "flex-start",  "important");
+          modal.style.setProperty("padding",         "0",           "important");
+          modal.style.setProperty("padding-left",    "1rem",        "important");
+          modal.style.setProperty("padding-right",   "1rem",        "important");
+          modal.style.setProperty("z-index",         "99999999",    "important");
+
+          /* Modal-box — fill the full overlay height */
+          if (modalBox) {
+            modalBox.style.setProperty("flex",       "1 1 auto",    "important");
+            modalBox.style.setProperty("height",     "100%",        "important");
+            modalBox.style.setProperty("max-height", "100%",        "important");
+            modalBox.style.setProperty("min-height", "0",           "important");
+            modalBox.style.setProperty("margin",     "0",           "important");
+            modalBox.style.setProperty("overflow-y", "auto",        "important");
+          }
+
+          const data = MODAL_DATA[type];
+          document.querySelector(".modal-platform-label").textContent = data.title;
+          renderInstructionCards(data.tabs.tab1, "tab1-content");
+          renderInstructionCards(data.tabs.tab2, "tab2-content");
+          modal.classList.add("active");
+          startModalSync(modal);
+          setTimeout(() => { if (modalBox) modalBox.scrollTop = 0; }, 50);
+        }
+
+        /* ─── Modal close ───────────────────────────────────────── */
+        function hideModal() {
+          stopModalSync();
+          const modal    = $id("modal");
+          const modalBox = document.querySelector(".modal-box");
+          if (modal) {
+            modal.classList.remove("active");
+            ["position","inset","top","left","right","bottom",
+             "display","flex-direction","align-items","justify-content",
+             "padding","padding-top","padding-bottom","padding-left","padding-right",
+             "z-index"]
+              .forEach(p => modal.style.removeProperty(p));
+          }
+          if (modalBox) {
+            ["flex","height","max-height","min-height","margin","overflow-y"]
+              .forEach(p => modalBox.style.removeProperty(p));
+          }
+        }
+
+        /* ─── Render steps ──────────────────────────────────────── */
+        function renderInstructionCards(items, containerId) {
+          const container = $id(containerId);
+          if (!container) return;
+          container.innerHTML = items.map(item => `
+            <instruction-card
+              image="${item.image}"
+              title="${item.title}"
+              description="${item.description}"
+              stepNumberImage="${item.stepNumberImage}"
+            ></instruction-card>`).join("");
+        }
+
+        /* ─── Notification ──────────────────────────────────────── */
+        function updateNotificationUI() {
+          hide($id("push-notification-btn"));
+          show($id("notification-enabled-btn"), "flex");
+        }
+        function pushNotification() {
+          window.pwaApp?.handlePushNotification((result, error) => {
+            if (error) { console.error("Push notification error:", error); return; }
+            if (result?.permission === "granted") updateNotificationUI();
+          });
+        }
+        function checkNotificationPermission() {
+          window.pwaApp?.handleGetNotificationPermission((result, error) => {
+            if (error) { console.error("Permission check error:", error); return; }
+            if (result?.permission === "granted") updateNotificationUI();
+          });
+        }
+
+        /* ─── PWA install ───────────────────────────────────────── */
+        function handleInstallPWA() {
+          handleAppBrowserRedirect();
+          const platform = window.pwaApp?.getOperatingSystem();
+          if (platform === "iosChrome") { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
+          if (platform === "iosSafari" || platform === "macOSSafari" || platform === "ios") { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
+          window.pwaApp?.handleInstallPWA((result, error) => { if (error) console.error("PWA install error:", error); });
+        }
+
+        function handlePushButtonClick(e) {
+          e.preventDefault();
+          handleAppBrowserRedirect();
+          const platform = window.pwaApp?.getOperatingSystem();
+          window.pwaApp?.handleGetPWAStatus((result, error) => {
+            if (error || !result) return;
+            if (platform === "iosChrome" && !result.status) { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
+            if ((platform === "iosSafari" || platform === "ios") && !result.status) { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
+            pushNotification();
+          });
+        }
+
+        function checkPWAStatus() {
+          window.pwaApp?.handleGetPWAStatus((result, error) => {
+            if (result?.status) hide($id("get-the-app"));
+          });
+        }
+
+        /* ─── Utilities ─────────────────────────────────────────── */
+        function renderAppName() {
+          $all(".app-name").forEach(el => { el.textContent = window.APP_NAME; });
+        }
+        function isInAppBrowser() {
+          const ua = navigator.userAgent.toLowerCase();
+          const isAnd = /android/.test(ua);
+          return /fban|fbav|fb_iab|instagram|line/.test(ua) ||
+            (typeof window.TelegramWebviewProxy !== "undefined" && typeof window.TelegramWebviewProxyProto !== "undefined") ||
+            (isAnd && typeof window.TelegramWebviewProxy !== "undefined");
+        }
+        function isIOS()     { return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()); }
+        function isAndroid() { return /android/.test(navigator.userAgent.toLowerCase()); }
+        function handleAppBrowserRedirect() {
+          if (!isInAppBrowser()) return;
+          const url = window.location.href;
+          if (isIOS()) { window.open("x-safari-" + url, "_blank"); }
+          else if (isAndroid()) { window.open("intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(url) + ";end", "_blank"); }
+        }
+
+        /* ─── Platform UI ───────────────────────────────────────── */
+        function checkIOSNativeApp() {
+          const platform = window.pwaApp?.getOperatingSystem();
+          if (platform === "android") hide($id("download-macos-btn"));
+          else hide($id("download-android-btn"));
+        }
+
+        /* ─── Events ────────────────────────────────────────────── */
+        function bindEvents() {
+          const pushBtn    = $id("push-notification-btn");
+          const installBtn = $id("install-pwa-btn");
+          const modal      = $id("modal");
+          const closeBtn1  = $id("close-modal-btn1");
+          const closeBtn2  = $id("close-modal-btn2");
+          if (pushBtn)    pushBtn.addEventListener("click", handlePushButtonClick);
+          if (installBtn) installBtn.addEventListener("click", handleInstallPWA);
+          if (modal)      modal.addEventListener("click", e => { if (e.target === modal) hideModal(); });
+          if (closeBtn1)  closeBtn1.addEventListener("click", hideModal);
+          if (closeBtn2)  closeBtn2.addEventListener("click", hideModal);
+        }
+
+        /* ─── SPA hooks ─────────────────────────────────────────── */
+        window._pwaRunChecks = () => { checkNotificationPermission(); checkPWAStatus(); checkIOSNativeApp(); };
+        window._pwaReInit    = () => { initTabs(); bindEvents(); };
+
+        /* ─── Boot ──────────────────────────────────────────────── */
+        function init() {
+          initTabs();
+          renderAppName();
+          bindEvents();
+          document.documentElement.style.transition = "opacity 0.25s ease";
+          document.documentElement.style.opacity    = "1";
+          setTimeout(window._pwaRunChecks, 300);
+        }
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+
+      })();
+    } else {
+      document.documentElement.style.transition = "opacity 0.25s ease";
+      document.documentElement.style.opacity    = "1";
+      window._pwaReInit?.();
+      setTimeout(() => window._pwaRunChecks?.(), 300);
+    }
+
+    /* ─── <instruction-card> ────────────────────────────────────── */
+    class InstructionCard extends HTMLElement {
+      connectedCallback() {
+        const image           = this.getAttribute("image") || "";
+        const stepNumberImage = this.getAttribute("stepNumberImage") || "";
+        const title           = (this.getAttribute("title")       || "").replace(/{{appName}}/g, window.APP_NAME);
+        const description     = (this.getAttribute("description") || "").replace(/{{appName}}/g, window.APP_NAME);
+        this.innerHTML = `
+          <div class="instruction-card">
+            <div class="instruction-card-image">
+              <div class="instruction-card-img" style="background-image:url('${image}')"></div>
+            </div>
+            <div class="card-containers">
+              <div class="card-heading">
+                <div class="step-number"><img src="${stepNumberImage}" width="18" height="18" alt="" /></div>
+                <div class="card-title">${title}</div>
+              </div>
+              <div class="card-excerpt">${description}</div>
+            </div>
+          </div>`;
+      }
+    }
+    if (!customElements.get("instruction-card")) {
+      customElements.define("instruction-card", InstructionCard);
+    }
+  </script>
+</body>
+</html>
+</textarea>
+
+<textarea id="ta-xox-css"   style="display:none">
+/* =========================================================
+   BRAND VARIABLES — edit all brand values from here
+========================================================= */
+:root {
+
+  /* --- Primary Color --- */
+  --primary:          #5BFDA4;
+  --primary-dim:      rgba(91, 253, 164, 0.48);
+  --primary-faint:    rgba(91, 253, 164, 0.08);
+  --primary-border:   #388D65;
+  --primary-dark:     #16492E;
+
+  /* --- Secondary Color --- */
+  --secondary:        #FFEA00;
+  --secondary-dim:    rgba(255, 234, 0, 0.48);
+  --secondary-faint:  rgba(255, 234, 0, 0.08);
+  --secondary-border: rgba(255, 234, 0, 0.24);
+
+  /* --- Backgrounds --- */
+  --bg-page:          #0B1D14;
+  --bg-hero:          url("https://static.gwvkyk.com/media/1c441098412a65c4165e9.png");
+  --bg-notif-card:    #18262B;
+  --bg-remark:        #1D3735;
+  --bg-app-card:      #25251E;
+  --bg-app-card-pwa:  #18262B;
+  --bg-app-icon-pwa:  #203F3A;
+  --bg-modal:         #071F16;
+  --bg-modal-inner:   #0D3121;
+
+  /* --- Icons --- */
+  --icon-app:         url("https://static.gwvkyk.com/media/df655823822a6f6e50e6b.png");
+  --icon-button:      url("https://static.gwvkyk.com/media/958b669d322a60e0d35b7.png");
+  --icon-enabled:     url("https://static.gwvkyk.com/media/93b46fae322a6d7255e1d.png");
+
+  /* --- Layout --- */
+  --container:        495px;
+  --radius-sm:        8px;
+  --radius-md:        12px;
+  --radius-lg:        16px;
+  --radius-xl:        24px;
+}
+
+
+/* =========================================================
+   RESET / BASE
+========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  text-transform: none !important;
+}
+
+img    { display: block; max-width: 100%; }
+a      { color: inherit; text-decoration: none; background: transparent; }
+ul, li { margin: 0; padding: 0; }
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+.body {
+  background-color: var(--bg-page);
+  -webkit-text-fill-color: inherit;
+  background-clip: border-box;
+}
+
+.page {
+  width: min(100% - 2rem, var(--container));
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+
+/* =========================================================
+   HERO SECTION
+========================================================= */
+.hero-card {
+  background-image: var(--bg-hero);
+  background-position: 0 0;
+  background-size: cover;
+  border: 1px solid var(--primary-dim);
+  border-radius: var(--radius-xl);
+}
+
+.hero-card {
+  min-height: 180px;
+  padding: 20px;
+}
+
+.hero-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.hero-icon {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--secondary);
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BENEFIT GRID
+========================================================= */
+.benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.benefit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  gap: 8px;
+  padding: 12px 8px;
+  text-align: center;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--primary-dim);
+  background: var(--primary-faint);
+}
+
+.benefit-card img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.benefit-title {
+  margin: 0;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   NOTIFICATION CARD
+========================================================= */
+.notification-card {
+  margin-top: 16px;
+  padding: 1.2rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--primary-dim);
+  background: var(--bg-notif-card);
+}
+
+.notification-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--primary);
+}
+
+.notification-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+}
+
+.notification-icon img { width: 26px; height: 26px; }
+
+.notification-title {
+  margin: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.notification-list {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notification-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary-border);
+  font-size: 1rem;
+}
+
+.check-badge {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid var(--primary-border);
+  background: var(--primary-dark);
+}
+
+.check-badge img { width: 14px; height: 14px; }
+
+
+/* =========================================================
+   REMARK BOX
+========================================================= */
+.remark-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px;
+  color: #fff;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--primary-border);
+  background: var(--bg-remark);
+}
+
+.remark-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+}
+
+.remark-label { color: var(--secondary); }
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  height: auto;
+  margin-top: 20px;
+  padding: 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius-md) !important;
+  background-color: var(--secondary-faint);
+}
+
+.w-button {
+  color: var(--secondary);
+  border: 1px solid var(--secondary-border);
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.button-icon {
+  width: 20px;
+  height: 20px;
+  background-image: var(--icon-button);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+/* =========================================================
+   ENABLED STATE
+========================================================= */
+.enabled-hide { display: none; }
+
+.enabled-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--secondary);
+}
+
+.enabled-icon {
+  width: 20px;
+  height: 20px;
+  background-image: var(--icon-enabled);
+  background-position: 0 0;
+  background-size: cover;
+}
+
+.enabled-text {
+  margin: 0;
+  color: #000C0A;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+
+/* =========================================================
+   GET THE APP
+========================================================= */
+.apps-section { margin-top: 24px; }
+
+.section-title {
+  margin: 0 0 16px;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.app-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--secondary);
+  background: var(--bg-app-card);
+  color: var(--secondary-dim);
+}
+
+.app-card--pwa {
+  background: var(--bg-app-card-pwa);
+  color: var(--secondary);
+  border-color: var(--primary);
+}
+
+.app-icon-wrap {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  border-radius: 10px;
+}
+
+.app-icon-wrap img { width: 28px; height: 28px; }
+
+.app-icon-wrap--pwa {
+  background: var(--bg-app-icon-pwa);
+  border: 1px solid var(--primary);
+}
+
+.app-icon-wrap--mac {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#36351C, #36351C) padding-box,
+    linear-gradient(90deg, #F3E92E 0%, #8CFF00 100%) border-box;
+}
+
+.app-copy { flex: 1; min-width: 0; }
+
+.app-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.app-description {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.32);
+  font-size: 1rem;
+}
+
+.app-action-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, #CF1917 0%, #FF6E30 100%) padding-box,
+    linear-gradient(180deg, #FF4545 0%, #FFB056 100%) border-box;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tag--native {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background:
+    linear-gradient(#36351C, #36351C) padding-box,
+    linear-gradient(90deg, #F3E92E 0%, #8CFF00 100%) border-box;
+  color: #F3E92E;
+}
+
+
+/* =========================================================
+   MODAL OVERLAY
+========================================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2.8rem 1.1rem 0;
+  background: rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+  z-index: 10000;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+  max-height: 88vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  transform: scale(0.95);
+  transition: all 0.2s ease;
+}
+
+.modal-overlay.active .modal-box { transform: scale(1); }
+
+
+/* =========================================================
+   MODAL CONTENT
+========================================================= */
+.w-layout-blockcontainer {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.modal-container {
+  display: flex;
+  flex-flow: column;
+  max-width: 495px;
+  padding: 20px;
+  background-color: var(--bg-modal);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-xl);
+}
+
+.modal-inner { margin-top: 40px; }
+
+.modal-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.modal-top-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-app-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 auto;
+  width: 58px;
+  height: 58px;
+  background-color: var(--primary);
+  border-radius: var(--radius-sm);
+}
+
+.modal-app-icon-img {
+  width: 36px;
+  height: 36px;
+  background-image: var(--icon-app);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.modal-heading {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.modal-platform-label {
+  margin-bottom: 0;
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.modal-title {
+  margin: 0;
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1.2rem;
+}
+
+.close-button {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.modal-warning {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: var(--bg-modal-inner);
+  border: 1px dashed var(--primary-border);
+  border-radius: var(--radius-md);
+}
+
+.modal-warning-icon-wrap { flex: 0 0 auto; }
+
+.warning-icon { width: 16px; height: 16px; object-fit: cover; }
+
+.warning-info {
+  margin: 0;
+  color: var(--primary-dim);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 124%;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+.modal-tabs { margin-top: 20px; }
+
+.modal-tabs-menu {
+  display: flex;
+  gap: 12px;
+  padding: 6px;
+  background-color: var(--bg-modal-inner);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-md);
+}
+
+.modal-tab-link,
+.modal-tab-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 50%;
+  height: 52px;
+  background-color: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.modal-tab-link.w-tab-link,
+.modal-tab-link.w-tab-link { padding: 8px; }
+
+.modal-tab-link.w--current,
+.modal-tab-link.w--current {
+  background-color: var(--primary);
+  border-radius: var(--radius-sm);
+}
+
+.tab-label {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.tab-sublabel {
+  text-align: center;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.tab-sublabel.tab-sublabel--small { font-size: 0.85rem; }
+
+.modal-tab-link .tab-label,
+.modal-tab-link .tab-label { color: var(--primary); }
+
+.modal-tab-link .tab-sublabel--small,
+.modal-tab-link .tab-sublabel--small     { color: var(--primary-dim); }
+
+.modal-tab-link.w--current .tab-label,
+.modal-tab-link.w--current .tab-label { color: #000; }
+
+.modal-tab-link.w--current .tab-sublabel--small,
+.modal-tab-link.w--current .tab-sublabel--small     { color: rgba(0, 12, 10, 0.48); }
+
+/* Webflow tab engine — do not edit */
+.w-tabs { position: relative; }
+.w-tabs::before, .w-tabs::after {
+  content: " "; display: table;
+  grid-column-start: 1; grid-row-start: 1;
+  grid-column-end: 2;   grid-row-end: 2;
+}
+.w-tabs::after { clear: both; }
+.w-tab-menu    { position: relative; }
+.w-tab-link    { cursor: pointer; }
+.w-tab-link:focus { outline: 0; }
+.w-tab-content, .w-tab-link, .w-tab-menu,
+.w-tab-pane, .w-tabs { position: relative; }
+.w-tab-content { display: block; overflow: hidden; }
+.w--tab-active { display: block; }
+.w-tab-pane {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+}
+.w-tab-pane.w--tab-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+
+/* =========================================================
+   INSTRUCTION CARD
+========================================================= */
+.instruction-card {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: var(--bg-modal-inner);
+  border: 1px solid #195F49;
+  border-radius: var(--radius-md);
+}
+
+.instruction-card-image {
+  display: flex;
+  flex-flow: wrap;
+  place-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 100px;
+  height: 120px;
+  padding: 6px;
+  background: linear-gradient(#13402C, #13402C);
+  border: 1px solid #1C573A;
+  border-radius: 6px;
+}
+
+.instruction-card-img {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.card-containers {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+}
+
+.card-heading {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.75rem;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  min-height: 1.75rem;
+}
+
+.card-title {
+  margin: 0;
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 100%;
+}
+
+.card-excerpt {
+  width: 100%;
+  margin: 0;
+  color: #329360;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 112%;
+}
+
+
+/* =========================================================
+   iOS PWA
+========================================================= */
+.ios-pwa .menu-badge {
+  top: calc(14px + env(safe-area-inset-top, 0px));
+}
+
+
+/* =========================================================
+   RESPONSIVE — 480px and below
+========================================================= */
+@media screen and (max-width: 479px) {
+  .w-tab-link { display: block; }
+}
+
+@media (max-width: 479px) {
+  .page                    { width: calc(100% - 2rem); }
+  .hero-card               { padding: 16px; }
+  .hero-header             { gap: 12px; margin: 0 8px 16px 0; }
+  .hero-icon               { width: 40px; height: 40px; }
+  .hero-title              { font-size: 1rem; }
+  .eyebrow                 { font-size: 0.75rem; }
+  .benefit-grid            { gap: 8px; }
+  .benefit-card            { min-height: 72px; padding: 12px 8px; border-radius: 12px; }
+  .benefit-card img        { width: 32px; height: 32px; }
+  .benefit-title            { padding-left: 0 !important; padding-right: 0 !important; }
+  .notification-title      { font-size: 1.2rem; }
+  .notification-icon       { width: 38px; height: 38px; }
+  .notification-icon img   { width: 22px; height: 22px; }
+  .notification-list li    { font-size: 0.8rem; }
+  .check-badge             { width: 18px; height: 18px; }
+  .check-badge img         { width: 12px; height: 12px; }
+  .remark-box              { font-size: 0.8rem; }
+  .section-title           { font-size: 1rem; }
+  .app-title               { font-size: 1rem; }
+  .app-description         { font-size: 0.8rem; }
+  .app-icon-wrap           { width: 46px; height: 46px; }
+  .app-title-row           { flex-wrap: wrap; align-items: flex-start; }
+  .button                  { width: auto; }
+  .modal-inner                 { margin-top: 3.625rem; margin-bottom: 3.625rem; }
+  .close-button            { width: 28px; height: 28px; max-width: 100%; }
+  .modal-app-icon        { width: 2.5rem; height: 2.5rem; }
+  .modal-app-icon-img            { width: 1.8rem; height: 1.8rem; }
+  .modal-heading                 { margin-right: 8px; }
+  .modal-title                 { font-size: 1rem; }
+  .modal-platform-label               { font-size: 0.75rem; }
+  .modal-warning                    { margin-top: 1.2rem; padding: 1rem; }
+  .modal-warning-icon-wrap            { width: 1.5rem; height: 1.5rem; }
+  .warning-icon            { width: 1rem; height: 1rem; }
+  .warning-info            { font-size: 0.8rem; }
+  .modal-tabs-menu             { padding: 0.375rem; }
+  .modal-tab-link,
+  .modal-tab-link        { padding-left: 10px; padding-right: 10px; }
+  .tab-sublabel,
+  .tab-label         { font-size: 1rem; }
+  .instruction-card        { margin-top: 1.25rem; padding: 0.625rem; }
+  .instruction-card-image  { width: 82.66px; height: 112px; }
+  .card-containers         { padding: 0 10px 10px; }
+  .card-heading            { gap: 6px; }
+  .card-excerpt            { font-size: 0.8rem; }
+}
+
+@media screen and (max-width: 991px) {
+  .w-layout-blockcontainer { max-width: 728px; }
+}
+
+@media screen and (max-width: 767px) {
+  .w-layout-blockcontainer { max-width: none; }
+}
+</textarea>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script>populateCode();</script>
+</body>
+</html>
