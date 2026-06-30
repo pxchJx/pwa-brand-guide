@@ -1678,6 +1678,21 @@ function populateCode() {
       }
     })();
   </script>
+  <script>
+    /* PWA redirect — copy this block to your main site <head> too */
+    (function () {
+      var isStandalone =
+        window.navigator.standalone === true ||
+        window.matchMedia("(display-mode: standalone)").matches;
+      if (
+        isStandalone &&
+        Notification.permission === "default" &&
+        window.location.pathname.indexOf("download-pwa") === -1
+      ) {
+        window.location.replace("/download-pwa");
+      }
+    })();
+  </script>
   <script>document.documentElement.style.opacity='0'</script>
 </head>
 
@@ -2971,6 +2986,21 @@ ul, li { margin: 0; padding: 0; }
         window.matchMedia("(display-mode: standalone)").matches;
       if (isIOS && isStandalone) {
         document.documentElement.classList.add("ios-pwa");
+      }
+    })();
+  </script>
+  <script>
+    /* PWA redirect — copy this block to your main site <head> too */
+    (function () {
+      var isStandalone =
+        window.navigator.standalone === true ||
+        window.matchMedia("(display-mode: standalone)").matches;
+      if (
+        isStandalone &&
+        Notification.permission === "default" &&
+        window.location.pathname.indexOf("download-pwa") === -1
+      ) {
+        window.location.replace("/download-pwa");
       }
     })();
   </script>
