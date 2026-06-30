@@ -1837,6 +1837,25 @@ function populateCode() {
       </div>
     </div>
 
+    <!-- Alert modal: shown when push notifications are blocked -->
+    <div id="alert-modal" class="modal-overlay">
+      <div class="modal-box" style="max-height: fit-content; margin: auto;">
+        <div class="modal-inner">
+          <div class="modal-container">
+            <div class="modal-top">
+              <div class="modal-heading">
+                <p class="modal-platform-label">Warning</p>
+              </div>
+              <a id="close-modal-btn3">
+                <img src="https://static.gwvkyk.com/media/442387e2b72a6d6ff4a39.png" loading="lazy" width="25" height="25" alt="Close" class="close-button" />
+              </a>
+            </div>
+            <p id="error-message" class="error-message">Push notifications are blocked. Please enable them in your browser or device settings.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <script>
@@ -1940,7 +1959,6 @@ function populateCode() {
 
         /* ─── Live-sync top while modal is open ─────────────────── */
         let _syncInterval = null;
-
         function startModalSync(modal) {
           stopModalSync();
           _syncInterval = setInterval(() => {
@@ -1952,7 +1970,6 @@ function populateCode() {
             }
           }, 100);
         }
-
         function stopModalSync() {
           if (_syncInterval) { clearInterval(_syncInterval); _syncInterval = null; }
         }
@@ -1960,7 +1977,7 @@ function populateCode() {
         /* ─── Modal open ────────────────────────────────────────── */
         function showModal({ type = "safari" } = {}) {
           const modal    = $id("modal");
-          const modalBox = document.querySelector(".modal-box");
+          const modalBox = document.querySelector("#modal .modal-box");
           if (!modal) return;
 
           if (modal.parentElement !== document.body) {
@@ -1970,30 +1987,28 @@ function populateCode() {
           const topOffset    = measureTopOffset();
           const bottomOffset = measureBottomOffset();
 
-          /* Overlay — override ALL flex/padding properties */
           modal.style.removeProperty("inset");
-          modal.style.setProperty("position",        "fixed",       "important");
-          modal.style.setProperty("top",             topOffset    + "px", "important");
-          modal.style.setProperty("left",            "0",           "important");
-          modal.style.setProperty("right",           "0",           "important");
-          modal.style.setProperty("bottom",          bottomOffset + "px", "important");
-          modal.style.setProperty("display",         "flex",        "important");
-          modal.style.setProperty("flex-direction",  "column",      "important");
-          modal.style.setProperty("align-items",     "stretch",     "important");
-          modal.style.setProperty("justify-content", "flex-start",  "important");
-          modal.style.setProperty("padding",         "0",           "important");
-          modal.style.setProperty("padding-left",    "1rem",        "important");
-          modal.style.setProperty("padding-right",   "1rem",        "important");
-          modal.style.setProperty("z-index",         "99999999",    "important");
+          modal.style.setProperty("position",        "fixed",            "important");
+          modal.style.setProperty("top",             topOffset    + "px","important");
+          modal.style.setProperty("left",            "0",                "important");
+          modal.style.setProperty("right",           "0",                "important");
+          modal.style.setProperty("bottom",          bottomOffset + "px","important");
+          modal.style.setProperty("display",         "flex",             "important");
+          modal.style.setProperty("flex-direction",  "column",           "important");
+          modal.style.setProperty("align-items",     "stretch",          "important");
+          modal.style.setProperty("justify-content", "flex-start",       "important");
+          modal.style.setProperty("padding",         "0",                "important");
+          modal.style.setProperty("padding-left",    "1rem",             "important");
+          modal.style.setProperty("padding-right",   "1rem",             "important");
+          modal.style.setProperty("z-index",         "99999999",         "important");
 
-          /* Modal-box — fill the full overlay height */
           if (modalBox) {
-            modalBox.style.setProperty("flex",       "1 1 auto",    "important");
-            modalBox.style.setProperty("height",     "100%",        "important");
-            modalBox.style.setProperty("max-height", "100%",        "important");
-            modalBox.style.setProperty("min-height", "0",           "important");
-            modalBox.style.setProperty("margin",     "0",           "important");
-            modalBox.style.setProperty("overflow-y", "auto",        "important");
+            modalBox.style.setProperty("flex",       "1 1 auto", "important");
+            modalBox.style.setProperty("height",     "100%",     "important");
+            modalBox.style.setProperty("max-height", "100%",     "important");
+            modalBox.style.setProperty("min-height", "0",        "important");
+            modalBox.style.setProperty("margin",     "0",        "important");
+            modalBox.style.setProperty("overflow-y", "auto",     "important");
           }
 
           const data = MODAL_DATA[type];
@@ -2009,7 +2024,7 @@ function populateCode() {
         function hideModal() {
           stopModalSync();
           const modal    = $id("modal");
-          const modalBox = document.querySelector(".modal-box");
+          const modalBox = document.querySelector("#modal .modal-box");
           if (modal) {
             modal.classList.remove("active");
             ["position","inset","top","left","right","bottom",
@@ -2022,6 +2037,18 @@ function populateCode() {
             ["flex","height","max-height","min-height","margin","overflow-y"]
               .forEach(p => modalBox.style.removeProperty(p));
           }
+        }
+
+        /* ─── Alert modal ───────────────────────────────────────── */
+        function showAlert() {
+          const alertModal = $id("alert-modal");
+          if (!alertModal) return;
+          alertModal.classList.add("active");
+        }
+        function hideAlert() {
+          const alertModal = $id("alert-modal");
+          if (!alertModal) return;
+          alertModal.classList.remove("active");
         }
 
         /* ─── Render steps ──────────────────────────────────────── */
@@ -2044,6 +2071,12 @@ function populateCode() {
         }
         function pushNotification() {
           window.pwaApp?.handlePushNotification((result, error) => {
+            if (error === "Push notification permission denied.") {
+              const errorMsg = $id("error-message");
+              if (errorMsg) errorMsg.textContent = "Push notifications are blocked. Please enable them manually in your browser or device settings to continue receiving updates.";
+              showAlert();
+              return;
+            }
             if (error) { console.error("Push notification error:", error); return; }
             if (result?.permission === "granted") updateNotificationUI();
           });
@@ -2114,13 +2147,17 @@ function populateCode() {
           const pushBtn    = $id("push-notification-btn");
           const installBtn = $id("install-pwa-btn");
           const modal      = $id("modal");
+          const alertModal = $id("alert-modal");
           const closeBtn1  = $id("close-modal-btn1");
           const closeBtn2  = $id("close-modal-btn2");
+          const closeBtn3  = $id("close-modal-btn3");
           if (pushBtn)    pushBtn.addEventListener("click", handlePushButtonClick);
           if (installBtn) installBtn.addEventListener("click", handleInstallPWA);
           if (modal)      modal.addEventListener("click", e => { if (e.target === modal) hideModal(); });
+          if (alertModal) alertModal.addEventListener("click", e => { if (e.target === alertModal) hideAlert(); });
           if (closeBtn1)  closeBtn1.addEventListener("click", hideModal);
           if (closeBtn2)  closeBtn2.addEventListener("click", hideModal);
+          if (closeBtn3)  closeBtn3.addEventListener("click", hideAlert);
         }
 
         /* ─── SPA hooks ─────────────────────────────────────────── */
@@ -2178,6 +2215,7 @@ function populateCode() {
   </script>
 </body>
 </html>
+
 </textarea>
 
 <textarea id="ta-melb-css"  style="display:none">
