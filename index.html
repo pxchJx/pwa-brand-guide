@@ -1040,8 +1040,10 @@
 
 <!-- STEPS -->
 <div id="step1" class="section-wrap steps-section" style="border-top:none; padding-top:0; max-width:900px;">
-  <p class="section-label">Steps 1 – 3</p>
+  <p class="section-label">Steps 1 – 4</p>
   <h2 class="section-title">What to change</h2>
+
+
 
   <!-- STEP 1 -->
   <div class="step-block" data-step>
@@ -1050,10 +1052,36 @@
       <div class="step-line"></div>
     </div>
     <div class="step-content">
-      <h3 class="step-title">Change the app name</h3>
-      <p class="step-subtitle">One line in JavaScript</p>
+      <h3 class="step-title">Create the download-pwa page</h3>
+      <p class="step-subtitle">Set up the push notification page and set your brand name</p>
 
-      <div class="code-block">
+      <ol class="setup-steps-list">
+        <li>Go to your brand Admin Dashboard</li>
+        <li>Click the three lines menu icon — top of the last button</li>
+        <li>Click <strong>"MANAGE PAGE"</strong></li>
+        <li>Click <strong>"CREATE NEW"</strong></li>
+        <li>Set the <strong>PAGE URL</strong> using <code>download-pwa</code> as the path:</li>
+      </ol>
+
+      <div class="code-block" style="margin-top:0.75rem;">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>PAGE URL</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="token-comment">// Name your path — example below</span>
+<span class="token-var">download-pwa</span>
+
+<span class="token-comment">// Final URL</span>
+<span class="token-value">https://your_brand_domain/download-pwa</span></pre>
+      </div>
+
+      <ol class="setup-steps-list" style="margin-top:1.25rem;">
+        <li>Paste the <strong>MELB96 or XOX96 HTML</strong> from the template code section below</li>
+        <li>Find this line in the HTML and change to your brand name:</li>
+      </ol>
+
+      <div class="code-block" style="margin-top:0.75rem;">
         <div class="code-block-header">
           <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
           <span>script — top of &lt;script&gt; block</span>
@@ -1063,7 +1091,15 @@
 <span class="token-key">window</span>.<span class="token-var">APP_NAME</span> = <span class="token-key">window</span>.<span class="token-var">APP_NAME</span> || <span class="token-value">"YOURNEWBRAND"</span>;</pre>
       </div>
 
-      <div class="warning-card warning-card--info">
+      <div class="warning-card warning-card--info" style="margin-top:1rem;">
+        <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <p class="warn-title">Also add the redirect script to your homepage</p>
+          <p class="warn-text">Copy the PWA redirect block from the template&#39;s <code>&lt;head&gt;</code> and paste it into your website&#39;s main page head too — this sends users to the download-pwa page automatically when they open the installed app for the first time.</p>
+        </div>
+      </div>
+
+      <div class="warning-card warning-card--info" style="margin-top:0.75rem;">
         <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
         <div>
           <p class="warn-title">Also update the page title</p>
@@ -1339,7 +1375,7 @@
   <div id="step4" class="step-block" data-step>
     <div class="step-number-wrap">
       <div class="step-num">4</div>
-      <div class="step-line"></div>
+      <div class="step-line" style="display:none;"></div>
     </div>
     <div class="step-content">
       <h3 class="step-title">Replace all image URLs in HTML</h3>
@@ -1371,227 +1407,6 @@
   </div>
 
 </div>
-
-<!-- ADMIN DASHBOARD SETUP -->
-<div id="admin-setup" class="section-wrap steps-section" style="max-width:900px;">
-  <p class="section-label">Admin Dashboard</p>
-  <h2 class="section-title">Admin Dashboard Setup</h2>
-
-  <!-- STEP 4 -->
-  <div class="step-block" data-step>
-    <div class="step-number-wrap">
-      <div class="step-num">4</div>
-      <div class="step-line"></div>
-    </div>
-    <div class="step-content">
-      <h3 class="step-title">Add PWA meta tags</h3>
-      <p class="step-subtitle">Configure your brand's manifest and app identity in the Admin Dashboard</p>
-
-      <ol class="setup-steps-list">
-        <li>Go to your brand Admin Dashboard</li>
-        <li>Click the three lines menu icon — top of the last button</li>
-        <li>Click <strong>"Display"</strong></li>
-        <li>Click <strong>"Script"</strong></li>
-        <li>Paste the template below into the <strong>"Meta Tag"</strong> section</li>
-        <li>Edit the <strong>Manifest configuration</strong> section:
-          <ul>
-            <li><code>name</code> — your brand name</li>
-            <li><code>short_name</code> — your brand name</li>
-            <li><code>start_url</code> — your brand URL</li>
-            <li><code>icons</code> — your brand icon image URLs</li>
-          </ul>
-        </li>
-        <li>Edit the <strong>Meta tags for app name and icons</strong> section:
-          <ul>
-            <li><code>APP_NAME</code> — your brand name</li>
-            <li><code>APP_ICON</code> — your brand icon image URL</li>
-          </ul>
-        </li>
-      </ol>
-
-      <div class="code-block" style="margin-top:1.5rem;">
-        <div class="code-block-header">
-          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
-          <span>Meta Tag script — edit marked fields before pasting</span>
-          <button class="code-copy" onclick="copyCode(this)">copy</button>
-        </div>
-        <pre>&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /&gt;
-&lt;meta name="theme-color" content="#000000" /&gt;
-&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /&gt;
-&lt;script&gt;
-  // Manifest configuration
-  const manifest = {
-    name: "Your brand name",            // ← change this
-    short_name: "Your brand name",      // ← change this
-    start_url: "Your brand url",        // ← change this (e.g. "https://yourbrand.com")
-    display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#000000",
-    icons: [
-      { src: "Your brand icon url for 192 size", sizes: "192x192", type: "image/png" },  // ← change this
-      { src: "Your brand icon url for 512 size", sizes: "512x512", type: "image/png" },  // ← change this
-    ],
-  };
-
-  const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("link");
-  link.rel = "manifest";
-  link.href = url;
-  document.head.appendChild(link);
-
-  // Meta tags for app name and icons
-  window.APP_NAME = "Your brand name";  // ← change this
-  const APP_NAME = "Your brand name";   // ← change this
-  const APP_ICON = "Your brand icon url";  // ← change this
-  var pwaAppTitle = document.getElementById("pwa-app-title");
-  if (pwaAppTitle) pwaAppTitle.setAttribute("content", APP_NAME);
-
-  ["icon", "apple-touch-icon"].forEach(function (rel) {
-    var link = document.querySelector('link[rel="' + rel + '"]');
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = rel;
-      document.head.appendChild(link);
-    }
-    link.href = APP_ICON;
-  });
-
-  const style = document.createElement("style");
-  style.innerHTML = `
-    html, body { margin: 0; padding: 0; background: #000 !important; }
-    body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-    #root, #app { min-height: 100vh; background: #000; }
-  `;
-  document.head.appendChild(style);
-&lt;/script&gt;</pre>
-      </div>
-
-      <div class="warning-card warning-card--info" style="margin-top:1.25rem;margin-bottom:0.75rem;">
-        <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <div>
-          <p class="warn-title">Example — MEL96</p>
-          <p class="warn-text">This shows how the completed script looks for MELB96. Use it as a reference when filling in your own values.</p>
-        </div>
-      </div>
-
-      <div class="code-block">
-        <div class="code-block-header">
-          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
-          <span>Example — MELB96</span>
-          <button class="code-copy" onclick="copyCode(this)">copy</button>
-        </div>
-        <pre>&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
-&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /&gt;
-&lt;meta name="theme-color" content="#000000" /&gt;
-&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /&gt;
-&lt;script&gt;
-  // Manifest configuration
-  const manifest = {
-    name: "MEL96",
-    short_name: "MEL96",
-    start_url: "https://mel96.com",
-    display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#000000",
-    icons: [
-      { src: "https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png", sizes: "192x192", type: "image/png" },
-      { src: "https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png", sizes: "512x512", type: "image/png" },
-    ],
-  };
-
-  const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("link");
-  link.rel = "manifest";
-  link.href = url;
-  document.head.appendChild(link);
-
-  // Meta tags for app name and icons
-  window.APP_NAME = "MEL96";
-  const APP_NAME = "MEL96";
-  const APP_ICON = "https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png";
-  var pwaAppTitle = document.getElementById("pwa-app-title");
-  if (pwaAppTitle) pwaAppTitle.setAttribute("content", APP_NAME);
-
-  ["icon", "apple-touch-icon"].forEach(function (rel) {
-    var link = document.querySelector('link[rel="' + rel + '"]');
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = rel;
-      document.head.appendChild(link);
-    }
-    link.href = APP_ICON;
-  });
-
-  const style = document.createElement("style");
-  style.innerHTML = `
-    html, body { margin: 0; padding: 0; background: #000 !important; }
-    body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-    #root, #app { min-height: 100vh; background: #000; }
-  `;
-  document.head.appendChild(style);
-&lt;/script&gt;</pre>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 5 -->
-  <div class="step-block" data-step>
-    <div class="step-number-wrap">
-      <div class="step-num">5</div>
-      <div class="step-line" style="display:none;"></div>
-    </div>
-    <div class="step-content">
-      <h3 class="step-title">Create the download-pwa page</h3>
-      <p class="step-subtitle">Set up the push notification page in Admin Dashboard → Manage Page</p>
-
-      <ol class="setup-steps-list">
-        <li>Go to your brand Admin Dashboard</li>
-        <li>Click the three lines menu icon — top of the last button</li>
-        <li>Click <strong>"MANAGE PAGE"</strong></li>
-        <li>Click <strong>"CREATE NEW"</strong></li>
-        <li>Set the <strong>PAGE URL</strong> — use <code>download-pwa</code> as the path</li>
-        <li>Paste the <strong>MELB96 or XOX96 HTML</strong> from the template code section below</li>
-        <li>Find the line below in the HTML and change to your brand name:</li>
-      </ol>
-
-      <div class="code-block" style="margin-top:0.75rem;">
-        <div class="code-block-header">
-          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
-          <span>PAGE URL</span>
-          <button class="code-copy" onclick="copyCode(this)">copy</button>
-        </div>
-        <pre>// You can name your path — below is just an example
-download-pwa
-
-// Final URL result
-https://your_brand_domain/download-pwa</pre>
-      </div>
-
-      <div class="code-block" style="margin-top:1rem;">
-        <div class="code-block-header">
-          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
-          <span>HTML — find and update APP_NAME</span>
-          <button class="code-copy" onclick="copyCode(this)">copy</button>
-        </div>
-        <pre>// Find this line in the HTML and change to your brand name
-window.APP_NAME = window.APP_NAME || "Your Brand Name";</pre>
-      </div>
-
-      <div class="warning-card warning-card--info" style="margin-top:1rem;">
-        <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <div>
-          <p class="warn-title">Also add the redirect script to your homepage</p>
-          <p class="warn-text">Copy the PWA redirect block from the template's <code>&lt;head&gt;</code> and paste it into your website's main page head too — this sends users to the download-pwa page automatically when they open the installed app for the first time.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
 
 <!-- DO NOT TOUCH -->
 <div id="donot" class="section-wrap">
@@ -1656,7 +1471,7 @@ window.APP_NAME = window.APP_NAME || "Your Brand Name";</pre>
 
   <div class="check-progress">
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <span class="progress-label" id="progress-label">0 / 7</span>
+    <span class="progress-label" id="progress-label">0 / 10</span>
   </div>
 
   <div class="check-grid" id="check-list">
@@ -1687,6 +1502,18 @@ window.APP_NAME = window.APP_NAME || "Your Brand Name";</pre>
         <div class="check-item" onclick="toggleCheck(this)">
       <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <span class="check-label">Tested modal on iOS Safari and Android Chrome</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Created download-pwa page in Manage Page</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Added PWA redirect script to homepage &lt;head&gt;</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Set Android and macOS app download button links</span>
     </div>
   </div>
 
@@ -3006,525 +2833,588 @@ instruction-card { display: block; margin-bottom: 12px; }
 }
 </textarea>
 
-<textarea id="ta-xox-html"  style="display:none">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Push Notifications</title>
+<textarea id="ta-xox-html"  style="display:none">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" /&gt;
+  &lt;title&gt;Push Notifications&lt;/title&gt;
 
-  <script>
+  &lt;script&gt;
     (function () {
       const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
       const isStandalone =
         window.navigator.standalone === true ||
         window.matchMedia("(display-mode: standalone)").matches;
-      if (isIOS && isStandalone) {
+      if (isIOS &amp;&amp; isStandalone) {
         document.documentElement.classList.add("ios-pwa");
       }
     })();
-  </script>
-  <script>
-    /* PWA redirect — copy this block to your main site <head> too */
+  &lt;/script&gt;
+  &lt;script&gt;
+    /* PWA redirect — copy this block to your main site &lt;head&gt; too */
     (function () {
       var isStandalone =
         window.navigator.standalone === true ||
         window.matchMedia("(display-mode: standalone)").matches;
       if (
-        isStandalone &&
-        Notification.permission === "default" &&
+        isStandalone &amp;&amp;
+        Notification.permission === "default" &amp;&amp;
         window.location.pathname.indexOf("download-pwa") === -1
       ) {
         window.location.replace("/download-pwa");
       }
     })();
-  </script>
-  <script>document.documentElement.style.opacity='0'</script>
-</head>
+  &lt;/script&gt;
+  &lt;script&gt;document.documentElement.style.opacity='0'&lt;/script&gt;
+&lt;/head&gt;
 
-<body class="body">
-  <main class="page">
+&lt;body class="body"&gt;
+  &lt;main class="page"&gt;
 
-    <section class="hero-card" aria-labelledby="push-title">
-      <header class="hero-header">
-        <img class="hero-icon" src="https://static.gwvkyk.com/media/91585941412a65826b350.png" alt="Notification bell" />
-        <div>
-          <p class="eyebrow">Don't miss a beat</p>
-          <h1 id="push-title" class="hero-title">Turn on Push Notifications</h1>
-        </div>
-      </header>
-      <div class="benefit-grid" aria-label="Notification benefits">
-        <article class="benefit-card">
-          <img src="https://static.gwvkyk.com/media/89e66244412a68c15e351.png" alt="Promotions" />
-          <h5 class="benefit-title">Exclusive Promos</h5>
-        </article>
-        <article class="benefit-card">
-          <img src="https://static.gwvkyk.com/media/91905d54412a6ed85c000.png" alt="Maintenance alerts" />
-          <h5 class="benefit-title">Maintenance Alerts</h5>
-        </article>
-        <article class="benefit-card">
-          <img src="https://static.gwvkyk.com/media/c7965e64412a655a9441c.png" alt="New brand launches" />
-          <h5 class="benefit-title">NEW Brand Launches</h5>
-        </article>
-      </div>
-    </section>
+    &lt;section class="hero-card" aria-labelledby="push-title"&gt;
+      &lt;header class="hero-header"&gt;
+        &lt;img class="hero-icon" src="https://static.gwvkyk.com/media/91585941412a65826b350.png" alt="Notification bell" /&gt;
+        &lt;div&gt;
+          &lt;p class="eyebrow"&gt;Don't miss a beat&lt;/p&gt;
+          &lt;h1 id="push-title" class="hero-title"&gt;Turn on Push Notifications&lt;/h1&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;div class="benefit-grid" aria-label="Notification benefits"&gt;
+        &lt;article class="benefit-card"&gt;
+          &lt;img src="https://static.gwvkyk.com/media/89e66244412a68c15e351.png" alt="Promotions" /&gt;
+          &lt;h5 class="benefit-title"&gt;Exclusive Promos&lt;/h5&gt;
+        &lt;/article&gt;
+        &lt;article class="benefit-card"&gt;
+          &lt;img src="https://static.gwvkyk.com/media/91905d54412a6ed85c000.png" alt="Maintenance alerts" /&gt;
+          &lt;h5 class="benefit-title"&gt;Maintenance Alerts&lt;/h5&gt;
+        &lt;/article&gt;
+        &lt;article class="benefit-card"&gt;
+          &lt;img src="https://static.gwvkyk.com/media/c7965e64412a655a9441c.png" alt="New brand launches" /&gt;
+          &lt;h5 class="benefit-title"&gt;NEW Brand Launches&lt;/h5&gt;
+        &lt;/article&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
 
-    <section class="notification-card" aria-labelledby="allow-title">
-      <header class="notification-heading">
-        <span class="notification-icon" aria-hidden="true">
-          <img src="https://static.gwvkyk.com/media/294f3a49412a6633a4357.png" alt="" />
-        </span>
-        <h4 id="allow-title" class="notification-title">Allow Push Notification</h4>
-      </header>
-      <ul class="notification-list">
-        <li>
-          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /></span>
+    &lt;section class="notification-card" aria-labelledby="allow-title"&gt;
+      &lt;header class="notification-heading"&gt;
+        &lt;span class="notification-icon" aria-hidden="true"&gt;
+          &lt;img src="https://static.gwvkyk.com/media/294f3a49412a6633a4357.png" alt="" /&gt;
+        &lt;/span&gt;
+        &lt;h4 id="allow-title" class="notification-title"&gt;Allow Push Notification&lt;/h4&gt;
+      &lt;/header&gt;
+      &lt;ul class="notification-list"&gt;
+        &lt;li&gt;
+          &lt;span class="check-badge" aria-hidden="true"&gt;&lt;img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /&gt;&lt;/span&gt;
           Receive Exclusive Invite-Only Promotions
-        </li>
-        <li>
-          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /></span>
-          Get Notified During Maintenance &amp; Domain Changes
-        </li>
-        <li>
-          <span class="check-badge" aria-hidden="true"><img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /></span>
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;span class="check-badge" aria-hidden="true"&gt;&lt;img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /&gt;&lt;/span&gt;
+          Get Notified During Maintenance &amp;amp; Domain Changes
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;span class="check-badge" aria-hidden="true"&gt;&lt;img src="https://static.gwvkyk.com/media/d4f59910512a64598e31c.png" alt="" /&gt;&lt;/span&gt;
           Get Notified For Deposit/Withdrawal Status (Coming Soon)
-        </li>
-      </ul>
-      <aside class="remark-box">
-        <span class="remark-icon" aria-hidden="true"><img src="https://static.gwvkyk.com/media/895614f2512a670607c76.png" alt="" /></span>
-        <span><strong class="remark-label">REMARK:</strong> We will never spam you.</span>
-      </aside>
-      <a id="push-notification-btn" class="button w-button">
-        <span class="button-icon"></span>
+        &lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;aside class="remark-box"&gt;
+        &lt;span class="remark-icon" aria-hidden="true"&gt;&lt;img src="https://static.gwvkyk.com/media/895614f2512a670607c76.png" alt="" /&gt;&lt;/span&gt;
+        &lt;span&gt;&lt;strong class="remark-label"&gt;REMARK:&lt;/strong&gt; We will never spam you.&lt;/span&gt;
+      &lt;/aside&gt;
+      &lt;a id="push-notification-btn" class="button w-button"&gt;
+        &lt;span class="button-icon"&gt;&lt;/span&gt;
         Enable Notifications
-      </a>
-      <div id="notification-enabled-btn" aria-label="Notifications - Enabled" class="enabled-hide">
-        <div class="enabled-container">
-          <div class="enabled-icon"></div>
-          <h4 class="enabled-text">Notifications - Enabled</h4>
-        </div>
-      </div>
-    </section>
+      &lt;/a&gt;
+      &lt;div id="notification-enabled-btn" aria-label="Notifications - Enabled" class="enabled-hide"&gt;
+        &lt;div class="enabled-container"&gt;
+          &lt;div class="enabled-icon"&gt;&lt;/div&gt;
+          &lt;h4 class="enabled-text"&gt;Notifications - Enabled&lt;/h4&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
 
-    <section class="apps-section" aria-labelledby="apps-title" id="get-the-app">
-      <h2 id="apps-title" class="section-title">Get the App</h2>
-      <a class="app-card app-card--pwa" aria-label="Install PWA App" id="install-pwa-btn">
-        <span class="app-icon-wrap app-icon-wrap--pwa" aria-hidden="true"><img src="https://static.gwvkyk.com/media/1b1ac544422a603234873.png" alt="" /></span>
-        <span class="app-copy">
-          <span class="app-title-row"><strong class="app-title">Install PWA App</strong><span class="tag">No Download</span></span>
-          <span class="app-description">Launch from your Home Screen</span>
-        </span>
-        <img class="app-action-icon" src="https://static.gwvkyk.com/media/f4791965422a6d8c19042.png" alt="" aria-hidden="true" />
-      </a>
-      <a class="app-card" aria-label="Download for macOS" id="download-macos-btn">
-        <span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"><img src="https://static.gwvkyk.com/media/5e963f2c422a646dc198d.png" alt="" /></span>
-        <span class="app-copy">
-          <span class="app-title-row"><strong class="app-title">Download for macOS</strong><span class="tag tag--native">Native</span></span>
-          <span class="app-description">Apple Silicon • 92 MB</span>
-        </span>
-        <img class="app-action-icon" src="https://static.gwvkyk.com/media/06dbb94c422a62ed60e07.png" alt="" aria-hidden="true" />
-      </a>
-      <a class="app-card" aria-label="Download for Android" id="download-android-btn">
-        <span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"><img src="https://static.gwvkyk.com/media/785f54ac422a6b0ff67d8.png" alt="" /></span>
-        <span class="app-copy">
-          <span class="app-title-row"><strong class="app-title">Download for Android</strong><span class="tag tag--native">Native</span></span>
-          <span class="app-description">APK • 92 MB</span>
-        </span>
-        <img class="app-action-icon" src="https://static.gwvkyk.com/media/06dbb94c422a62ed60e07.png" alt="" aria-hidden="true" />
-      </a>
-    </section>
+    &lt;section class="apps-section" aria-labelledby="apps-title" id="get-the-app"&gt;
+      &lt;h2 id="apps-title" class="section-title"&gt;Get the App&lt;/h2&gt;
+      &lt;a class="app-card app-card--pwa" aria-label="Install PWA App" id="install-pwa-btn"&gt;
+        &lt;span class="app-icon-wrap app-icon-wrap--pwa" aria-hidden="true"&gt;&lt;img src="https://static.gwvkyk.com/media/1b1ac544422a603234873.png" alt="" /&gt;&lt;/span&gt;
+        &lt;span class="app-copy"&gt;
+          &lt;span class="app-title-row"&gt;&lt;strong class="app-title"&gt;Install PWA App&lt;/strong&gt;&lt;span class="tag"&gt;No Download&lt;/span&gt;&lt;/span&gt;
+          &lt;span class="app-description"&gt;Launch from your Home Screen&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;img class="app-action-icon" src="https://static.gwvkyk.com/media/f4791965422a6d8c19042.png" alt="" aria-hidden="true" /&gt;
+      &lt;/a&gt;
+      &lt;a class="app-card" aria-label="Download for macOS" id="download-macos-btn"&gt;
+        &lt;span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"&gt;&lt;img src="https://static.gwvkyk.com/media/5e963f2c422a646dc198d.png" alt="" /&gt;&lt;/span&gt;
+        &lt;span class="app-copy"&gt;
+          &lt;span class="app-title-row"&gt;&lt;strong class="app-title"&gt;Download for macOS&lt;/strong&gt;&lt;span class="tag tag--native"&gt;Native&lt;/span&gt;&lt;/span&gt;
+          &lt;span class="app-description"&gt;Apple Silicon • 92 MB&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;img class="app-action-icon" src="https://static.gwvkyk.com/media/06dbb94c422a62ed60e07.png" alt="" aria-hidden="true" /&gt;
+      &lt;/a&gt;
+      &lt;a class="app-card" aria-label="Download for Android" id="download-android-btn"&gt;
+        &lt;span class="app-icon-wrap app-icon-wrap--mac" aria-hidden="true"&gt;&lt;img src="https://static.gwvkyk.com/media/785f54ac422a6b0ff67d8.png" alt="" /&gt;&lt;/span&gt;
+        &lt;span class="app-copy"&gt;
+          &lt;span class="app-title-row"&gt;&lt;strong class="app-title"&gt;Download for Android&lt;/strong&gt;&lt;span class="tag tag--native"&gt;Native&lt;/span&gt;&lt;/span&gt;
+          &lt;span class="app-description"&gt;APK • 92 MB&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;img class="app-action-icon" src="https://static.gwvkyk.com/media/06dbb94c422a62ed60e07.png" alt="" aria-hidden="true" /&gt;
+      &lt;/a&gt;
+    &lt;/section&gt;
 
-    <div id="modal" class="modal-overlay">
-      <div class="modal-box">
-        <div class="modal-inner">
-          <div class="modal-container">
-            <div class="modal-top">
-              <div class="modal-top-left">
-                <div class="modal-app-icon"><div class="modal-app-icon-img"></div></div>
-                <div class="modal-heading">
-                  <p class="modal-platform-label">IOS SAFARI</p>
-                  <h2 class="modal-title">Add <span class="app-name"></span> to Home Screen</h2>
-                </div>
-              </div>
-              <a id="close-modal-btn1">
-                <img src="https://static.gwvkyk.com/media/fa4555f3822a635007148.png" loading="lazy" width="25" height="25" alt="Close" class="close-button" />
-              </a>
-            </div>
-            <div class="modal-warning">
-              <div class="modal-warning-icon-wrap">
-                <img src="https://static.gwvkyk.com/media/bb93b616822a63f4833ed.png" loading="lazy" width="18" height="18" alt="" class="warning-icon" />
-              </div>
-              <p class="warning-info">
+    &lt;div id="modal" class="modal-overlay"&gt;
+      &lt;div class="modal-box"&gt;
+        &lt;div class="modal-inner"&gt;
+          &lt;div class="modal-container"&gt;
+            &lt;div class="modal-top"&gt;
+              &lt;div class="modal-top-left"&gt;
+                &lt;div class="modal-app-icon"&gt;&lt;div class="modal-app-icon-img"&gt;&lt;/div&gt;&lt;/div&gt;
+                &lt;div class="modal-heading"&gt;
+                  &lt;p class="modal-platform-label"&gt;IOS SAFARI&lt;/p&gt;
+                  &lt;h2 class="modal-title"&gt;Add &lt;span class="app-name"&gt;&lt;/span&gt; to Home Screen&lt;/h2&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;a id="close-modal-btn1"&gt;
+                &lt;img src="https://static.gwvkyk.com/media/fa4555f3822a635007148.png" loading="lazy" width="25" height="25" alt="Close" class="close-button" /&gt;
+              &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;div class="modal-warning"&gt;
+              &lt;div class="modal-warning-icon-wrap"&gt;
+                &lt;img src="https://static.gwvkyk.com/media/bb93b616822a63f4833ed.png" loading="lazy" width="18" height="18" alt="" class="warning-icon" /&gt;
+              &lt;/div&gt;
+              &lt;p class="warning-info"&gt;
                 On iPhone, push notifications only work from the installed app.
-                Add <span class="app-name"></span> to your home screen first,
+                Add &lt;span class="app-name"&gt;&lt;/span&gt; to your home screen first,
                 then open it from there to enable push.
-              </p>
-            </div>
-            <div class="modal-tabs w-tabs">
-              <div class="modal-tabs-menu w-tab-menu" id="modal-tab-menus">
-                <a data-w-tab="Tab 1" class="modal-tab-link w-tab-link w--current">
-                  <div class="tab-label">IOS 16 &amp; newer</div>
-                  <div class="tab-sublabel tab-sublabel--small">2022+</div>
-                </a>
-                <a data-w-tab="Tab 2" class="modal-tab-link w-tab-link">
-                  <div class="tab-label">IOS 15 &amp; older</div>
-                  <div class="tab-sublabel tab-sublabel--small">2021 &amp; earlier</div>
-                </a>
-              </div>
-              <div class="w-tab-content">
-                <div data-w-tab="Tab 1" class="w-tab-pane w--tab-active"><div id="tab1-content"></div></div>
-                <div data-w-tab="Tab 2" class="w-tab-pane"><div id="tab2-content"></div></div>
-              </div>
-            </div>
-            <a class="button w-button" id="close-modal-btn2">GOT IT</a>
-          </div>
-        </div>
-        <div style="height: 100px; width: 100%"></div>
-      </div>
-    </div>
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="modal-tabs w-tabs"&gt;
+              &lt;div class="modal-tabs-menu w-tab-menu" id="modal-tab-menus"&gt;
+                &lt;a data-w-tab="Tab 1" class="modal-tab-link w-tab-link w--current"&gt;
+                  &lt;div class="tab-label"&gt;IOS 16 &amp;amp; newer&lt;/div&gt;
+                  &lt;div class="tab-sublabel tab-sublabel--small"&gt;2022+&lt;/div&gt;
+                &lt;/a&gt;
+                &lt;a data-w-tab="Tab 2" class="modal-tab-link w-tab-link"&gt;
+                  &lt;div class="tab-label"&gt;IOS 15 &amp;amp; older&lt;/div&gt;
+                  &lt;div class="tab-sublabel tab-sublabel--small"&gt;2021 &amp;amp; earlier&lt;/div&gt;
+                &lt;/a&gt;
+              &lt;/div&gt;
+              &lt;div class="w-tab-content"&gt;
+                &lt;div data-w-tab="Tab 1" class="w-tab-pane w--tab-active"&gt;&lt;div id="tab1-content"&gt;&lt;/div&gt;&lt;/div&gt;
+                &lt;div data-w-tab="Tab 2" class="w-tab-pane"&gt;&lt;div id="tab2-content"&gt;&lt;/div&gt;&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;a class="button w-button" id="close-modal-btn2"&gt;GOT IT&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div style="height: 100px; width: 100%"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
 
-  </main>
+    &lt;!-- Alert modal: shown when push notifications are blocked --&gt;
+    &lt;div id="alert-modal" class="modal-overlay"&gt;
+      &lt;div class="modal-box" style="max-height: fit-content; margin: auto;"&gt;
+        &lt;div class="modal-inner"&gt;
+          &lt;div class="modal-container"&gt;
+            &lt;div class="modal-top"&gt;
+              &lt;div class="modal-heading"&gt;
+                &lt;p class="modal-platform-label"&gt;Warning&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;a id="close-modal-btn3"&gt;
+                &lt;img src="https://static.gwvkyk.com/media/fa4555f3822a635007148.png" loading="lazy" width="25" height="25" alt="Close" class="close-button" /&gt;
+              &lt;/a&gt;
+            &lt;/div&gt;
+            &lt;p id="error-message" class="error-message"&gt;Push notifications are blocked. Please enable them in your browser or device settings.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
 
-  <script>
+  &lt;/main&gt;
 
-    window.APP_NAME = window.APP_NAME || "XOX96";
+&lt;script&gt;
 
-    if (!window._pwaPageInit) {
-      window._pwaPageInit = true;
-      (() => {
+window.APP_NAME = window.APP_NAME || "XOX96";
 
-        const $id  = id       => document.getElementById(id);
-        const $all = selector => document.querySelectorAll(selector);
-        function show(el, display = "block") { if (el) el.style.display = display; }
-        function hide(el)                    { if (el) el.style.display = "none";  }
+if (!window._pwaPageInit) {
+  window._pwaPageInit = true;
+  (() =&gt; {
 
-        /* ─── Tabs ─────────────────────────────────────────────── */
-        function initTabs() {
-          const links = $all(".w-tab-link");
-          const panes = $all(".w-tab-pane");
-          if (!links.length || !panes.length) return;
-          links.forEach((link, i) => {
-            link.addEventListener("click", () => {
-              links.forEach(el   => el.classList.remove("w--current"));
-              panes.forEach(pane => pane.classList.remove("w--tab-active"));
-              link.classList.add("w--current");
-              if (panes[i]) panes[i].classList.add("w--tab-active");
-            });
-          });
-        }
+    const $id  = id       =&gt; document.getElementById(id);
+    const $all = selector =&gt; document.querySelectorAll(selector);
+    function show(el, display = "block") { if (el) el.style.display = display; }
+    function hide(el)                    { if (el) el.style.display = "none";  }
 
-        /* ─── Modal data ────────────────────────────────────────── */
-        const MODAL_DATA = {
-          safari: {
-            title: "IOS SAFARI",
-            tabs: {
-              tab1: [
-                { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "On iOS 16 and newer, the share icon sits in the bottom toolbar of Safari." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
-              ],
-              tab2: [
-                { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "On iOS 15 and earlier, the share icon sits in the bottom toolbar of Safari." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
-              ],
-            },
-          },
-          chrome: {
-            title: "IOS CHROME",
-            tabs: {
-              tab1: [
-                { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Chrome",           description: "Push notifications require Chrome on iPhone — not Safari or an in-app browser." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "The share icon sits in the top right toolbar of Chrome." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
-                { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
-              ],
-              tab2: [],
-            },
-          },
-        };
-
-        /* ─── Measure top (below all fixed headers) ─────────────── */
-        function measureTopOffset() {
-          const modal = $id("modal");
-          let top = 0;
-          ["smart-banner", "header", "marquee"].forEach(id => {
-            const el = document.getElementById(id);
-            if (!el || getComputedStyle(el).display === "none") return;
-            const r = el.getBoundingClientRect();
-            if (r.height > 0) top = Math.max(top, Math.round(r.bottom));
-          });
-          if (top === 0) {
-            document.querySelectorAll("*").forEach(el => {
-              if (el === modal || (modal && modal.contains(el))) return;
-              const cs = getComputedStyle(el);
-              if (cs.position !== "fixed" && cs.position !== "sticky") return;
-              if (cs.display === "none" || cs.visibility === "hidden") return;
-              const r = el.getBoundingClientRect();
-              if (r.width === 0 || r.height === 0) return;
-              if (r.top <= 2 && r.bottom > 0 && r.bottom < window.innerHeight * 0.5) {
-                top = Math.max(top, Math.round(r.bottom));
-              }
-            });
-          }
-          return top;
-        }
-
-        /* ─── Measure bottom nav height ─────────────────────────── */
-        function measureBottomOffset() {
-          const el =
-            document.querySelector(".bottom-nav") ||
-            $id("floatcontainer") ||
-            $id("footer");
-          return el ? el.offsetHeight : 0;
-        }
-
-        /* ─── Live-sync top while modal is open ─────────────────── */
-        let _syncInterval = null;
-
-        function startModalSync(modal) {
-          stopModalSync();
-          _syncInterval = setInterval(() => {
-            if (!modal || !modal.classList.contains("active")) { stopModalSync(); return; }
-            const newTop = measureTopOffset();
-            const cur    = parseInt(modal.style.getPropertyValue("top")) || 0;
-            if (Math.abs(newTop - cur) > 1) {
-              modal.style.setProperty("top", newTop + "px", "important");
-            }
-          }, 100);
-        }
-
-        function stopModalSync() {
-          if (_syncInterval) { clearInterval(_syncInterval); _syncInterval = null; }
-        }
-
-        /* ─── Modal open ────────────────────────────────────────── */
-        function showModal({ type = "safari" } = {}) {
-          const modal    = $id("modal");
-          const modalBox = document.querySelector(".modal-box");
-          if (!modal) return;
-
-          if (modal.parentElement !== document.body) {
-            document.body.appendChild(modal);
-          }
-
-          const topOffset    = measureTopOffset();
-          const bottomOffset = measureBottomOffset();
-
-          /* Overlay — override ALL flex/padding properties */
-          modal.style.removeProperty("inset");
-          modal.style.setProperty("position",        "fixed",       "important");
-          modal.style.setProperty("top",             topOffset    + "px", "important");
-          modal.style.setProperty("left",            "0",           "important");
-          modal.style.setProperty("right",           "0",           "important");
-          modal.style.setProperty("bottom",          bottomOffset + "px", "important");
-          modal.style.setProperty("display",         "flex",        "important");
-          modal.style.setProperty("flex-direction",  "column",      "important");
-          modal.style.setProperty("align-items",     "stretch",     "important");
-          modal.style.setProperty("justify-content", "flex-start",  "important");
-          modal.style.setProperty("padding",         "0",           "important");
-          modal.style.setProperty("padding-left",    "1rem",        "important");
-          modal.style.setProperty("padding-right",   "1rem",        "important");
-          modal.style.setProperty("z-index",         "99999999",    "important");
-
-          /* Modal-box — fill the full overlay height */
-          if (modalBox) {
-            modalBox.style.setProperty("flex",       "1 1 auto",    "important");
-            modalBox.style.setProperty("height",     "100%",        "important");
-            modalBox.style.setProperty("max-height", "100%",        "important");
-            modalBox.style.setProperty("min-height", "0",           "important");
-            modalBox.style.setProperty("margin",     "0",           "important");
-            modalBox.style.setProperty("overflow-y", "auto",        "important");
-          }
-
-          const data = MODAL_DATA[type];
-          document.querySelector(".modal-platform-label").textContent = data.title;
-          renderInstructionCards(data.tabs.tab1, "tab1-content");
-          renderInstructionCards(data.tabs.tab2, "tab2-content");
-          modal.classList.add("active");
-          startModalSync(modal);
-          setTimeout(() => { if (modalBox) modalBox.scrollTop = 0; }, 50);
-        }
-
-        /* ─── Modal close ───────────────────────────────────────── */
-        function hideModal() {
-          stopModalSync();
-          const modal    = $id("modal");
-          const modalBox = document.querySelector(".modal-box");
-          if (modal) {
-            modal.classList.remove("active");
-            ["position","inset","top","left","right","bottom",
-             "display","flex-direction","align-items","justify-content",
-             "padding","padding-top","padding-bottom","padding-left","padding-right",
-             "z-index"]
-              .forEach(p => modal.style.removeProperty(p));
-          }
-          if (modalBox) {
-            ["flex","height","max-height","min-height","margin","overflow-y"]
-              .forEach(p => modalBox.style.removeProperty(p));
-          }
-        }
-
-        /* ─── Render steps ──────────────────────────────────────── */
-        function renderInstructionCards(items, containerId) {
-          const container = $id(containerId);
-          if (!container) return;
-          container.innerHTML = items.map(item => `
-            <instruction-card
-              image="${item.image}"
-              title="${item.title}"
-              description="${item.description}"
-              stepNumberImage="${item.stepNumberImage}"
-            ></instruction-card>`).join("");
-        }
-
-        /* ─── Notification ──────────────────────────────────────── */
-        function updateNotificationUI() {
-          hide($id("push-notification-btn"));
-          show($id("notification-enabled-btn"), "flex");
-        }
-        function pushNotification() {
-          window.pwaApp?.handlePushNotification((result, error) => {
-            if (error) { console.error("Push notification error:", error); return; }
-            if (result?.permission === "granted") updateNotificationUI();
-          });
-        }
-        function checkNotificationPermission() {
-          window.pwaApp?.handleGetNotificationPermission((result, error) => {
-            if (error) { console.error("Permission check error:", error); return; }
-            if (result?.permission === "granted") updateNotificationUI();
-          });
-        }
-
-        /* ─── PWA install ───────────────────────────────────────── */
-        function handleInstallPWA() {
-          handleAppBrowserRedirect();
-          const platform = window.pwaApp?.getOperatingSystem();
-          if (platform === "iosChrome") { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
-          if (platform === "iosSafari" || platform === "macOSSafari" || platform === "ios") { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
-          window.pwaApp?.handleInstallPWA((result, error) => { if (error) console.error("PWA install error:", error); });
-        }
-
-        function handlePushButtonClick(e) {
-          e.preventDefault();
-          handleAppBrowserRedirect();
-          const platform = window.pwaApp?.getOperatingSystem();
-          window.pwaApp?.handleGetPWAStatus((result, error) => {
-            if (error || !result) return;
-            if (platform === "iosChrome" && !result.status) { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
-            if ((platform === "iosSafari" || platform === "ios") && !result.status) { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
-            pushNotification();
-          });
-        }
-
-        function checkPWAStatus() {
-          window.pwaApp?.handleGetPWAStatus((result, error) => {
-            if (result?.status) hide($id("get-the-app"));
-          });
-        }
-
-        /* ─── Utilities ─────────────────────────────────────────── */
-        function renderAppName() {
-          $all(".app-name").forEach(el => { el.textContent = window.APP_NAME; });
-        }
-        function isInAppBrowser() {
-          const ua = navigator.userAgent.toLowerCase();
-          const isAnd = /android/.test(ua);
-          return /fban|fbav|fb_iab|instagram|line/.test(ua) ||
-            (typeof window.TelegramWebviewProxy !== "undefined" && typeof window.TelegramWebviewProxyProto !== "undefined") ||
-            (isAnd && typeof window.TelegramWebviewProxy !== "undefined");
-        }
-        function isIOS()     { return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()); }
-        function isAndroid() { return /android/.test(navigator.userAgent.toLowerCase()); }
-        function handleAppBrowserRedirect() {
-          if (!isInAppBrowser()) return;
-          const url = window.location.href;
-          if (isIOS()) { window.open("x-safari-" + url, "_blank"); }
-          else if (isAndroid()) { window.open("intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(url) + ";end", "_blank"); }
-        }
-
-        /* ─── Platform UI ───────────────────────────────────────── */
-        function checkIOSNativeApp() {
-          const platform = window.pwaApp?.getOperatingSystem();
-          if (platform === "android") hide($id("download-macos-btn"));
-          else hide($id("download-android-btn"));
-        }
-
-        /* ─── Events ────────────────────────────────────────────── */
-        function bindEvents() {
-          const pushBtn    = $id("push-notification-btn");
-          const installBtn = $id("install-pwa-btn");
-          const modal      = $id("modal");
-          const closeBtn1  = $id("close-modal-btn1");
-          const closeBtn2  = $id("close-modal-btn2");
-          if (pushBtn)    pushBtn.addEventListener("click", handlePushButtonClick);
-          if (installBtn) installBtn.addEventListener("click", handleInstallPWA);
-          if (modal)      modal.addEventListener("click", e => { if (e.target === modal) hideModal(); });
-          if (closeBtn1)  closeBtn1.addEventListener("click", hideModal);
-          if (closeBtn2)  closeBtn2.addEventListener("click", hideModal);
-        }
-
-        /* ─── SPA hooks ─────────────────────────────────────────── */
-        window._pwaRunChecks = () => { checkNotificationPermission(); checkPWAStatus(); checkIOSNativeApp(); };
-        window._pwaReInit    = () => { initTabs(); bindEvents(); };
-
-        /* ─── Boot ──────────────────────────────────────────────── */
-        function init() {
-          initTabs();
-          renderAppName();
-          bindEvents();
-          document.documentElement.style.transition = "opacity 0.25s ease";
-          document.documentElement.style.opacity    = "1";
-          setTimeout(window._pwaRunChecks, 300);
-        }
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", init);
-        } else {
-          init();
-        }
-
-      })();
-    } else {
-      document.documentElement.style.transition = "opacity 0.25s ease";
-      document.documentElement.style.opacity    = "1";
-      window._pwaReInit?.();
-      setTimeout(() => window._pwaRunChecks?.(), 300);
+    /* ─── Tabs ─────────────────────────────────────────────── */
+    function initTabs() {
+      const links = $all(".w-tab-link");
+      const panes = $all(".w-tab-pane");
+      if (!links.length || !panes.length) return;
+      links.forEach((link, i) =&gt; {
+        link.addEventListener("click", () =&gt; {
+          links.forEach(el   =&gt; el.classList.remove("w--current"));
+          panes.forEach(pane =&gt; pane.classList.remove("w--tab-active"));
+          link.classList.add("w--current");
+          if (panes[i]) panes[i].classList.add("w--tab-active");
+        });
+      });
     }
 
-    /* ─── <instruction-card> ────────────────────────────────────── */
-    class InstructionCard extends HTMLElement {
-      connectedCallback() {
-        const image           = this.getAttribute("image") || "";
-        const stepNumberImage = this.getAttribute("stepNumberImage") || "";
-        const title           = (this.getAttribute("title")       || "").replace(/{{appName}}/g, window.APP_NAME);
-        const description     = (this.getAttribute("description") || "").replace(/{{appName}}/g, window.APP_NAME);
-        this.innerHTML = `
-          <div class="instruction-card">
-            <div class="instruction-card-image">
-              <div class="instruction-card-img" style="background-image:url('${image}')"></div>
-            </div>
-            <div class="card-containers">
-              <div class="card-heading">
-                <div class="step-number"><img src="${stepNumberImage}" width="18" height="18" alt="" /></div>
-                <div class="card-title">${title}</div>
-              </div>
-              <div class="card-excerpt">${description}</div>
-            </div>
-          </div>`;
+    /* ─── Modal data ────────────────────────────────────────── */
+    const MODAL_DATA = {
+      safari: {
+        title: "IOS SAFARI",
+        tabs: {
+          tab1: [
+            { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "On iOS 16 and newer, the share icon sits in the bottom toolbar of Safari." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+          ],
+          tab2: [
+            { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Safari",           description: "Push notifications require Safari on iPhone — not Chrome or an in-app browser." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "On iOS 15 and earlier, the share icon sits in the bottom toolbar of Safari." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+          ],
+        },
+      },
+      chrome: {
+        title: "IOS CHROME",
+        tabs: {
+          tab1: [
+            { stepNumberImage: "https://static.gwvkyk.com/media/1a82c552a62a68ac1b518.png", image: "https://static.gwvkyk.com/media/cb3d4ba2a62a65c246f74.png", title: "Open {{appName}} in Chrome",           description: "Push notifications require Chrome on iPhone — not Safari or an in-app browser." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/8df22762a62a60e40e100.png", image: "https://static.gwvkyk.com/media/064db0c2a62a651ea5772.png", title: "Tap the Share button",                  description: "The share icon sits in the top right toolbar of Chrome." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/308f7772a62a6a7c65bb2.png", image: "https://static.gwvkyk.com/media/9b0cc1bea62a6d99e75c1.png", title: "Find “Add to Home Screen”",   description: "Scroll through the action row — the grey square with a plus sign." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/6109ab82a62a69a4e0bab.png", image: "https://static.gwvkyk.com/media/b760c0e2a62a6b805c125.png", title: "Tap “Add” to confirm",        description: "Give it a name and tap Add. {{appName}} now lives on your home screen." },
+            { stepNumberImage: "https://static.gwvkyk.com/media/09fe5b92a62a631b6c248.png", image: "https://static.gwvkyk.com/media/da07bee2a62a66bd4b179.png", title: "Open {{appName}} from the home screen", description: "Launch the new {{appName}} icon. Once it opens, return here and enable push notifications." },
+          ],
+          tab2: [],
+        },
+      },
+    };
+
+    /* ─── Measure top (below all fixed headers) ─────────────── */
+    function measureTopOffset() {
+      const modal = $id("modal");
+      let top = 0;
+      ["header", "marquee"].forEach(id =&gt; {
+        const el = document.getElementById(id);
+        if (!el || getComputedStyle(el).display === "none") return;
+        const r = el.getBoundingClientRect();
+        if (r.height &gt; 0) top = Math.max(top, Math.round(r.bottom));
+      });
+      if (top === 0) {
+        document.querySelectorAll("*").forEach(el =&gt; {
+          if (el === modal || (modal &amp;&amp; modal.contains(el))) return;
+          const cs = getComputedStyle(el);
+          if (cs.position !== "fixed" &amp;&amp; cs.position !== "sticky") return;
+          if (cs.display === "none" || cs.visibility === "hidden") return;
+          const r = el.getBoundingClientRect();
+          if (r.width === 0 || r.height === 0) return;
+          if (r.top &lt;= 2 &amp;&amp; r.bottom &gt; 0 &amp;&amp; r.bottom &lt; window.innerHeight * 0.5) {
+            top = Math.max(top, Math.round(r.bottom));
+          }
+        });
+      }
+      return top;
+    }
+
+    /* ─── Measure bottom nav height ─────────────────────────── */
+    function measureBottomOffset() {
+      const el =
+        document.querySelector(".bottom-nav") ||
+        $id("floatcontainer") ||
+        $id("footer");
+      return el ? el.offsetHeight : 0;
+    }
+
+    /* ─── Safe-area fix for fixed content wrapper around .page ── */
+    function fixContentWrapperSafeArea() {
+      document.body.style.removeProperty("padding-top");
+      document.getElementById("page")?.style.removeProperty("padding-top");
+      document.querySelector(".page")?.style.removeProperty("padding-top");
+
+      const page = document.querySelector(".page");
+      if (!page) return;
+      const wrapper = page.parentElement;
+      if (!wrapper) return;
+
+      const cs = getComputedStyle(wrapper);
+      if (cs.position !== "fixed" &amp;&amp; cs.position !== "sticky") return;
+
+      if (!wrapper.dataset.baseTop) {
+        wrapper.dataset.baseTop = String(parseFloat(cs.top) || 0);
+      }
+      const base = wrapper.dataset.baseTop;
+      wrapper.style.setProperty("top", `calc(${base}px + env(safe-area-inset-top, 0px))`, "important");
+    }
+
+    window.addEventListener("resize", fixContentWrapperSafeArea);
+    window.addEventListener("orientationchange", () =&gt; setTimeout(fixContentWrapperSafeArea, 150));
+
+    /* ─── Live-sync top while modal is open ─────────────────── */
+    let _syncInterval = null;
+    function startModalSync(modal) {
+      stopModalSync();
+      _syncInterval = setInterval(() =&gt; {
+        if (!modal || !modal.classList.contains("active")) { stopModalSync(); return; }
+        const newTop = measureTopOffset();
+        const cur    = parseInt(modal.style.getPropertyValue("top")) || 0;
+        if (Math.abs(newTop - cur) &gt; 1) {
+          modal.style.setProperty("top", newTop + "px", "important");
+        }
+      }, 100);
+    }
+    function stopModalSync() {
+      if (_syncInterval) { clearInterval(_syncInterval); _syncInterval = null; }
+    }
+
+    /* ─── Modal open ────────────────────────────────────────── */
+    function showModal({ type = "safari" } = {}) {
+      const modal    = $id("modal");
+      const modalBox = document.querySelector("#modal .modal-box");
+      if (!modal) return;
+
+      if (modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+      }
+
+      const topOffset    = measureTopOffset();
+      const bottomOffset = measureBottomOffset();
+
+      modal.style.removeProperty("inset");
+      modal.style.setProperty("position",        "fixed",            "important");
+      modal.style.setProperty("top",             topOffset    + "px","important");
+      modal.style.setProperty("left",            "0",                "important");
+      modal.style.setProperty("right",           "0",                "important");
+      modal.style.setProperty("bottom",          bottomOffset + "px","important");
+      modal.style.setProperty("display",         "flex",             "important");
+      modal.style.setProperty("flex-direction",  "column",           "important");
+      modal.style.setProperty("align-items",     "stretch",          "important");
+      modal.style.setProperty("justify-content", "flex-start",       "important");
+      modal.style.setProperty("padding",         "0",                "important");
+      modal.style.setProperty("padding-left",    "1rem",             "important");
+      modal.style.setProperty("padding-right",   "1rem",             "important");
+      modal.style.setProperty("z-index",         "99999999",         "important");
+
+      if (modalBox) {
+        modalBox.style.setProperty("flex",       "1 1 auto", "important");
+        modalBox.style.setProperty("height",     "100%",     "important");
+        modalBox.style.setProperty("max-height", "100%",     "important");
+        modalBox.style.setProperty("min-height", "0",        "important");
+        modalBox.style.setProperty("margin",     "0",        "important");
+        modalBox.style.setProperty("overflow-y", "auto",     "important");
+      }
+
+      const data = MODAL_DATA[type];
+      document.querySelector(".modal-platform-label").textContent = data.title;
+      renderInstructionCards(data.tabs.tab1, "tab1-content");
+      renderInstructionCards(data.tabs.tab2, "tab2-content");
+      modal.classList.add("active");
+      startModalSync(modal);
+      setTimeout(() =&gt; { if (modalBox) modalBox.scrollTop = 0; }, 50);
+    }
+
+    /* ─── Modal close ───────────────────────────────────────── */
+    function hideModal() {
+      stopModalSync();
+      const modal    = $id("modal");
+      const modalBox = document.querySelector("#modal .modal-box");
+      if (modal) {
+        modal.classList.remove("active");
+        ["position","inset","top","left","right","bottom",
+         "display","flex-direction","align-items","justify-content",
+         "padding","padding-top","padding-bottom","padding-left","padding-right",
+         "z-index"]
+          .forEach(p =&gt; modal.style.removeProperty(p));
+      }
+      if (modalBox) {
+        ["flex","height","max-height","min-height","margin","overflow-y"]
+          .forEach(p =&gt; modalBox.style.removeProperty(p));
       }
     }
-    if (!customElements.get("instruction-card")) {
-      customElements.define("instruction-card", InstructionCard);
+
+    /* ─── Alert modal ───────────────────────────────────────── */
+    function showAlert() {
+      const alertModal = $id("alert-modal");
+      if (!alertModal) return;
+      alertModal.classList.add("active");
     }
-  </script>
-</body>
-</html>
+    function hideAlert() {
+      const alertModal = $id("alert-modal");
+      if (!alertModal) return;
+      alertModal.classList.remove("active");
+    }
+
+    /* ─── Render steps ──────────────────────────────────────── */
+    function renderInstructionCards(items, containerId) {
+      const container = $id(containerId);
+      if (!container) return;
+      container.innerHTML = items.map(item =&gt; `
+        &lt;instruction-card
+          image="${item.image}"
+          title="${item.title}"
+          description="${item.description}"
+          stepNumberImage="${item.stepNumberImage}"
+        &gt;&lt;/instruction-card&gt;`).join("");
+    }
+
+    /* ─── Notification ──────────────────────────────────────── */
+    function updateNotificationUI() {
+      hide($id("push-notification-btn"));
+      show($id("notification-enabled-btn"), "flex");
+    }
+    function pushNotification() {
+      window.pwaApp?.handlePushNotification((result, error) =&gt; {
+        if (error === "Push notification permission denied.") {
+          const errorMsg = $id("error-message");
+          if (errorMsg) errorMsg.textContent = "Push notifications are blocked. Please enable them manually in your browser or device settings to continue receiving updates.";
+          showAlert();
+          return;
+        }
+        if (error) { console.error("Push notification error:", error); return; }
+        if (result?.permission === "granted") updateNotificationUI();
+      });
+    }
+    function checkNotificationPermission() {
+      window.pwaApp?.handleGetNotificationPermission((result, error) =&gt; {
+        if (error) { console.error("Permission check error:", error); return; }
+        if (result?.permission === "granted") updateNotificationUI();
+      });
+    }
+
+    /* ─── PWA install ───────────────────────────────────────── */
+    function handleInstallPWA() {
+      handleAppBrowserRedirect();
+      const platform = window.pwaApp?.getOperatingSystem();
+      if (platform === "iosChrome") { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
+      if (platform === "iosSafari" || platform === "macOSSafari" || platform === "ios") { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
+      window.pwaApp?.handleInstallPWA((result, error) =&gt; { if (error) console.error("PWA install error:", error); });
+    }
+
+    function handlePushButtonClick(e) {
+      e.preventDefault();
+      handleAppBrowserRedirect();
+      const platform = window.pwaApp?.getOperatingSystem();
+      window.pwaApp?.handleGetPWAStatus((result, error) =&gt; {
+        if (error || !result) return;
+        if (platform === "iosChrome" &amp;&amp; !result.status) { hide($id("modal-tab-menus")); showModal({ type: "chrome" }); return; }
+        if ((platform === "iosSafari" || platform === "ios") &amp;&amp; !result.status) { show($id("modal-tab-menus"), "flex"); showModal({ type: "safari" }); return; }
+        pushNotification();
+      });
+    }
+
+    function checkPWAStatus() {
+      window.pwaApp?.handleGetPWAStatus((result, error) =&gt; {
+        if (result?.status) hide($id("get-the-app"));
+      });
+    }
+
+    /* ─── Utilities ─────────────────────────────────────────── */
+    function renderAppName() {
+      $all(".app-name").forEach(el =&gt; { el.textContent = window.APP_NAME; });
+    }
+    function isInAppBrowser() {
+      const ua = navigator.userAgent.toLowerCase();
+      const isAnd = /android/.test(ua);
+      return /fban|fbav|fb_iab|instagram|line/.test(ua) ||
+        (typeof window.TelegramWebviewProxy !== "undefined" &amp;&amp; typeof window.TelegramWebviewProxyProto !== "undefined") ||
+        (isAnd &amp;&amp; typeof window.TelegramWebviewProxy !== "undefined");
+    }
+    function isIOS()     { return /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()); }
+    function isAndroid() { return /android/.test(navigator.userAgent.toLowerCase()); }
+    function handleAppBrowserRedirect() {
+      if (!isInAppBrowser()) return;
+      const url = window.location.href;
+      if (isIOS()) { window.open("x-safari-" + url, "_blank"); }
+      else if (isAndroid()) { window.open("intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(url) + ";end", "_blank"); }
+    }
+
+    /* ─── Platform UI ───────────────────────────────────────── */
+    function checkIOSNativeApp() {
+      const platform = window.pwaApp?.getOperatingSystem();
+      if (platform === "android") hide($id("download-macos-btn"));
+      else hide($id("download-android-btn"));
+    }
+
+    /* ─── Events ────────────────────────────────────────────── */
+    function bindEvents() {
+      const pushBtn    = $id("push-notification-btn");
+      const installBtn = $id("install-pwa-btn");
+      const modal      = $id("modal");
+      const alertModal = $id("alert-modal");
+      const closeBtn1  = $id("close-modal-btn1");
+      const closeBtn2  = $id("close-modal-btn2");
+      const closeBtn3  = $id("close-modal-btn3");
+      if (pushBtn)    pushBtn.addEventListener("click", handlePushButtonClick);
+      if (installBtn) installBtn.addEventListener("click", handleInstallPWA);
+      if (modal)      modal.addEventListener("click", e =&gt; { if (e.target === modal) hideModal(); });
+      if (alertModal) alertModal.addEventListener("click", e =&gt; { if (e.target === alertModal) hideAlert(); });
+      if (closeBtn1)  closeBtn1.addEventListener("click", hideModal);
+      if (closeBtn2)  closeBtn2.addEventListener("click", hideModal);
+      if (closeBtn3)  closeBtn3.addEventListener("click", hideAlert);
+    }
+
+    /* ─── SPA hooks ─────────────────────────────────────────── */
+    window._pwaRunChecks = () =&gt; { checkNotificationPermission(); checkPWAStatus(); checkIOSNativeApp(); };
+    window._pwaReInit    = () =&gt; { initTabs(); bindEvents(); };
+
+    /* ─── Boot ──────────────────────────────────────────────── */
+    function init() {
+      initTabs();
+      renderAppName();
+      bindEvents();
+      fixContentWrapperSafeArea();
+      document.documentElement.style.transition = "opacity 0.25s ease";
+      document.documentElement.style.opacity    = "1";
+      setTimeout(window._pwaRunChecks, 300);
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+
+  })();
+} else {
+  document.documentElement.style.transition = "opacity 0.25s ease";
+  document.documentElement.style.opacity    = "1";
+  window._pwaReInit?.();
+  setTimeout(() =&gt; window._pwaRunChecks?.(), 300);
+}
+
+/* ─── &lt;instruction-card&gt; ────────────────────────────────────── */
+class InstructionCard extends HTMLElement {
+  connectedCallback() {
+    const image           = this.getAttribute("image") || "";
+    const stepNumberImage = this.getAttribute("stepNumberImage") || "";
+    const title           = (this.getAttribute("title")       || "").replace(/{{appName}}/g, window.APP_NAME);
+    const description     = (this.getAttribute("description") || "").replace(/{{appName}}/g, window.APP_NAME);
+    this.innerHTML = `
+      &lt;div class="instruction-card"&gt;
+        &lt;div class="instruction-card-image"&gt;
+          &lt;div class="instruction-card-img" style="background-image:url('${image}')"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="card-containers"&gt;
+          &lt;div class="card-heading"&gt;
+            &lt;div class="step-number"&gt;&lt;img src="${stepNumberImage}" width="18" height="18" alt="" /&gt;&lt;/div&gt;
+            &lt;div class="card-title"&gt;${title}&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class="card-excerpt"&gt;${description}&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;`;
+  }
+}
+if (!customElements.get("instruction-card")) {
+  customElements.define("instruction-card", InstructionCard);
+}
+
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
 </textarea>
 
 <textarea id="ta-xox-css"   style="display:none">
@@ -3563,7 +3453,9 @@ instruction-card { display: block; margin-bottom: 12px; }
   --icon-enabled:     url("https://static.gwvkyk.com/media/93b46fae322a6d7255e1d.png");
 
   /* --- PWA Title Color --- */
-  --color-pwa-title:  #5BFDA4;
+  --color-pwa-title:    #5BFDA4;
+  --color-macos-title:  #fff;
+  --color-android-title:#fff;
 
   /* --- Layout --- */
   --container:        495px;
@@ -4303,6 +4195,25 @@ ul, li { margin: 0; padding: 0; }
 /* =========================================================
    RESPONSIVE — 480px and below
 ========================================================= */
+
+/* ── New: macOS and Android card titles ────────────────── */
+#download-macos-btn .app-title   { color: var(--color-macos-title); }
+#download-android-btn .app-title { color: var(--color-android-title); }
+
+/* ── Alert modal ──────────────────────────────────────── */
+#alert-modal .modal-box {
+  border-radius: var(--radius-xl);
+  max-height: fit-content;
+  flex: 0 1 auto;
+  margin: auto;
+}
+.error-message {
+  font-size: 14px;
+  color: rgba(255,255,255,.75);
+  line-height: 1.55;
+  padding-bottom: 8px;
+}
+
 @media screen and (max-width: 479px) {
   .w-tab-link { display: block; }
 }
