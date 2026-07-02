@@ -1040,7 +1040,7 @@
 
 <!-- STEPS -->
 <div id="step1" class="section-wrap steps-section" style="border-top:none; padding-top:0; max-width:900px;">
-  <p class="section-label">Steps 1 – 4</p>
+  <p class="section-label">Steps 1 – 5</p>
   <h2 class="section-title">What to change</h2>
 
 
@@ -1113,6 +1113,36 @@
   <div id="step2" class="step-block" data-step>
     <div class="step-number-wrap">
       <div class="step-num">2</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Add brand name to the Meta Tag script</h3>
+      <p class="step-subtitle">Set your app name in Admin Dashboard → Display → Script</p>
+
+      <ol class="setup-steps-list">
+        <li>Go to your brand Admin Dashboard again</li>
+        <li>Click the three lines menu icon — top of the last button</li>
+        <li>Click <strong>"Display"</strong></li>
+        <li>Click <strong>"Script"</strong></li>
+        <li>Add the script below to the <strong>"Meta Tag"</strong> section:</li>
+      </ol>
+
+      <div class="code-block" style="margin-top:0.75rem;">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>Meta Tag — add inside the script block</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre><span class="token-comment">// Meta tags for app name and icons</span>
+<span class="token-key">window</span>.<span class="token-var">APP_NAME</span> = <span class="token-value">"YOURNEWBRAND"</span>;</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step3" class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">3</div>
       <div class="step-line"></div>
     </div>
     <div class="step-content">
@@ -1277,9 +1307,9 @@
   </div>
 
   <!-- STEP 3 -->
-  <div id="step3" class="step-block" data-step>
+  <div id="step4" class="step-block" data-step>
     <div class="step-number-wrap">
-      <div class="step-num">3</div>
+      <div class="step-num">4</div>
       <div class="step-line"></div>
     </div>
     <div class="step-content">
@@ -1372,9 +1402,9 @@
   </div>
 
   <!-- STEP 4 -->
-  <div id="step4" class="step-block" data-step>
+  <div id="step5" class="step-block" data-step>
     <div class="step-number-wrap">
-      <div class="step-num">4</div>
+      <div class="step-num">5</div>
       <div class="step-line" style="display:none;"></div>
     </div>
     <div class="step-content">
@@ -1471,13 +1501,17 @@
 
   <div class="check-progress">
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <span class="progress-label" id="progress-label">0 / 9</span>
+    <span class="progress-label" id="progress-label">0 / 10</span>
   </div>
 
   <div class="check-grid" id="check-list">
     <div class="check-item" onclick="toggleCheck(this)">
       <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <span class="check-label">Created download-pwa page in Manage Page</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Added window.APP_NAME to Meta Tag script in Admin Dashboard</span>
     </div>
     <div class="check-item" onclick="toggleCheck(this)">
       <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
