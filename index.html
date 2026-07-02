@@ -905,6 +905,36 @@
   .token.rule                   { color: #C792EA; }
   .token.operator               { color: rgba(255,255,255,0.55); }
   .token.variable               { color: #ADDB67; }
+
+  /* ── SETUP STEPS LIST ── */
+  .setup-steps-list {
+    margin: 1.25rem 0 0;
+    padding-left: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .setup-steps-list li { padding-left: 0.25rem; }
+  .setup-steps-list ul {
+    margin-top: 0.4rem;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    list-style: disc;
+  }
+  .setup-steps-list strong { color: rgba(255,255,255,0.9); }
+  .setup-steps-list code {
+    font-family: monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,0.08);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #93C5FD;
+  }
 </style>
 </head>
 <body>
@@ -1010,7 +1040,7 @@
 
 <!-- STEPS -->
 <div id="step1" class="section-wrap steps-section" style="border-top:none; padding-top:0; max-width:900px;">
-  <p class="section-label">Steps 1 – 4</p>
+  <p class="section-label">Steps 1 – 3</p>
   <h2 class="section-title">What to change</h2>
 
   <!-- STEP 1 -->
@@ -1341,6 +1371,227 @@
   </div>
 
 </div>
+
+<!-- ADMIN DASHBOARD SETUP -->
+<div id="admin-setup" class="section-wrap steps-section" style="max-width:900px;">
+  <p class="section-label">Admin Dashboard</p>
+  <h2 class="section-title">Admin Dashboard Setup</h2>
+
+  <!-- STEP 4 -->
+  <div class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">4</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Add PWA meta tags</h3>
+      <p class="step-subtitle">Configure your brand's manifest and app identity in the Admin Dashboard</p>
+
+      <ol class="setup-steps-list">
+        <li>Go to your brand Admin Dashboard</li>
+        <li>Click the three lines menu icon — top of the last button</li>
+        <li>Click <strong>"Display"</strong></li>
+        <li>Click <strong>"Script"</strong></li>
+        <li>Paste the template below into the <strong>"Meta Tag"</strong> section</li>
+        <li>Edit the <strong>Manifest configuration</strong> section:
+          <ul>
+            <li><code>name</code> — your brand name</li>
+            <li><code>short_name</code> — your brand name</li>
+            <li><code>start_url</code> — your brand URL</li>
+            <li><code>icons</code> — your brand icon image URLs</li>
+          </ul>
+        </li>
+        <li>Edit the <strong>Meta tags for app name and icons</strong> section:
+          <ul>
+            <li><code>APP_NAME</code> — your brand name</li>
+            <li><code>APP_ICON</code> — your brand icon image URL</li>
+          </ul>
+        </li>
+      </ol>
+
+      <div class="code-block" style="margin-top:1.5rem;">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>Meta Tag script — edit marked fields before pasting</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre>&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /&gt;
+&lt;meta name="theme-color" content="#000000" /&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /&gt;
+&lt;script&gt;
+  // Manifest configuration
+  const manifest = {
+    name: "Your brand name",            // ← change this
+    short_name: "Your brand name",      // ← change this
+    start_url: "Your brand url",        // ← change this (e.g. "https://yourbrand.com")
+    display: "standalone",
+    background_color: "#ffffff",
+    theme_color: "#000000",
+    icons: [
+      { src: "Your brand icon url for 192 size", sizes: "192x192", type: "image/png" },  // ← change this
+      { src: "Your brand icon url for 512 size", sizes: "512x512", type: "image/png" },  // ← change this
+    ],
+  };
+
+  const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("link");
+  link.rel = "manifest";
+  link.href = url;
+  document.head.appendChild(link);
+
+  // Meta tags for app name and icons
+  window.APP_NAME = "Your brand name";  // ← change this
+  const APP_NAME = "Your brand name";   // ← change this
+  const APP_ICON = "Your brand icon url";  // ← change this
+  var pwaAppTitle = document.getElementById("pwa-app-title");
+  if (pwaAppTitle) pwaAppTitle.setAttribute("content", APP_NAME);
+
+  ["icon", "apple-touch-icon"].forEach(function (rel) {
+    var link = document.querySelector('link[rel="' + rel + '"]');
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = rel;
+      document.head.appendChild(link);
+    }
+    link.href = APP_ICON;
+  });
+
+  const style = document.createElement("style");
+  style.innerHTML = `
+    html, body { margin: 0; padding: 0; background: #000 !important; }
+    body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+    #root, #app { min-height: 100vh; background: #000; }
+  `;
+  document.head.appendChild(style);
+&lt;/script&gt;</pre>
+      </div>
+
+      <div class="warning-card warning-card--info" style="margin-top:1.25rem;margin-bottom:0.75rem;">
+        <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <p class="warn-title">Example — MEL96</p>
+          <p class="warn-text">This shows how the completed script looks for MELB96. Use it as a reference when filling in your own values.</p>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>Example — MELB96</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre>&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /&gt;
+&lt;meta name="theme-color" content="#000000" /&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /&gt;
+&lt;script&gt;
+  // Manifest configuration
+  const manifest = {
+    name: "MEL96",
+    short_name: "MEL96",
+    start_url: "https://mel96.com",
+    display: "standalone",
+    background_color: "#ffffff",
+    theme_color: "#000000",
+    icons: [
+      { src: "https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png", sizes: "192x192", type: "image/png" },
+      { src: "https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png", sizes: "512x512", type: "image/png" },
+    ],
+  };
+
+  const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("link");
+  link.rel = "manifest";
+  link.href = url;
+  document.head.appendChild(link);
+
+  // Meta tags for app name and icons
+  window.APP_NAME = "MEL96";
+  const APP_NAME = "MEL96";
+  const APP_ICON = "https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png";
+  var pwaAppTitle = document.getElementById("pwa-app-title");
+  if (pwaAppTitle) pwaAppTitle.setAttribute("content", APP_NAME);
+
+  ["icon", "apple-touch-icon"].forEach(function (rel) {
+    var link = document.querySelector('link[rel="' + rel + '"]');
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = rel;
+      document.head.appendChild(link);
+    }
+    link.href = APP_ICON;
+  });
+
+  const style = document.createElement("style");
+  style.innerHTML = `
+    html, body { margin: 0; padding: 0; background: #000 !important; }
+    body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+    #root, #app { min-height: 100vh; background: #000; }
+  `;
+  document.head.appendChild(style);
+&lt;/script&gt;</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">5</div>
+      <div class="step-line" style="display:none;"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Create the download-pwa page</h3>
+      <p class="step-subtitle">Set up the push notification page in Admin Dashboard → Manage Page</p>
+
+      <ol class="setup-steps-list">
+        <li>Go to your brand Admin Dashboard</li>
+        <li>Click the three lines menu icon — top of the last button</li>
+        <li>Click <strong>"MANAGE PAGE"</strong></li>
+        <li>Click <strong>"CREATE NEW"</strong></li>
+        <li>Set the <strong>PAGE URL</strong> — use <code>download-pwa</code> as the path</li>
+        <li>Paste the <strong>MELB96 or XOX96 HTML</strong> from the template code section below</li>
+        <li>Find the line below in the HTML and change to your brand name:</li>
+      </ol>
+
+      <div class="code-block" style="margin-top:0.75rem;">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>PAGE URL</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre>// You can name your path — below is just an example
+download-pwa
+
+// Final URL result
+https://your_brand_domain/download-pwa</pre>
+      </div>
+
+      <div class="code-block" style="margin-top:1rem;">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>HTML — find and update APP_NAME</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre>// Find this line in the HTML and change to your brand name
+window.APP_NAME = window.APP_NAME || "Your Brand Name";</pre>
+      </div>
+
+      <div class="warning-card warning-card--info" style="margin-top:1rem;">
+        <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div>
+          <p class="warn-title">Also add the redirect script to your homepage</p>
+          <p class="warn-text">Copy the PWA redirect block from the template's <code>&lt;head&gt;</code> and paste it into your website's main page head too — this sends users to the download-pwa page automatically when they open the installed app for the first time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 
 <!-- DO NOT TOUCH -->
 <div id="donot" class="section-wrap">
