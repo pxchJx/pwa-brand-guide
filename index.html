@@ -1134,7 +1134,11 @@
           <button class="code-copy" onclick="copyCode(this)">copy</button>
         </div>
         <pre><span class="token-comment">// Meta tags for app name and icons</span>
-<span class="token-key">window</span>.<span class="token-var">APP_NAME</span> = <span class="token-value">"YOURNEWBRAND"</span>;</pre>
+<span class="token-key">window</span>.<span class="token-var">APP_NAME</span> = <span class="token-value">"Your Brand Name"</span>;
+<span class="token-key">const</span> <span class="token-var">APP_NAME</span> = <span class="token-value">"MELB96"</span>;
+<span class="token-key">const</span> <span class="token-var">APP_ICON</span> = <span class="token-value">"https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png"</span>;
+<span class="token-key">var</span> <span class="token-var">pwaAppTitle</span> = document.getElementById(<span class="token-value">"pwa-app-title"</span>);
+<span class="token-key">if</span> (pwaAppTitle) pwaAppTitle.setAttribute(<span class="token-value">"content"</span>, APP_NAME);</pre>
       </div>
     </div>
   </div>
@@ -1164,89 +1168,89 @@
           <span>Homepage • Floating Widget — left column JS</span>
           <button class="code-copy" onclick="copyCode(this)">copy</button>
         </div>
-        <pre>/* Bottom Modal */
-function showBottomModal() {
-  if(
-    window.location.href.indexOf("download-pwa") !== -1 ||
-    window.location.pathname.indexOf("download-pwa") !== -1 ||
-    window.location.hash.indexOf("download-pwa") !== -1
-  ) return;
+        <pre><span class="token-comment">/* Bottom Modal */</span>
+<span class="token-key">function</span> showBottomModal() {
+  <span class="token-key">if</span>(
+    <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.hash.indexOf(<span class="token-value">"download-pwa"</span>) !== -1
+  ) <span class="token-key">return</span>;
 
-  if(document.getElementById("bottom-modal")) return;
+  <span class="token-key">if</span>(<span class="token-key">document</span>.getElementById(<span class="token-value">"bottom-modal"</span>)) <span class="token-key">return</span>;
 
-  var toggleWrapper = document.getElementById("toggleWrapper");
-  if(toggleWrapper) toggleWrapper.style.setProperty("z-index", "10000", "important");
+  <span class="token-key">var</span> toggleWrapper = <span class="token-key">document</span>.getElementById(<span class="token-value">"toggleWrapper"</span>);
+  <span class="token-key">if</span>(toggleWrapper) toggleWrapper.style.setProperty(<span class="token-value">"z-index"</span>, <span class="token-value">"10000"</span>, <span class="token-value">"important"</span>);
 
-  var overlay = document.createElement("div");
-  overlay.id = "bottom-modal";
-  overlay.setAttribute("style", [
-    "position:fixed","inset:0","width:100%","height:100%",
-    "background:rgba(0,0,0,0.4)","display:flex",
-    "justify-content:center","align-items:flex-end",
-    "z-index:9999","backdrop-filter:blur(2px)"
-  ].join(";"));
+  <span class="token-key">var</span> overlay = <span class="token-key">document</span>.createElement(<span class="token-value">"div"</span>);
+  overlay.id = <span class="token-value">"bottom-modal"</span>;
+  overlay.setAttribute(<span class="token-value">"style"</span>, [
+    <span class="token-value">"position:fixed"</span>,<span class="token-value">"inset:0"</span>,<span class="token-value">"width:100%"</span>,<span class="token-value">"height:100%"</span>,
+    <span class="token-value">"background:rgba(0,0,0,0.4)"</span>,<span class="token-value">"display:flex"</span>,
+    <span class="token-value">"justify-content:center"</span>,<span class="token-value">"align-items:flex-end"</span>,
+    <span class="token-value">"z-index:9999"</span>,<span class="token-value">"backdrop-filter:blur(2px)"</span>
+  ].join(<span class="token-value">";"</span>));
 
-  var container = document.createElement("div");
-  container.setAttribute("style", [
-    "width:100%","max-width:400px","padding:16px",
-    "border-radius:12px 12px 0 0",
-    "box-shadow:0 -2px 10px rgba(0,0,0,0.3)",
-    "text-align:center","background:rgba(255,255,255,0.95)"
-  ].join(";"));
+  <span class="token-key">var</span> container = <span class="token-key">document</span>.createElement(<span class="token-value">"div"</span>);
+  container.setAttribute(<span class="token-value">"style"</span>, [
+    <span class="token-value">"width:100%"</span>,<span class="token-value">"max-width:400px"</span>,<span class="token-value">"padding:16px"</span>,
+    <span class="token-value">"border-radius:12px 12px 0 0"</span>,
+    <span class="token-value">"box-shadow:0 -2px 10px rgba(0,0,0,0.3)"</span>,
+    <span class="token-value">"text-align:center"</span>,<span class="token-value">"background:rgba(255,255,255,0.95)"</span>
+  ].join(<span class="token-value">";"</span>));
 
-  var text = document.createElement("p");
-  text.innerText = "Install This App For A Better Experience";
-  text.setAttribute("style", "margin:0 0 12px;font-size:16px;");
+  <span class="token-key">var</span> text = <span class="token-key">document</span>.createElement(<span class="token-value">"p"</span>);
+  text.innerText = <span class="token-value">"Install This App For A Better Experience"</span>;
+  text.setAttribute(<span class="token-value">"style"</span>, <span class="token-value">"margin:0 0 12px;font-size:16px;"</span>);
 
-  var btn = document.createElement("button");
-  btn.innerText = "Enable";
-  btn.setAttribute("style", [
-    "width:100%","padding:12px","border:none",
-    "border-radius:8px","background:#000",
-    "color:#fff","font-size:16px","cursor:pointer"
-  ].join(";"));
+  <span class="token-key">var</span> btn = <span class="token-key">document</span>.createElement(<span class="token-value">"button"</span>);
+  btn.innerText = <span class="token-value">"Enable"</span>;
+  btn.setAttribute(<span class="token-value">"style"</span>, [
+    <span class="token-value">"width:100%"</span>,<span class="token-value">"padding:12px"</span>,<span class="token-value">"border:none"</span>,
+    <span class="token-value">"border-radius:8px"</span>,<span class="token-value">"background:#000"</span>,
+    <span class="token-value">"color:#fff"</span>,<span class="token-value">"font-size:16px"</span>,<span class="token-value">"cursor:pointer"</span>
+  ].join(<span class="token-value">";"</span>));
 
-  function closeModal() {
+  <span class="token-key">function</span> closeModal() {
     overlay.remove();
-    if(toggleWrapper) toggleWrapper.style.removeProperty("z-index");
+    <span class="token-key">if</span>(toggleWrapper) toggleWrapper.style.removeProperty(<span class="token-value">"z-index"</span>);
   }
 
-  btn.onclick = function() {
+  btn.onclick = <span class="token-key">function</span>() {
     closeModal();
-    window.location.replace("/download-pwa");
+    <span class="token-key">window</span>.location.replace(<span class="token-value">"/download-pwa"</span>);
   };
 
-  overlay.onclick = function(e) {
-    if(e.target === overlay) closeModal();
+  overlay.onclick = <span class="token-key">function</span>(e) {
+    <span class="token-key">if</span>(e.target === overlay) closeModal();
   };
 
   container.appendChild(text);
   container.appendChild(btn);
   overlay.appendChild(container);
-  document.body.appendChild(overlay);
+  <span class="token-key">document</span>.body.appendChild(overlay);
 }
 
-function safeInit(retry) {
-  retry = retry || 0;
-  if(
-    window.location.href.indexOf("download-pwaa") !== -1 ||
-    window.location.pathname.indexOf("download-pwa") !== -1 ||
-    window.location.hash.indexOf("download-pwa") !== -1
-  ) return;
-  if(!document.body) {
-    if(retry &lt; 20) setTimeout(function(){ safeInit(retry + 1); }, 100);
-    return;
+<span class="token-key">function</span> safeInit(<span class="token-key">retry</span>) {
+  <span class="token-key">retry</span> = <span class="token-key">retry</span> || 0;
+  <span class="token-key">if</span>(
+    <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download-pwaa"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.hash.indexOf(<span class="token-value">"download-pwa"</span>) !== -1
+  ) <span class="token-key">return</span>;
+  <span class="token-key">if</span>(!<span class="token-key">document</span>.body) {
+    <span class="token-key">if</span>(<span class="token-key">retry</span> &lt; 20) <span class="token-key">setTimeout</span>(<span class="token-key">function</span>(){ safeInit(<span class="token-key">retry</span> + 1); }, 100);
+    <span class="token-key">return</span>;
   }
-  if(document.visibilityState !== "visible") {
-    document.addEventListener("visibilitychange", function handler() {
-      if(document.visibilityState === "visible"){
-        document.removeEventListener("visibilitychange", handler);
+  <span class="token-key">if</span>(<span class="token-key">document</span>.visibilityState !== <span class="token-value">"visible"</span>) {
+    <span class="token-key">document</span>.addEventListener(<span class="token-value">"visibilitychange"</span>, <span class="token-key">function</span> handler() {
+      <span class="token-key">if</span>(<span class="token-key">document</span>.visibilityState === <span class="token-value">"visible"</span>){
+        <span class="token-key">document</span>.removeEventListener(<span class="token-value">"visibilitychange"</span>, handler);
         safeInit();
       }
     });
-    return;
+    <span class="token-key">return</span>;
   }
-  setTimeout(function(){ showBottomModal(); }, 300);
+  <span class="token-key">setTimeout</span>(<span class="token-key">function</span>(){ showBottomModal(); }, 300);
 }
 
 safeInit();</pre>
