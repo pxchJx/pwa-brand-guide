@@ -1630,6 +1630,26 @@ safeInit();</pre>
   ...
 &lt;/<span class="token-key">a</span>&gt;</pre>
       </div>
+      <div class="step-note" style="margin-top:1.5rem;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
+        <p style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:10px;">If you have <em>neither</em> a macOS nor an Android file</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:12px;">Delete <strong>both</strong> cards — only the PWA install card stays.</p>
+        <div class="code-block">
+          <div class="code-block-header">
+            <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+            <span>Template HTML — remove both native cards</span>
+            <button class="code-copy" onclick="copyCode(this)">copy</button>
+          </div>
+          <pre><span class="token-comment">&lt;!-- DELETE this entire block ↓ --&gt;</span>
+&lt;<span class="token-key">a</span> <span class="token-key">class</span>=<span class="token-value">&quot;app-card&quot;</span> <span class="token-key">id</span>=<span class="token-value">&quot;download-macos-btn&quot;</span>&gt;
+  ...
+&lt;/<span class="token-key">a</span>&gt;
+
+<span class="token-comment">&lt;!-- DELETE this entire block ↓ --&gt;</span>
+&lt;<span class="token-key">a</span> <span class="token-key">class</span>=<span class="token-value">&quot;app-card&quot;</span> <span class="token-key">id</span>=<span class="token-value">&quot;download-android-btn&quot;</span>&gt;
+  ...
+&lt;/<span class="token-key">a</span>&gt;</pre>
+        </div>
+      </div>
     </div>
   </div>
 
