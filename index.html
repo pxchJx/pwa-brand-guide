@@ -1124,7 +1124,7 @@
         <li>Click the three lines menu icon — top of the last button</li>
         <li>Click <strong>"Display"</strong></li>
         <li>Click <strong>"Script"</strong></li>
-        <li>In the <strong>"Meta Tag"</strong> section, find the code block <code>// Meta tags for app name and icons</code> and add this line above <code>const APP_NAME = "MELB96";</code>:</li>
+        <li>Add the script below to the <strong>"Meta Tag"</strong> section:</li>
       </ol>
 
       <div class="code-block" style="margin-top:0.75rem;">
@@ -1133,12 +1133,7 @@
           <span>Meta Tag — add inside the script block</span>
           <button class="code-copy" onclick="copyCode(this)">copy</button>
         </div>
-        <pre><span class="token-comment">// Meta tags for app name and icons</span>
-<span class="token-key">window</span>.<span class="token-var">APP_NAME</span> = <span class="token-value">"Your Brand Name"</span>;
-<span class="token-key">const</span> <span class="token-var">APP_NAME</span> = <span class="token-value">"MELB96"</span>;
-<span class="token-key">const</span> <span class="token-var">APP_ICON</span> = <span class="token-value">"https://static.gwvkyk.com/media/f04b40c8faf96ffa99f2b.png"</span>;
-<span class="token-key">var</span> <span class="token-var">pwaAppTitle</span> = document.getElementById(<span class="token-value">"pwa-app-title"</span>);
-<span class="token-key">if</span> (pwaAppTitle) pwaAppTitle.setAttribute(<span class="token-value">"content"</span>, APP_NAME);</pre>
+        <pre><span class="token-key">window</span>.<span class="token-var">APP_NAME</span> = <span class="token-value">"Your Brand Name"</span>;</pre>
       </div>
     </div>
   </div>
