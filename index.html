@@ -2838,7 +2838,16 @@ ul { list-style: none; }
 }
 
 .modal-inner { padding: 20px 16px 0; }
-.modal-container { display: flex; flex-direction: column; gap: 16px; }
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 495px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--bg-modal);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-xl);
+}
 
 .modal-top {
   display: flex;
@@ -4069,8 +4078,9 @@ ul, li { margin: 0; padding: 0; }
 
 .modal-container {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   max-width: 495px;
+  margin: 0 auto;
   padding: 20px;
   background-color: var(--bg-modal);
   border: 1px solid var(--primary);
