@@ -1040,7 +1040,7 @@
 
 <!-- STEPS -->
 <div id="step1" class="section-wrap steps-section" style="border-top:none; padding-top:0; max-width:900px;">
-  <p class="section-label">Steps 1 – 5</p>
+  <p class="section-label">Steps 1 – 6</p>
   <h2 class="section-title">What to change</h2>
 
 
@@ -1140,9 +1140,123 @@
   </div>
 
   <!-- STEP 2 -->
+  <!-- STEP 3 -->
   <div id="step3" class="step-block" data-step>
     <div class="step-number-wrap">
       <div class="step-num">3</div>
+      <div class="step-line"></div>
+    </div>
+    <div class="step-content">
+      <h3 class="step-title">Add install prompt to Homepage floating widget</h3>
+      <p class="step-subtitle">Paste the JS into Admin Dashboard → Layout → Homepage • Floating Widget</p>
+
+      <ol class="setup-steps-list">
+        <li>Go to your brand Admin Dashboard again</li>
+        <li>Click the three lines menu icon — top of the last button</li>
+        <li>Click <strong>"Layout"</strong></li>
+        <li>Click <strong>"Homepage • Floating Widget"</strong></li>
+        <li>In the <strong>left column JS</strong> field, add the code below <em>after</em> all existing code:</li>
+      </ol>
+
+      <div class="code-block" style="margin-top:0.75rem;">
+        <div class="code-block-header">
+          <div class="code-dots"><div class="code-dot"></div><div class="code-dot"></div><div class="code-dot"></div></div>
+          <span>Homepage • Floating Widget — left column JS</span>
+          <button class="code-copy" onclick="copyCode(this)">copy</button>
+        </div>
+        <pre>/* Bottom Modal */
+function showBottomModal() {
+  if(
+    window.location.href.indexOf("download-pwa") !== -1 ||
+    window.location.pathname.indexOf("download-pwa") !== -1 ||
+    window.location.hash.indexOf("download-pwa") !== -1
+  ) return;
+
+  if(document.getElementById("bottom-modal")) return;
+
+  var toggleWrapper = document.getElementById("toggleWrapper");
+  if(toggleWrapper) toggleWrapper.style.setProperty("z-index", "10000", "important");
+
+  var overlay = document.createElement("div");
+  overlay.id = "bottom-modal";
+  overlay.setAttribute("style", [
+    "position:fixed","inset:0","width:100%","height:100%",
+    "background:rgba(0,0,0,0.4)","display:flex",
+    "justify-content:center","align-items:flex-end",
+    "z-index:9999","backdrop-filter:blur(2px)"
+  ].join(";"));
+
+  var container = document.createElement("div");
+  container.setAttribute("style", [
+    "width:100%","max-width:400px","padding:16px",
+    "border-radius:12px 12px 0 0",
+    "box-shadow:0 -2px 10px rgba(0,0,0,0.3)",
+    "text-align:center","background:rgba(255,255,255,0.95)"
+  ].join(";"));
+
+  var text = document.createElement("p");
+  text.innerText = "Install This App For A Better Experience";
+  text.setAttribute("style", "margin:0 0 12px;font-size:16px;");
+
+  var btn = document.createElement("button");
+  btn.innerText = "Enable";
+  btn.setAttribute("style", [
+    "width:100%","padding:12px","border:none",
+    "border-radius:8px","background:#000",
+    "color:#fff","font-size:16px","cursor:pointer"
+  ].join(";"));
+
+  function closeModal() {
+    overlay.remove();
+    if(toggleWrapper) toggleWrapper.style.removeProperty("z-index");
+  }
+
+  btn.onclick = function() {
+    closeModal();
+    window.location.replace("/download-pwa");
+  };
+
+  overlay.onclick = function(e) {
+    if(e.target === overlay) closeModal();
+  };
+
+  container.appendChild(text);
+  container.appendChild(btn);
+  overlay.appendChild(container);
+  document.body.appendChild(overlay);
+}
+
+function safeInit(retry) {
+  retry = retry || 0;
+  if(
+    window.location.href.indexOf("download-pwaa") !== -1 ||
+    window.location.pathname.indexOf("download-pwa") !== -1 ||
+    window.location.hash.indexOf("download-pwa") !== -1
+  ) return;
+  if(!document.body) {
+    if(retry &lt; 20) setTimeout(function(){ safeInit(retry + 1); }, 100);
+    return;
+  }
+  if(document.visibilityState !== "visible") {
+    document.addEventListener("visibilitychange", function handler() {
+      if(document.visibilityState === "visible"){
+        document.removeEventListener("visibilitychange", handler);
+        safeInit();
+      }
+    });
+    return;
+  }
+  setTimeout(function(){ showBottomModal(); }, 300);
+}
+
+safeInit();</pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="step4" class="step-block" data-step>
+    <div class="step-number-wrap">
+      <div class="step-num">4</div>
       <div class="step-line"></div>
     </div>
     <div class="step-content">
@@ -1307,9 +1421,9 @@
   </div>
 
   <!-- STEP 3 -->
-  <div id="step4" class="step-block" data-step>
+  <div id="step5" class="step-block" data-step>
     <div class="step-number-wrap">
-      <div class="step-num">4</div>
+      <div class="step-num">5</div>
       <div class="step-line"></div>
     </div>
     <div class="step-content">
@@ -1402,9 +1516,9 @@
   </div>
 
   <!-- STEP 4 -->
-  <div id="step5" class="step-block" data-step>
+  <div id="step6" class="step-block" data-step>
     <div class="step-number-wrap">
-      <div class="step-num">5</div>
+      <div class="step-num">6</div>
       <div class="step-line" style="display:none;"></div>
     </div>
     <div class="step-content">
@@ -1501,7 +1615,7 @@
 
   <div class="check-progress">
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <span class="progress-label" id="progress-label">0 / 10</span>
+    <span class="progress-label" id="progress-label">0 / 11</span>
   </div>
 
   <div class="check-grid" id="check-list">
@@ -1512,6 +1626,10 @@
     <div class="check-item" onclick="toggleCheck(this)">
       <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <span class="check-label">Added window.APP_NAME to Meta Tag script in Admin Dashboard</span>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="check-label">Added floating widget install prompt JS to Homepage layout</span>
     </div>
     <div class="check-item" onclick="toggleCheck(this)">
       <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#071F16" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
