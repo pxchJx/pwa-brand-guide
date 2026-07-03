@@ -2305,8 +2305,20 @@ if (!window._pwaPageInit) {
       wrapper.style.setProperty("top", `calc(${base}px + env(safe-area-inset-top, 0px))`, "important");
     }
 
+    /* ─── Fix site's own #content pane sitting under the marquee ── */
+    function fixSiteContentOffset() {
+      const content = document.getElementById("content");
+      if (!content) return;
+      const cs = getComputedStyle(content);
+      if (cs.position !== "fixed" &amp;&amp; cs.position !== "sticky" &amp;&amp; cs.position !== "absolute") return;
+      const top = measureTopOffset();
+      if (top &gt; 0) content.style.setProperty("top", `${top}px`, "important");
+    }
+
     window.addEventListener("resize", fixContentWrapperSafeArea);
     window.addEventListener("orientationchange", () =&gt; setTimeout(fixContentWrapperSafeArea, 150));
+    window.addEventListener("resize", fixSiteContentOffset);
+    window.addEventListener("orientationchange", () =&gt; setTimeout(fixSiteContentOffset, 150));
 
     /* ─── Live-sync top while modal is open ─────────────────── */
     let _syncInterval = null;
@@ -2520,10 +2532,13 @@ if (!window._pwaPageInit) {
       initTabs();
       renderAppName();
       bindEvents();
-      fixContentWrapperSafeArea();
-      document.documentElement.style.transition = "opacity 0.25s ease";
-      document.documentElement.style.opacity    = "1";
-      setTimeout(window._pwaRunChecks, 300);
+      setTimeout(() =&gt; {
+        fixContentWrapperSafeArea();
+        fixSiteContentOffset();
+        document.documentElement.style.transition = "opacity 0.25s ease";
+        document.documentElement.style.opacity    = "1";
+      }, 250);
+      setTimeout(window._pwaRunChecks, 550);
     }
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", init);
@@ -3691,8 +3706,20 @@ if (!window._pwaPageInit) {
       wrapper.style.setProperty("top", `calc(${base}px + env(safe-area-inset-top, 0px))`, "important");
     }
 
+    /* ─── Fix site's own #content pane sitting under the marquee ── */
+    function fixSiteContentOffset() {
+      const content = document.getElementById("content");
+      if (!content) return;
+      const cs = getComputedStyle(content);
+      if (cs.position !== "fixed" &amp;&amp; cs.position !== "sticky" &amp;&amp; cs.position !== "absolute") return;
+      const top = measureTopOffset();
+      if (top &gt; 0) content.style.setProperty("top", `${top}px`, "important");
+    }
+
     window.addEventListener("resize", fixContentWrapperSafeArea);
     window.addEventListener("orientationchange", () =&gt; setTimeout(fixContentWrapperSafeArea, 150));
+    window.addEventListener("resize", fixSiteContentOffset);
+    window.addEventListener("orientationchange", () =&gt; setTimeout(fixSiteContentOffset, 150));
 
     /* ─── Live-sync top while modal is open ─────────────────── */
     let _syncInterval = null;
@@ -3906,10 +3933,13 @@ if (!window._pwaPageInit) {
       initTabs();
       renderAppName();
       bindEvents();
-      fixContentWrapperSafeArea();
-      document.documentElement.style.transition = "opacity 0.25s ease";
-      document.documentElement.style.opacity    = "1";
-      setTimeout(window._pwaRunChecks, 300);
+      setTimeout(() =&gt; {
+        fixContentWrapperSafeArea();
+        fixSiteContentOffset();
+        document.documentElement.style.transition = "opacity 0.25s ease";
+        document.documentElement.style.opacity    = "1";
+      }, 250);
+      setTimeout(window._pwaRunChecks, 550);
     }
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", init);
