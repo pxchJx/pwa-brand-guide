@@ -1201,7 +1201,20 @@
           <button class="code-copy" onclick="copyCode(this)">copy</button>
         </div>
         <pre><span class="token-comment">/* Bottom Modal */</span>
+<span class="token-key">function</span> isLoggedIn() {
+  <span class="token-key">try</span> {
+    <span class="token-key">var</span> raw = localStorage.getItem(<span class="token-value">"USER"</span>);
+    <span class="token-key">if</span>(!raw) <span class="token-key">return</span> <span class="token-key">false</span>;
+    <span class="token-key">var</span> user = JSON.parse(raw);
+    <span class="token-key">return</span> !!(user &amp;&amp; user.id);
+  } <span class="token-key">catch</span>(e) {
+    <span class="token-key">return</span> <span class="token-key">false</span>;
+  }
+}
+
 <span class="token-key">function</span> showBottomModal() {
+  <span class="token-key">if</span>(!isLoggedIn()) <span class="token-key">return</span>;
+
   <span class="token-key">if</span>(
     <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
     <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
