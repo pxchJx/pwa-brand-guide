@@ -2700,7 +2700,7 @@ ul, li { margin: 0; padding: 0; }
   margin: 0;
   font-size: 1.4rem;
   line-height: 1.2;
-  color: #000;
+  color: var(--secondary);
 }
 
 
@@ -2958,10 +2958,8 @@ ul, li { margin: 0; padding: 0; }
 }
 
 .app-icon-wrap--mac {
-  border: 1px solid transparent;
-  background:
-    linear-gradient(#CCC, #CCC) padding-box,
-    linear-gradient(#000, #000) border-box;
+  border: 1px solid var(--secondary-border);
+  background: var(--bg-app-card);
 }
 
 .app-copy { flex: 1; min-width: 0; }
@@ -2997,21 +2995,18 @@ ul, li { margin: 0; padding: 0; }
   justify-content: center;
   padding: 4px 8px;
   border-radius: 6px;
-  border: 1px solid transparent;
-  background:
-    linear-gradient(#FFF, #FFF) padding-box,
-    linear-gradient(#FA0004, #FA0004) border-box;
-  color: #FA0004;
+  border: 1px solid var(--primary);
+  background: var(--primary-faint);
+  color: var(--primary);
   font-size: 0.8rem;
   font-weight: 700;
   line-height: 1;
 }
 
 .tag--native {
-  background:
-    linear-gradient(#FFF, #FFF) padding-box,
-    linear-gradient(#000, #000) border-box;
-  color: #000;
+  border: 1px solid var(--secondary);
+  background: var(--secondary-faint);
+  color: var(--secondary);
 }
 
 
@@ -3242,8 +3237,8 @@ ul, li { margin: 0; padding: 0; }
   gap: 0;
   margin-top: 20px;
   padding: 12px;
-  background-color: #FFF;
-  border: 1px solid rgba(250, 0, 4, 0.32);
+  background-color: var(--bg-modal);
+  border: 1px solid var(--primary-dim);
   border-radius: var(--radius-md);
 }
 
@@ -3254,8 +3249,8 @@ ul, li { margin: 0; padding: 0; }
   width: 100px;
   height: 120px;
   padding: 6px;
-  background: rgba(250, 0, 4, 0.16);
-  border: 1px solid rgba(250, 0, 4, 0.48);
+  background: var(--primary-faint);
+  border: 1px solid var(--primary-dim);
   border-radius: 6px;
 }
 
@@ -4351,10 +4346,8 @@ ul, li { margin: 0; padding: 0; }
 }
 
 .app-icon-wrap--mac {
-  border: 1px solid transparent;
-  background:
-    linear-gradient(#36351C, #36351C) padding-box,
-    linear-gradient(90deg, #F3E92E 0%, #8CFF00 100%) border-box;
+  border: 1px solid var(--secondary-border);
+  background: var(--bg-app-card);
 }
 
 .app-copy { flex: 1; min-width: 0; }
@@ -4390,23 +4383,19 @@ ul, li { margin: 0; padding: 0; }
   justify-content: center;
   padding: 4px 8px;
   border-radius: 6px;
-  border: 1px solid transparent;
-  background:
-    linear-gradient(180deg, #CF1917 0%, #FF6E30 100%) padding-box,
-    linear-gradient(180deg, #FF4545 0%, #FFB056 100%) border-box;
-  color: #fff;
+  border: 1px solid var(--primary);
+  background: var(--primary-faint);
+  color: var(--primary);
   font-size: 0.8rem;
   font-weight: 700;
   line-height: 1;
 }
 
 .tag--native {
-  border: 1px solid transparent;
+  border: 1px solid var(--secondary);
   border-radius: 6px;
-  background:
-    linear-gradient(#36351C, #36351C) padding-box,
-    linear-gradient(90deg, #F3E92E 0%, #8CFF00 100%) border-box;
-  color: #F3E92E;
+  background: var(--secondary-faint);
+  color: var(--secondary);
 }
 
 
@@ -4659,7 +4648,7 @@ ul, li { margin: 0; padding: 0; }
   margin-top: 20px;
   padding: 12px;
   background-color: var(--bg-modal-inner);
-  border: 1px solid #195F49;
+  border: 1px solid var(--primary-border);
   border-radius: var(--radius-md);
 }
 
@@ -4672,8 +4661,8 @@ ul, li { margin: 0; padding: 0; }
   width: 100px;
   height: 120px;
   padding: 6px;
-  background: linear-gradient(#13402C, #13402C);
-  border: 1px solid #1C573A;
+  background: var(--primary-dark);
+  border: 1px solid var(--primary-border);
   border-radius: 6px;
 }
 
@@ -4723,7 +4712,7 @@ ul, li { margin: 0; padding: 0; }
 .card-excerpt {
   width: 100%;
   margin: 0;
-  color: #329360;
+  color: var(--primary-dim);
   font-size: 1rem;
   font-weight: 400;
   line-height: 112%;
