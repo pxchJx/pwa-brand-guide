@@ -1681,8 +1681,8 @@ safeInit();</pre>
         <li>Go to your brand Admin Dashboard (BO)</li>
         <li>Open the side menu → <strong>Setting</strong> → <strong>Other</strong></li>
         <li>Find the <strong>Webhook Config</strong> field</li>
-        <li>Paste the JSON below, replacing <code>YOUR_BRAND_ID</code> and <code>YOUR_WEBHOOK_SECRET</code> with your own values</li>
-        <li>Your <code>YOUR_BRAND_ID</code> must match the brand's own ID already used elsewhere in the app — check the <code>br-id</code> key in the site's <code>localStorage</code> (DevTools → Application → Local Storage) to confirm it</li>
+        <li>Paste the JSON below into the field</li>
+        <li>The brand ID in the URL (<code>019d856d-d9bf-7bb8-bd6f-e438dd8748fb</code>) matches the <code>br-id</code> key already used elsewhere in the app — check the site's <code>localStorage</code> (DevTools → Application → Local Storage) to confirm it</li>
       </ol>
 
       <div class="code-block" style="margin-top:0.75rem;">
@@ -1693,15 +1693,15 @@ safeInit();</pre>
         </div>
         <pre>{
   <span class="token-key">"Deposit"</span>: {
-    <span class="token-key">"Url"</span>: <span class="token-value">"https://api.f95m3jehxa.com/webhook/YOUR_BRAND_ID/deposit"</span>,
+    <span class="token-key">"Url"</span>: <span class="token-value">"https://api.f95m3jehxa.com/webhook/019d856d-d9bf-7bb8-bd6f-e438dd8748fb/deposit"</span>,
     <span class="token-key">"Header"</span>: {
-      <span class="token-key">"x-webhook-secret"</span>: <span class="token-value">"YOUR_WEBHOOK_SECRET"</span>
+      <span class="token-key">"x-webhook-secret"</span>: <span class="token-value">"jus18941@$!$iUHQmr&*2"</span>
     }
   },
   <span class="token-key">"Withdraw"</span>: {
-    <span class="token-key">"Url"</span>: <span class="token-value">"https://api.f95m3jehxa.com/webhook/YOUR_BRAND_ID/withdraw"</span>,
+    <span class="token-key">"Url"</span>: <span class="token-value">"https://api.f95m3jehxa.com/webhook/019d856d-d9bf-7bb8-bd6f-e438dd8748fb/withdraw"</span>,
     <span class="token-key">"Header"</span>: {
-      <span class="token-key">"x-webhook-secret"</span>: <span class="token-value">"YOUR_WEBHOOK_SECRET"</span>
+      <span class="token-key">"x-webhook-secret"</span>: <span class="token-value">"jus18941@$!$iUHQmr&*2"</span>
     }
   }
 }</pre>
@@ -1709,7 +1709,7 @@ safeInit();</pre>
 
       <div class="step-note" style="margin-top:1.5rem;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);">
         <p style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:10px;">Where to get these values</p>
-        <p style="font-size:13px;color:rgba(255,255,255,0.45);">Get your brand's actual webhook URL and secret from your own PWA Back Office — do not reuse another brand's ID or secret. Each brand has its own unique pair.</p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.45);">This example uses this brand's actual webhook URL and secret from its PWA Back Office. Each brand has its own unique pair.</p>
       </div>
     </div>
   </div>
