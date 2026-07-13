@@ -1020,7 +1020,7 @@
       <div class="step-line"></div>
     </div>
     <div class="step-content">
-      <h3 class="step-title">Create the download-pwa page</h3>
+      <h3 class="step-title">Create the download page</h3>
       <p class="step-subtitle">Set up the push notification page and set your brand name</p>
 
       <ol class="setup-steps-list">
@@ -1028,7 +1028,7 @@
         <li>Click the three lines menu icon — top of the last button</li>
         <li>Click <strong>"MANAGE PAGE"</strong></li>
         <li>Click <strong>"CREATE NEW"</strong></li>
-        <li>Set the <strong>PAGE URL</strong> using <code>download-pwa</code> as the path:</li>
+        <li>Set the <strong>PAGE URL</strong> using <code>download</code> as the path:</li>
       </ol>
 
       <div class="code-block" style="margin-top:0.75rem;">
@@ -1038,10 +1038,10 @@
           <button class="code-copy" onclick="copyCode(this)">copy</button>
         </div>
         <pre><span class="token-comment">// Name your path — example below</span>
-<span class="token-var">download-pwa</span>
+<span class="token-var">download</span>
 
 <span class="token-comment">// Final URL</span>
-<span class="token-value">https://your_brand_domain/download-pwa</span></pre>
+<span class="token-value">https://your_brand_domain/download</span></pre>
       </div>
 
       <ol class="setup-steps-list" style="margin-top:1.25rem;">
@@ -1063,7 +1063,7 @@
         <svg class="warn-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="#93C5FD" stroke-width="1.4"/><path d="M10 9v5M10 6.5v.5" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round"/></svg>
         <div>
           <p class="warn-title">Also add the redirect script to your homepage</p>
-          <p class="warn-text">Copy the PWA redirect block from the template&#39;s <code>&lt;head&gt;</code> and paste it into your website&#39;s main page head too — this sends users to the download-pwa page automatically when they open the installed app for the first time.</p>
+          <p class="warn-text">Copy the PWA redirect block from the template&#39;s <code>&lt;head&gt;</code> and paste it into your website&#39;s main page head too — this sends users to the download page automatically when they open the installed app for the first time.</p>
         </div>
       </div>
 
@@ -1147,9 +1147,9 @@
   <span class="token-key">if</span>(!isLoggedIn()) <span class="token-key">return</span>;
 
   <span class="token-key">if</span>(
-    <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
-    <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
-    <span class="token-key">window</span>.location.hash.indexOf(<span class="token-value">"download-pwa"</span>) !== -1
+    <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.hash.indexOf(<span class="token-value">"download"</span>) !== -1
   ) <span class="token-key">return</span>;
 
   <span class="token-key">if</span>(<span class="token-key">document</span>.getElementById(<span class="token-value">"bottom-modal"</span>)) <span class="token-key">return</span>;
@@ -1193,7 +1193,7 @@
 
   btn.onclick = <span class="token-key">function</span>() {
     closeModal();
-    <span class="token-key">window</span>.location.replace(<span class="token-value">"/download-pwa"</span>);
+    <span class="token-key">window</span>.location.replace(<span class="token-value">"/download"</span>);
   };
 
   overlay.onclick = <span class="token-key">function</span>(e) {
@@ -1209,9 +1209,9 @@
 <span class="token-key">function</span> safeInit(<span class="token-key">retry</span>) {
   <span class="token-key">retry</span> = <span class="token-key">retry</span> || 0;
   <span class="token-key">if</span>(
-    <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download-pwaa"</span>) !== -1 ||
-    <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download-pwa"</span>) !== -1 ||
-    <span class="token-key">window</span>.location.hash.indexOf(<span class="token-value">"download-pwa"</span>) !== -1
+    <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download"</span>) !== -1 ||
+    <span class="token-key">window</span>.location.hash.indexOf(<span class="token-value">"download"</span>) !== -1
   ) <span class="token-key">return</span>;
   <span class="token-key">if</span>(!<span class="token-key">document</span>.body) {
     <span class="token-key">if</span>(<span class="token-key">retry</span> &lt; 20) <span class="token-key">setTimeout</span>(<span class="token-key">function</span>(){ safeInit(<span class="token-key">retry</span> + 1); }, 100);
@@ -1673,7 +1673,7 @@ safeInit();</pre>
     <div class="cl-group-items" id="check-list-admin">
     <div class="check-item" onclick="toggleCheck(this)">
       <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="check-label">Created download-pwa page in Manage Page</span>
+      <span class="check-label">Created download page in Manage Page</span>
     </div>
     <div class="check-item" onclick="toggleCheck(this)">
       <div class="check-box"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -2133,9 +2133,9 @@ function populateCode() {
       if (
         isStandalone &amp;&amp;
         Notification.permission === "default" &amp;&amp;
-        window.location.pathname.indexOf("download-pwa") === -1
+        window.location.pathname.indexOf("download") === -1
       ) {
-        window.location.replace("/download-pwa");
+        window.location.replace("/download");
       }
     })();
   &lt;/script&gt;
@@ -3534,9 +3534,9 @@ ul, li { margin: 0; padding: 0; }
       if (
         isStandalone &amp;&amp;
         Notification.permission === "default" &amp;&amp;
-        window.location.pathname.indexOf("download-pwa") === -1
+        window.location.pathname.indexOf("download") === -1
       ) {
-        window.location.replace("/download-pwa");
+        window.location.replace("/download");
       }
     })();
   &lt;/script&gt;
@@ -4984,9 +4984,9 @@ ul, li { margin: 0; padding: 0; }
       if (
         isStandalone &amp;&amp;
         Notification.permission === "default" &amp;&amp;
-        window.location.pathname.indexOf("download-pwa") === -1
+        window.location.pathname.indexOf("download") === -1
       ) {
-        window.location.replace("/download-pwa");
+        window.location.replace("/download");
       }
     })();
   &lt;/script&gt;
@@ -6385,9 +6385,9 @@ ul, li { margin: 0; padding: 0; }
       if (
         isStandalone &amp;&amp;
         Notification.permission === "default" &amp;&amp;
-        window.location.pathname.indexOf("download-pwa") === -1
+        window.location.pathname.indexOf("download") === -1
       ) {
-        window.location.replace("/download-pwa");
+        window.location.replace("/download");
       }
     })();
   &lt;/script&gt;
@@ -7788,9 +7788,9 @@ ul, li { margin: 0; padding: 0; }
       if (
         isStandalone &amp;&amp;
         Notification.permission === "default" &amp;&amp;
-        window.location.pathname.indexOf("download-pwa") === -1
+        window.location.pathname.indexOf("download") === -1
       ) {
-        window.location.replace("/download-pwa");
+        window.location.replace("/download");
       }
     })();
   &lt;/script&gt;
@@ -9220,9 +9220,9 @@ ul, li { margin: 0; padding: 0; }
       if (
         isStandalone &amp;&amp;
         Notification.permission === "default" &amp;&amp;
-        window.location.pathname.indexOf("download-pwa") === -1
+        window.location.pathname.indexOf("download") === -1
       ) {
-        window.location.replace("/download-pwa");
+        window.location.replace("/download");
       }
     })();
   &lt;/script&gt;
