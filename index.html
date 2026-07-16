@@ -1146,6 +1146,8 @@
 <span class="token-key">function</span> showBottomModal() {
   <span class="token-key">if</span>(!isLoggedIn()) <span class="token-key">return</span>;
 
+  <span class="token-key">if</span>(<span class="token-key">typeof</span> Notification !== <span class="token-value">"undefined"</span> &amp;&amp; Notification.permission === <span class="token-value">"granted"</span>) <span class="token-key">return</span>;
+
   <span class="token-key">if</span>(
     <span class="token-key">window</span>.location.href.indexOf(<span class="token-value">"download"</span>) !== -1 ||
     <span class="token-key">window</span>.location.pathname.indexOf(<span class="token-value">"download"</span>) !== -1 ||
